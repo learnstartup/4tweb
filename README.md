@@ -1,5 +1,7 @@
 4tweb
 =====
+截图请见wiki: https://github.com/learnstartup/4tweb/wiki 
+交流请加QQ: 81552433
 
 点餐哟基于PHPWIND的外卖平台, 是一个开源的公益的平台, 开源是指点餐哟开源所有代码, 大家有自己的权利去发布自己的代码去做商业的活动以及二次开发; 当然用的人也需要遵守phpwind的协议。
 

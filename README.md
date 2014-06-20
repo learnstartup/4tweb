@@ -1,5 +1,7 @@
 4tweb
 =====
+截图请见wiki: https://github.com/learnstartup/4tweb/wiki 
+交流请加QQ: 81552433
 
 截图请见wiki: https://github.com/learnstartup/4tweb/wiki
 交流请加QQ: 81552433

@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+
+</head>
+<body style="width:450px" class="body_none">
+<div class="pop_cont pop_table">
+	<div class="h_a">{$schoolExtra['name']}</div>
+	<div class="mb10 prompt_text">
+		设置学校的相关设置
+	</div>
+	
+	<div class="h_a">学校设置</div>
+	<form class="" data-role="list" action="{@url:app/4tschool/schoolpeople/setup?schoolid=$schoolid}" method="post">
+	<input type='hidden' name='type' value="do">
+	<div class="">
+		<table width="100%">
+			<col class="th" />
+			<col />
+			<thead>
+			<tr>
+				<th>学校开放</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="schoolopen" value="1" {$schoolExtra['opened'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+				</td>
+			</tr>
+			<tr>
+				<th>允许下单</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="orderopen" value="1" {$schoolExtra['openorder'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+				</td>
+			</tr>
+			<tr>
+				<th>开放地图</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="openmap" value="1" {$schoolExtra['openmap'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+				</td>
+			</tr>
+			<tr>
+				<th>开放顺带</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="shundaiopen" value="1" {$schoolExtra['openshundai'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+				</td>
+			</tr>
+			<tr>
+				<th>顺带ID</th>
+				<td>
+					<input id="shundaiid" name="shundaiid" type="number" value="{$schoolExtra['shundaiid']}" class="input length_1">
+				</td>
+			</tr>
+			<tr>
+				<th>开放零钱包</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="walletopen" value="1" {$schoolExtra['openwallet'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>开放留言板</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="liuyanbanopen" value="1" {$schoolExtra['openliuyanban'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+
+			<tr>
+				<th>开放网站</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="openwebsite" value="1" {$schoolExtra['openwebsite'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>开放分类、动态广告及公告</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="openclassannounce" value="1" {$schoolExtra['openclassannounce'] == 1?"checked=checked":""}><span>是</span>
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>套餐推荐</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="checkbox" name="opencombo" value="1" {$schoolExtra['opencombo'] == 1?"checked=checked":""}><span>是</span>
+                        		
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>经度</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="text" name="schlongitude" value="{$schoolExtra['schlongitude']}" />
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>纬度</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="text" name="schlatitude" value="{$schoolExtra['schlatitude']}" />
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			<tr>
+				<th>学校简称</th>
+				<td>
+					<ul>
+                        <li>
+                        	<label>
+                        		<input type="text" name="abbreviation" value="{$schoolExtra['abbreviation']}" />
+                        	</label>
+                        </li>
+                    </ul>
+
+				</td>
+			</tr>
+			</thead>	
+		</table>
+		<div class="btn_wrap_pd">
+			<button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+		</div>
+	</div>
+	
+</form>
+</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

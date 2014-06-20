@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<div class="spacer"></div>
+	<form action="{@url:app/4tschool/myfavorite/orderedmechandise}" id="schoolordersForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myfavorite/run}">
+	<div class="clear"></div>
+	<div class="merch_bord">
+            <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+                <tbody>
+                <tr>
+                  <td class="tab_w">&nbsp;</td>
+                  <td style="width:155px;text-align:center">菜品名称</td>
+                  <td class="tab_w7">数量</td>
+                  <td class="tab_w7">单品积分</td>
+                  <td class="tab_w3">价格</td>
+                  <td class="tab_w4">小计</td>
+                  <td class="tab_w4">购买时间</td>
+                  <td class="tab_w5">操作</td>
+                </tr>
+              </tbody>
+          </table>
+			  <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">  	 
+			            <tbody>
+			            	<!--# if ($orderItems) { #-->
+			            	<!--#foreach ($orderItems as $key => $item) {#-->
+			            	<tr>
+			            		<td class="tab_w">
+			            			<a name="productpic" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}">
+			            			<img width="67px" height="30px" src="{$item['imageurl']}" title="{$item['name']}">
+			            			</a>
+			            		</td>
+			            		<td style="width:155px;text-align:center">
+			            			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}" target="" title="{$item['mname']}">{$item['mname']}</a>
+			            		</td>
+			            		<td class="tab_w7">{$item['quatity']}{$item['unit']}</td>
+			            		<td class="tab_w7">{$item['integral']}</td>
+			            		<td class="tab_w3"><span>￥{$item['price']}({$item['packingprice']==0?"无打包费用":"含打包费用"})</span></td>
+			            		<td class="tab_w4">￥{$item['price'] * $item['quatity']}</td>
+				            	<td class="tab_w4">{$item['orderdate']}</td>
+				            	<td class="tab_w5">
+				            		<span class="tab_w5_online">
+				            			<a href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}" target="" id="product_comment" name="product_comment" class="review" onmouseover="">去店铺</a>
+				            			&nbsp;
+				            			<!--# if($item['openorder'] == 1 && $schoolInfo['openorder'] == 1 && $item['isopen'] == 1 && $item['hasterminal'] == 1) { #-->
+				            				|&nbsp;
+				            				<a href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&type=m&mid=$item['mid']}" target="" id="product_comment" name="product_comment" class="review" onmouseover="">再买一次</a>
+				            			<!--# }  #-->	
+				            		</span>
+				            	</td>
+			            </tr>
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span>没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+		 </div>
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/myfavorite/orderedmechandise' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />

@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+	<template load="true" source="links"/>
+	<div class="h_a">功能说明</div>
+	<div class="prompt_text">
+		<ul>
+			<li>设置精品推荐</li>
+			<li>类型、图片地址、链接地址为必填，否则无法保存</li>
+		</ul>
+	</div>
+
+<form id="form" method="post" action="{@url:app/4tschool/boutique/run}">
+<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/boutique/run}">
+<input type="hidden" id="ajax_url_dorun" value="{@url:app/4tschool/boutique/dorun}">
+<input type="hidden" id="ajax_url_release" value="{@url:app/4tschool/boutique/release}">
+<select class="select length_4" id="choosenSchoolid" name="choosenschoolid">
+	<option class="school{$item['schoolid']}" <?php if(empty($choosenschoolid)) echo "selected"; ?> value="0" >ALL</option>
+	        <!--#foreach($allSchool as $item) {#-->
+	        <option class="school{$item['schoolid']}"
+	        <?php if($item['schoolid'] == $choosenschoolid) echo "selected"; ?>
+	         value="{$item['schoolid']}" >{$item['name']}</option>
+            <!--#}#-->
+</select>
+<span>有效期内的</span>
+<input id="isActive" name="isactive" type="checkbox" {$isActive == 1?"checked=checked":""}>
+<div class="table_list">
+	<table width="100%" id="J_table_list" style="table-layout:fixed;">
+		<colgroup>
+			<col width="30">
+			<col width="240">
+			<col width="70">
+			<col width="320">
+			<col width="190">
+			<col width="250">
+			<!-- <col width="250"> -->
+			<col width="250">
+			<col>
+		</colgroup>
+		<thead>
+			<tr>
+				<td></td>
+				<td>学校</td>
+				<td>类型</td>
+				<td>有效期</td>
+				<td>描述</td>
+				<td>链接地址</td>
+				<!-- <td>图片上传</td> -->
+				<td>操作</td>
+			</tr>
+		</thead>
+	<!--# foreach ($boutiqueList as $value) { #-->
+		<tbody>
+		<tr>
+		     <input name="data[{$value[id]}][id]" type="hidden" value="{$value['id']}" class="input length_1 mr10">
+             <td>
+             	<span class="zero_icon mr10"></span>
+             </td>
+             <td>
+                <select class="select length_4" name="data[{$value[id]}][schoolid]">
+                    <!--#foreach($allSchool as $item) {#-->
+                    <option class="school{$item['schoolid']}"
+                    <?php if($item['schoolid'] == $value['schoolid']) echo "selected"; ?>
+                    value="{$item['schoolid']}" >{$item['name']}</option>
+                    <!--#}#-->
+                </select>
+             </td>             
+             <td>
+             	<input name="data[{$value[id]}][type]" type="text" value="{$value['type']}" class="input length_1 mr10">
+             </td>
+			 <td>
+			 	<input name="data[{$value['id']}][startdate]" type="text" class="input length_2 J_date mr20" value="{$value['startdate']}">至
+			 	<input name="data[{$value['id']}][enddate]" type="text" value="{$value['enddate']}" class="input length_2 J_date">
+			 </td>             
+             <td>
+             	<textarea name="data[{$value['id']}][description]" type="text" value="{$value['description']}" class="input length_3 mr10">{$value['description']}</textarea>
+             </td>
+<!--              <td>
+             	<input name="data[{$value['id']}][imgurl]" type="text" class="input length_4" value="{$value['imgurl']}">
+             </td> -->
+             <td>
+             	<input name="data[{$value['id']}][link]" type="text" class="input length_4" value="{$value['link']}">
+             </td>
+			 <td>
+				<a href="{@url:app/4tschool/boutique/imgupload?id=$value[id]&url=$value['imgurl']&sid=$value['schoolid']}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+				<a href="{@url:app/4tschool/boutique/del?id=$value['id']}" class="mr10 J_ajax_del">[删除]</a>
+				<!--# if(@Pw::strlen($value['imgurl'])==0){ #-->
+				<label>[无图]</label>
+				<!--# } #-->
+				<!--# else{ #-->
+				<a href="{@url:app/4tschool/boutique/preview?id=$value['id']}"  target="_blank">[预览]</a>
+				<!--# } #-->
+
+				<!--# if(@Pw::strlen($value['imgurl'])!=0 && $value['isrelease']==0){ #-->
+				<a id="release" value="1_{$value['id']}" style="cursor:pointer" class="mr10 J_dialog">[发布]</a>
+				<!--# } #-->
+				<!--# elseif($value['isrelease']==1){ #-->
+				<a id="release" value="0_{$value['id']}" style="cursor:pointer" class="mr10 J_dialog">[取消发布]</a>
+				<!--# } #-->
+
+			 </td>
+		</tr>
+		</tbody>		
+		<!--# }	#-->
+	</table>
+	<table width="100%">
+		<tr class="ct"><td colspan="5" style="padding-left:38px;"><a data-type="nav_1" data-html="tbody" href="" id="J_add_root" class="link_add">添加</a></td></tr>
+	</table>
+</div>
+<div class="btn_wrap">
+	<div class="btn_wrap_pd">
+		
+		<!-- <input name="navtype" type="hidden" value="{$navType}" > -->
+	</div>
+</div>	
+</form>
+<button id="btnSave">Save</button>
+</div>
+<template source='TPL:admin.common.footer' />
+<script type="text/javascript">
+
+var root_tr_html = '<tr>\
+                            <td><span class="zero_icon mr10"></span></td>\
+                                        <td>\
+                                            <select name="newdata[root_][schoolid]" class="select length_4">\
+                                               <!--#foreach($allSchool as $item) {#-->
+                                               	   <option class="school{$item['schoolid']}" value="{$item['schoolid']}" >{$item['name']}</option>\
+                                               <!--#}#-->
+                                            </select>\
+                                        </td>\
+                                        <td>\
+                                            <input name="newdata[root_][type]" type="text" value="" class="input length_1 mr10">\
+                                        </td>\
+                                        <td>\
+                                            <input name="newdata[root_][startdate]" type="text" class="input length_2 J_date mr20" value="">\
+                                            至\
+                                            <input name="newdata[root_][enddate]" type="text" class="input length_2 J_date mr20" value="">\
+                                        </td>\
+                                        <td>\
+                                            <textarea name="newdata[root_][description]" type="text" value="" class="input length_3 mr10"></textarea>\
+                                        </td>\
+                                        <td><input name="newdata[root_][link]" type="text" class="input length_4" value="">\
+                                        </td>\
+                                        <td>\
+                                            <a href="" class="mr5 J_newRow_del">[删除]</a>\
+                                        </td>\
+                                    </tr>';
+
+                                        //                                     <td>\
+                                        //     <input name="newdata[root_][imgurl]" type="text" class="input length_4" value="">\
+                                        // </td>\
+
+Wind.js(GV.JS_ROOT+ 'pages/admin/common/forumTree_table.js?v=' +GV.JS_VERSION);
+
+Wind.use('datePicker',function(){});
+
+$("#btnSave").click(function() {
+	var ajaxUrl = $("#ajax_url_dorun").val();
+	$.post(ajaxUrl,$("#form").serialize(),function (r) {
+		if (r>0) alert("操作成功");
+		location.replace(location.href);
+	});	
+});
+
+$("#release").live('click',function(){
+	var ajaxUrl= $("#ajax_url_release").val();
+	var para=$(this).attr("value").split('_');
+
+	$.post(ajaxUrl,{release:para[0],id:para[1]},function(r){
+		if (r>0) {
+			location.replace(location.href);
+		}else{
+			// alert("更新失败");
+		}
+	});
+});
+
+$("input.J_date").live('click',function(){
+	if($(this).data('hasDatePicker')) return;
+	$(this).datePicker();
+	$(this).data('hasDatePicker',true);
+	$(this).click();
+});
+
+$("#choosenSchoolid").change(function()
+{
+	search();
+});
+
+$("#isActive").change(function(){
+	search();
+});
+
+function search(){
+	var schoolpara = '&choosenschoolid='+$("#choosenSchoolid").val(); 
+	var viewpara = '&isactive='+($("#isActive").attr("checked")?1:0);
+	window.location.href= $(".pageurl").val() + schoolpara + viewpara; 	
+}
+
+</script>
+</body>
+</html>

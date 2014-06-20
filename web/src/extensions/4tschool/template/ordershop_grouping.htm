@@ -1,0 +1,85 @@
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script> 
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+
+	oTable = $('#shopmgrouping').dataTable({
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+		"fnDrawCallback": function ( oSettings ) {
+			if ( oSettings.aiDisplay.length == 0 )
+			{
+				return;
+			}
+			
+			var nTrs = $('#shopmgrouping tbody tr');
+			var iColspan = nTrs[0].getElementsByTagName('td').length;
+			var sLastGroup = "";
+			for ( var i=0 ; i<nTrs.length ; i++ )
+			{
+				var iDisplayIndex = oSettings._iDisplayStart + i;
+				var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+				if ( sGroup != sLastGroup )
+				{
+					var nGroup = document.createElement( 'tr' );
+					var nCell = document.createElement( 'td' );
+					nCell.colSpan = iColspan;
+					nCell.className = "group";
+					nCell.innerHTML = sGroup;
+					nGroup.appendChild( nCell );
+					nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+					sLastGroup = sGroup;
+				}
+			}
+		},
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [ 0 ] }
+		],
+		"aaSortingFixed": [[ 0, 'asc' ]],
+		"aaSorting": [[ 1, 'asc' ]],
+		"sDom": 'lfr<"giveHeight"t>ip'
+	});
+});
+</script>
+
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmgrouping">
+	<thead>
+		<tr>
+			<th>商店名</th>
+			<th>商店分组/菜名</th>
+			<th>份数</th>
+			<th>订单以及流水号</th>
+			<th>菜品单价</th>
+			<th>合计</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<!--#foreach ($shopMOrders as $key => $eachShop) {#-->
+		<!--#foreach ($eachShop['Items'] as $key1 => $eachM) {#-->
+		<tr class="">
+			<td>{$eachShop['Name']}, {$eachShop['Phone']}, {$eachShop['Address']}
+				<span style="float:right;margin-right:40px;">应向店铺合计支付: ￥{$eachShop['PayTotal']}</span>
+			</td>
+			<td>{$eachM['mname']}</td>
+			<td>{$eachM['quatity']}{$eachM['unit']}</td>
+			<td>
+
+				<!--#foreach ($eachM['msequence'] as $skey => $eachSeq) {#-->
+					{$eachSeq['sequence']},<br/>
+				<!--# } #-->
+				
+			</td>
+			<td>￥{$eachM['price']}</td>
+			<td>￥{$eachM['quatity'] * $eachM['price']}</td>
+		</tr>
+		<!--# } #-->
+		<!--# } #-->
+		
+	</tbody>
+</table>

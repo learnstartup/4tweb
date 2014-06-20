@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<form action="{@url:app/4tschool/merchandise/noitem}" id="noItemForm" method="post">
+		<input type="hidden" name="noitemid" class="noitemid" value="">
+		<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/merchandise/noitem}">
+		<input type="hidden" class="updateurl" name="updateurl" value="{@url:app/4tschool/merchandise/markAsHasItem}">
+	</form>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>请查看列表并与商家沟通</li>
+				<li>标记相应的状态</li>
+			</ol>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>菜名</td>
+						<td>商家名</td>
+						<td>商家电话</td>
+						<td>价格</td>
+						<td>单位</td>
+						<td>功能</td>
+					</tr>
+				</thead>
+				<!--# if ($merchandiseList) { #-->
+				<!--#foreach ($merchandiseList as $key => $item) {#-->
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['shopname']}</td>
+					<td>{$item['phonenumber']} &nbsp;&nbsp;&nbsp;,{$item['contactnumber']}</td>
+					<td>{$item['price']}</td>
+					<td>{$item['unit']}</td>
+					<td>
+						<a href="{$item['id']}" class="markashasitem">
+						标记为有货</a>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">无缺货</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+<script>
+	$(".choosenShopid").change(function()
+	{
+		searchchange(true,false);
+	
+	});
+	$(".search").click(function(){
+		searchchange(true);	
+	});
+	function searchchange(showP)
+	{
+		var shoppara = '&choosenShopid='+$(".choosenShopid").val();
+		if(!showP)
+		{
+			provincepara = "";	
+		}
+		window.location.href= $(".pageurl").val()+shoppara; 
+	}
+
+	$(".markashasitem").click(function(event)
+	{
+		event.preventDefault();
+		var id = $(this).attr("href");
+		if(id <=0)
+		{
+			alert("无效的ID");
+			return;
+		}
+
+		$(".noitemid").val(id);
+
+		if(confirm("确定为有货?") == false)
+		{
+			return;
+		}
+
+		var updateurl = $(".updateurl").val();
+
+		$.post(updateurl, 
+            $('#noItemForm').serialize(), 
+            function(returndata) {
+              returndata=eval("("+returndata+")");
+
+              if(returndata.success)
+              {
+                alert(returndata.data);
+                
+              }else
+              {
+                alert(returndata.data);
+              }
+              
+          });
+
+		return;
+
+		window.location.href= $(".pageurl").val();
+		
+
+	});
+</script>
+</body>
+</html>

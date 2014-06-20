@@ -1,0 +1,41 @@
+/* fenxiangyo */
+.wrap{background:#f9f9f9;border-radius:4px;padding-top:30px;padding-bottom:30px}
+.wrap h1{color:#333;font-size:24px}
+.in{font-size:16px;color:#6cb658}
+.in .in-big{font-size:22px}
+.hide{display:none}
+.gform input,.gform label,.gform span{font-size:14px;vertical-align:middle}
+.gform .gform-box label{display:block;float:left;width:70px;margin-right:15px;text-align:right}
+.gform .gform-box .form-txt-vcode{width:6em}
+.gform .greg-btn{width:128px;height:32px;line-height:32px;border:0;background:url("../images/4-login_reg.png") 0 -120px no-repeat;margin-left:85px;text-align:center;color:#fff}
+.gform .gbtn-primary,.gform .gbtn-ext{margin-left:85px}
+.gform-captcha{display:inline;margin:0 10px;vertical-align:middle}
+.gform-forget_pw{font-size:12px;margin:10px 0 0 10px;display:inline-block;vertical-align:middle}
+.side{background:url("../images/reg_side.png") 0 0 no-repeat;height:277px}
+.side-connect{margin:30px 0}
+.connect-sina,.connect-renren,.connect-qq{background:url("../images/4-button.png");display:block;margin-top:10px;text-indent:-9999px;outline:0;height:40px;width:168px}
+.connect-sina{background-position:0 -100px}
+.connect-sina:active{background-position:-168px -100px}
+.connect-qq{background-position:0 -140px}
+.connect-qq:active{background-position:-168px -140px}
+.connect-renren{background-position:0 -180px}
+.connect-renren:active{background-position:-168px -180px}
+.check-success{color:#6cb658;margin-left:85px;margin-bottom:10px}
+.gform-rem{margin-left:92px}
+.gform .gform-rem label{display:inline;float:none;width:auto}
+.reg-summary{margin:0 0 10px 85px}
+.gform .login-password label{width:50px}
+.gform .user-head{float:left;padding-left:15px}
+.gform .user-summary{margin-left:85px;line-height:1.5}
+.msg-box p{margin:30px 0 0 50px}
+.gmotto{float:right;width:290px;height:20px;margin:10px 30px 0 0;_display:inline}
+.gform .greg-btn {
+width: 128px;
+height: 32px;
+line-height: 32px;
+border: 0;
+background: url("../images/4-login_reg.png") 0 -120px no-repeat;
+margin-left: 85px;
+text-align: center;
+color: #fff;
+}

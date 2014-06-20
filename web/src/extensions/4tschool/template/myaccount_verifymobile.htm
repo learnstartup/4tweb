@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/sendMobileMessage}" id="myAccountForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/sendMobileMessage}">
+	<input type="hidden" class="verifyMobileCodeUrl" name="verifyMobileCodeUrl" value="{@url:app/4tschool/myaccount/verifyMobileCode}">
+	<input type="hidden" class="verifyurl" name="verifyurl" value="{@url:verify/index/get}">
+	<input type="hidden" class="securitycenterurl" name="securitycenterurl" value="{@url:app/4tschool/myaccount/securitycenter}">
+
+	<div class="clear"></div>
+<div class="account_right">
+                         <h4>验证手机</h4>
+
+               <p class="verification_list"><label>手机号码：</label>
+               	<input name="change_mobile_txt" id="change_mobile_txt" maxlength="11" type="text" class="ver_fillin">
+               	<span id="get_mobile_vcode" style="display: none;">
+                	<a href="#" id="get_mobile_vcode_btns" class="verification_btn" style="">
+                	<span id="get_mobile_vcode_btn" name="get_mobile_vcode_btn">获取验证码</span></a>
+                	<span style="display: none;" id="send_ok" class="ver_ok">验证码已发送至手机</span>
+            	</span>
+              
+               <p class="verification_list">
+               	<label>验证码：</label>
+               	<input id="sms_verify_code" name="sms_verify_code" disabled="" maxlength="6" type="text" 
+               	class="ver_fillin ver_fillin_noborder">
+               	<span class="ver_hint" id="remind_txt" style="display: none">请输入验证码</span>
+               	<span class="ver_error" id="sms_verify_code_err_desc" style="display: none">验证码输入错误</span>
+               	<span class="ver_ok" style="display: none">&nbsp;</span>
+              </p>
+
+
+              
+               	<!--
+               		 <p class="verification_list" id="graphical_code" style="">
+               	<label>图形验证码：</label>
+               	<input name="graphical_vcode" id="graphical_vcode" maxlength="4" maxtype="text" class="ver_fillin">
+               	<span class="ver_error" id="graphical_vcode_erro_desc" style="display: none;">请输入图形验证码</span>
+               </p>
+               		<div id="J_verify_code" style="float:left;margin-left:200px;" class="ver_fillin"></div>
+                -->
+               	<div class="clear"></div>
+  
+            <p class="verification_list_btn"><a href="" class="ver_next">下一步</a></p>
+        <div class="ver_bottom_hint">
+            <p class="title">无法收到短信验证码？</p>
+            <p>·&nbsp;由于网络原因，可能会有延迟。如果您10分钟内还没有收到，请再次发送短信验证码，一个账号一天最多可以发送5条短信验证码</p>
+            <p>·&nbsp;若多次操作未收到短信验证码，请将问题反馈给客服：service@cs.dangdang.com</p>
+        </div>
+                               
+
+     
+            </div>
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global',  'validate', 'ajaxForm', 'dialog', function(){
+
+	$(document).ready(function(event)
+	{
+
+			getVerifyTemp({wrap : $('#J_verify_code')});
+
+			function getVerifyTemp(options){
+				//验证码模板
+				var _this = this,
+					wrap = options.wrap,				//验证码容器
+					afterClick = options.afterClick,	//点击换一个后回调
+					clone = options.clone;				//获取失败后恢复内容
+				if(!wrap.length) {
+					return;
+				}
+
+				wrap.html('<span class="tips_loading">验证码loading</span>');
+				var url = '<?php echo Wekit::app()->baseUrl,'/','admin.php?a=showVerify'; ?>';
+				$.post(url, {
+					csrf_token : GV.TOKEN
+				}, function(data){
+					if(data.state == 'success') {
+						wrap.html(data.data);
+					}else if(data.state == 'fail') {
+						if(clone) {
+							//恢复原代码
+							wrap.html(clone.html());
+						}else{
+							//重试
+							wrap.html('<a href="#" role="button" id="J_verify_update_a">重新获取</a>');
+						}
+
+						alert(data.message);
+						/*_this.resultTip({
+							error : true,
+							elem : $('#J_verify_update_a'),
+							follow : true,
+							msg : data.message
+						});*/
+					}
+
+				}, 'json');
+
+				wrap.off('click').on('click', '#J_verify_update_a', function(e){
+					//换一个
+					e.preventDefault();
+
+					if(wrap.find('.tips_loading').length) {
+						//防多次点击
+						return false;
+					}
+
+					var clone = wrap.clone();
+					wrap.html('<span class="tips_loading">验证码loading</span>');
+					getVerifyTemp({
+						wrap : wrap,
+						clone : clone
+					});
+
+					if(afterClick) {
+						afterClick();
+					}
+				}).on('click', '#J_verify_update_img', function(e){
+					//点击图片
+					$('#J_verify_update_a').click();
+				});
+			}
+	});
+
+
+
+
+	$("#change_mobile_txt").keydown(function (event) {  
+
+	var mobile = $.trim($("#change_mobile_txt").val());
+	if(mobile.length > 11)
+	{
+			return false;
+	}
+
+    var e = $(this).event || window.event;  
+    var code = parseInt(e.keyCode);  
+    if (code >= 96 && code <= 105 || code >= 48 && code <= 57 || code == 8) {  
+        return true;  
+    } else {  
+        return false;  
+    }  
+});  
+
+
+	$("#change_mobile_txt").keyup(function(event)
+	{
+		//get mobile, if it is 11 digit, then no need to allow input anymore
+		var mobile = $.trim($("#change_mobile_txt").val());
+
+		if(mobile.length == 11)
+		{
+			$("#get_mobile_vcode").show();
+			$("#change_mobile_txt").removeClass("ver_fillin_error");
+		}
+		else
+		{
+			$("#get_mobile_vcode").hide();
+		}
+
+	});
+
+	$(".ver_next").click(function(event)
+	{
+		event.preventDefault();
+
+		var mobile = $.trim($("#change_mobile_txt").val());
+
+		var canPost = true;
+
+		if(mobile.length != 11)
+		{
+			canPost = false;
+			$("#change_mobile_txt").addClass("ver_fillin_error");
+		}
+		else
+		{
+			$("#change_mobile_txt").removeClass("ver_fillin_error");
+		}
+
+		var messageCode =  $.trim($("#sms_verify_code").val());
+		if(messageCode == '')
+		{
+			canPost = false;
+			$("#sms_verify_code").addClass("ver_fillin_error");
+		}
+		else
+		{
+			$("#sms_verify_code").removeClass("ver_fillin_error");
+		}
+
+
+		if(false == canPost)
+			return;
+
+		//post data and check if it is verifed
+		//call server side and send the verificaiton code
+		var postUrl = $(".verifyMobileCodeUrl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				alert(returndata);return;
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					var url = $(".securitycenterurl").val();
+					window.location.href = url;
+					return;
+					
+				}else
+				{
+					alert(returndata.data);
+					$("#sms_verify_code").attr("disabled",true);
+				}
+
+		});
+
+
+
+	});
+
+	//get_mobile_vcode_btns
+	$("#get_mobile_vcode_btns").click(function(event)
+	{
+		event.preventDefault();
+
+		//call server side and send the verificaiton code
+		var postUrl = $(".pageurl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert("验证码已发送至手机");
+					$("#send_ok").show();
+					$("#remind_txt").show();//remind_txt
+					$("#sms_verify_code").removeClass("ver_fillin_noborder");
+					$("#sms_verify_code").attr("disabled",false);
+					$("#get_mobile_vcode_btns").unbind('click');
+					$("#get_mobile_vcode_btns").click(function()
+					{
+						event.preventDefault();
+					});
+					
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+	});
+
+});
+
+
+
+</script>

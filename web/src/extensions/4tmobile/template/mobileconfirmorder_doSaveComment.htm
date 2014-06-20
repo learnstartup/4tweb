@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/themes/default/jquery.mobile.4tui.css" >
+        <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/themes/default/jqm-icon-pack-fa.css" >
+        <script src="{@G:url.extres}/4tschool/js/jquery-1.9.1.js"></script>
+        <script src="{@G:url.extres}/4tschool/js/jquery.mobile-1.4.0.min.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,  initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,  user-scalable=no" />
+        <style type="text/css">
+        .hightlight-red{
+            color: red;
+        }           
+        </style>
+    </head>
+    <body>
+        <div data-role="page" data-theme="f">
+            <div data-role="header" data-position="fixed" data-theme="d">
+                <h1 style="display:none">订单评价</h1>
+                <template source='navbar' load="true" />                
+                <!--# if($ordertail['deservedpointcoin']>0){ #-->                        
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="#" data-theme="d"><span>{$ordertail['deservedpointcoin']}</span>点币已返还到您的零钱包。</a></li>
+                    </ul>
+                </div>
+                <!--# } #-->
+
+            </div>            
+            <div role="main" class="ui-content" >
+                <!--# if($action!=GET){ #-->
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="picture-o" data-expanded-icon="info-circle" data-theme="f">
+                    <h3>消息</h3>
+                    <!--# if($result>0){ #-->
+                    <span>亲，谢谢您的评价。
+                        <!--# if($ordertail['deservedpointcoin']>0){ #-->                        
+                        <span class="hightlight-red">{$ordertail['deservedpointcoin']} </span>点币已返还到您的零钱包。
+                        <!--# } #-->
+                    </span>
+                    <!--# }else{ #-->
+                    <span>评价成功，点币已转入零钱包</span>
+                    <!--# } #-->
+               </div>
+               <!--# } else{#-->
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="picture-o" data-expanded-icon="info-circle" data-theme="f">
+                    <h3>消息</h3>
+
+                    <span>评价成功，点币已转入零钱包</span>
+                    
+               </div>               
+               <!--# } #-->
+            </div>
+                <template source='footer' load="true" />
+        </div>      
+    </body>
+</html>

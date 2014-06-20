@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body style="width:450px;" class="body_none">
+	<div class="pop_cont pop_table">	
+		<form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/promo/edit?id=$merchandisePromotion['id']}&mid={$merchandisePromotion['merchandiseid']}&tid={$merchandisePromotion['templateid']}" method="post" >
+			<input type='hidden' name='type' value="do">
+			<div class="">
+				<table width="100%">
+					<col class="th" />
+					<col />
+					<thead>
+						<tr>	
+							<th>SPID</th>
+							<td>{$spid}</td>
+						</tr>	
+					</thead>
+                    <tr>
+                        <th>菜品</th>
+                        <td>{$merchandisePromotion['name']}</td>
+                    </tr>
+					<tr>
+						<th>折扣</th>
+						<td><input name="discount" type="text" class="input length_5" value="{$merchandisePromotion['value']}"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="pop_bottom">
+				<button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+			</div>
+
+		</form>
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

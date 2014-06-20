@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/updateMyInfo}" id="myAccountForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/updateMyInfo}">
+	<div class="clear"></div>
+		<div class="account_right">
+                <h4>设置支付密码</h4>
+
+                                <script type="text/javascript">
+                window.onload = window.onreadystatechange = function(){
+                    document.getElementById("set_pay_pass").focus();
+                }
+                </script>
+                <form action="my_payment_pass_submit.php" id="form1" method="post" name="form1" autocomplete="off">
+                    <p class="verification_list">
+                        <label>设置支付密码：</label>
+                        <input class="ver_fillin ver_fillin_error" name="set_pay_pass" id="set_pay_pass" type="password" onpaste="return false" onfocus="javascript:focusSetPwd()" onblur="javascript:onBlurSetPwd();onBlurRepeatSetPwd();" onkeyup="javascript:onkeydownSetPwd(event)">
+                        <span id="span_set_msg_1" class="ver_hint" style="display: none;">密码为6-20个字符，不能与登录密码相同</span>
+                        <span id="span_set_error" class="ver_error" style="display: inline;">请设置支付密码</span>
+                        <span id="span_set_msg_2" class="ver_hint" style="display: none;">密码强度：</span>
+                        <span id="span_set_level" class="msg_level" style="display: none;"></span>
+                    </p>
+
+                    <p class="verification_list">
+                        <label>确认支付密码：</label>
+                        <input class="ver_fillin ver_fillin_error" name="confirm_set_pay_pass" id="confirm_set_pay_pass" type="password" onpaste="return false" onfocus="javascript:focusRepeatSetPwd()" onblur="javascript:onBlurRepeatSetPwd()" onkeyup="javascript:onkeydownRepeatSetPwd(event,summitSetPayPass)">
+                        <span id="span_set_confirm_msg" class="ver_hint" style="display: none;"></span>
+                        <span id="span_set_confirm_error" class="ver_error" style="display: inline;">请再次输入支付密码</span>
+                        <span id="span_set_confirm_ok" class="ver_ok" style="display: none;">&nbsp;</span>
+                    </p>
+                    <input type="hidden" id="action" name="action" value="set_pay_pass">
+                    <input id="verify_mode_encode" type="hidden" name="verify_mode_encode" value="oCezbRNWY+o=">
+                    <input id="vcode" type="hidden" name="vcode" value="jFMjm5CtgJA=">
+                                        <p class="verification_list_btn"><a class="ver_next" href="javascript:summitSetPayPass()">下一步</a></p>
+                </form>
+
+                        
+    
+                
+            </div>
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".save_mess").click(function(event)
+	{
+		event.preventDefault();
+
+		//update data for each order's delivery
+		var postUrl = $(".pageurl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+});
+</script>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+	<head>
+		<template source='TPL:admin.common.head' />
+	</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>状态为开时, 推送则有效</li>
+				<li>编辑内容请排好内容</li>
+			</ol>
+		</div>
+		<div class="mb10"><a class="btn" id="J_cateweekreport_sub" href="{@url:app/4tschool/push/add}" title="添加周报" role="button"><span class="add"></span>添加推送</a></div>
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="J_ajaxForm" action="{@url:app/4tschool/push/run}" method="post">
+				<input type="hidden" name="page" value="{$page}">
+				<input type='hidden' name='submitype' value="do">
+				<label>学校:</label>
+					<select class="schoolid length_5" name="schoolid">
+						<option value="-1">全部</option>
+                        <!--#foreach($allSchool as $item) {#-->
+                        <option class="school{$item['schoolid']}"
+                        <?php if($item['schoolid'] == $searchCondition['schoolid']) echo "selected"; ?>
+                        value="{$item['schoolid']}" >{$item['name']}
+                    	</option>
+                        <!--#}#-->
+                    </select>
+				<label>类型:</label>
+					<select name="type">
+						<option value="-1">全部</option>
+                            <!--#foreach($pushTypeList as $key => $item) {#-->
+                            <option value="{$key+1}" <?php if($searchCondition['type'] == ($key+1)) echo "selected"; ?>>{$item}</option>
+                        <!--#}#-->
+					</select>
+				<label>状态:</label>
+					<select name="status">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($searchCondition['status'] == '1') echo "selected"; ?>>开</option>
+						<option value="0" <?php if($searchCondition['status'] == '0') echo "selected"; ?>>关</option>
+					</select>
+				<button type="submit" class="">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>学校</td>
+						<td>类型</td>
+						<td>标题</td>
+						<td>创建者</td>
+						<td>状态</td>
+						<td>创建时期</td>
+						<td>更新时间</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($pushList) { #-->
+				<!--#foreach ($pushList as $key => $item) {#-->
+				<tr>
+					<td>{$item['name']}</td>
+					<td>
+						<!--# if($item['type'] == 1){ #-->
+						活动
+						<!--# }elseif($item['type'] == 2){ #-->
+						优惠
+						<!--# }elseif($item['type'] == 3){ #-->
+						消息
+						<!--# }else{ #-->
+						信息出错
+						<!--# } #-->
+					</td>
+                    <td>{$item['title']}</td>
+                    <td>{$item['creator']}</td>
+                    <td>
+                    	{$item['status'] == 1?'开':'关'}
+                    </td>
+                    <td>{$item['createdate']}</td>
+                    <td>{$item['updatedate']}</td>
+					<td>
+						<a href="{@url:app/4tschool/push/edit?id=$item['id']}" class="mr10" title="编辑推送信息">[编辑]</a>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前没有搜索到数据哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+			<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/push/run' />
+			</div>
+		</div>
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<template source='EXT:4tshop.template.header' load="true" />
+<template source='EXT:4tshop.template.shopadvantageheader' load="true" />
+<style type="text/css">
+#catab ul li{
+	width:auto;
+	float:left;
+}
+.sa_tag_add{
+    margin-top:-5px;
+}
+
+#catab a:hover{
+    color:#1A66B3;
+}
+
+#catab ul li span{
+    font-size: 15px;
+}
+
+#catab .sa_tag_add_span{
+    float:right;
+    padding-right:5px;
+}
+
+.step-shop-menu-bg{
+    width:100%;
+}
+
+.step-div{
+    margin-left: 0px;
+    margin-right: 5px;
+}
+
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg control_top">
+	<template source='left_bar' load="true" />
+	<div style="float:right;width:780px;margin-top:9px;">
+	<div class="clear"></div>
+        <div id="catab" class="step-tab step-div">
+            <p class="site-title">
+                菜品分类
+                <span class="sa_tag_add_span">
+                    <a class="btn J_dialog sa_tag_add" href="http://localhost/4tweb/trunk/index.php?m=app&amp;c=shopadvantage&amp;a=shopmanageadd&amp;app=4tshop" title="添加菜品" role="button">
+                    <span class="add"></span>添加菜品</a>
+                </span>
+
+                <span class="sa_tag_add_span">
+                    <a class="btn J_dialog sa_tag_add" href="http://localhost/4tweb/trunk/index.php?m=app&amp;c=shopadvantage&amp;a=shoptagmanage&amp;app=4tshop" title="添加分类" role="button">
+                    <span class="add"></span>添加分类</a>
+                </span>
+            </p>
+            <ul>
+                <!--# foreach($tagList as $key => $item) { #-->
+                <li><span class="{$item==$defaultSelected?'ctgmenu ctgactive':'ctgmenu'}"
+                          curindex={$key}>{$item}</span>
+                </li>
+                <!--#}#-->
+            </ul>
+        </div>
+        <div class="clear"></div>
+
+        <ul class="step-shop-list">
+            <li>
+                <ul>
+                    <!--# foreach($tagList as $tkey => $item) { #-->
+                    <li style=" display: {$item==$defaultSelected?'block':'none'}" id="list{$tkey}"
+                        class="li-first">
+                        <!--# foreach($merchandiseList as $mkey => $item) { #-->
+                        <!--# if($item['tagid']==$tkey) { #-->
+                        <div id="{$item['id']==$mid?"m$mid":""}" class="{$item['id']==$mid?"step-shop-menu selected step-shop-menu-bg":"step-shop-menu step-shop-menu-bg step-div"}">
+                            <form class="jcart" action="" method="post">
+                                <!--# if($shop['openorder'] == 1) {#-->
+                                <input type="hidden" value="{$item['id']}" name="my-item-id">
+                                <input type="hidden" value="{$item['name']}" name="my-item-name">
+                                <input type="hidden" value="{$item['currentprice']}" name="my-item-price">
+                                <input type="hidden" value="1" name="my-item-qty">
+                                <input type="hidden" value="{$item['dmoney']}" name="my-item-dmoney">
+                                <input type="hidden" value="{$shop['id']}" name="my-vendor-guid">
+                                <input type="hidden" value="{$shop['name']}" name="my-vendor-name">
+                                <input type="hidden" value="1" name="my-box-qty">
+                                <input type="hidden" value="1" name="my-box-unitprice">
+                                <input type="hidden" value="{$item['unit']}" name="my-unitname">
+                                <input type="hidden" value="{$item['shoppromoid']}" name="my-promo">
+                                <input type="hidden" value="{$item['startingprice']==''?0:$item['startingprice']}" name="my-startingprice">
+                                <input type="hidden"
+                                       value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}"
+                                       name="my-item-url">
+                                <input type="hidden" value="{$item['needPackingPrice']}" name="my-needPackingPrice">
+                                <input type="hidden" name="jcartToken"
+                                       value="<?php echo $_SESSION['jcartToken'];?>"/>
+                                <!--# } #-->
+
+                                <div class="s-left">
+                                    <span>{$item['name']}</span>
+                                </div>
+                                <div class="s-right">
+                                    <span>￥{$item['currentprice']}/{$item['unit']}</span>
+
+                                    <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen'] == 1 && $item['openorder'] == 1) {#-->
+                                    <!--# if($item['remainder'] > 0) { #-->
+                                    <!--# } else { #-->
+                                    <input type="submit" value="缺货" disabled="disabled">
+                                    <!--# } #-->
+                                    <!--# } #-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--# } #-->
+                        <!--# } #-->
+                    </li>
+                    <!--# } #-->
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<template source='EXT:4tschool.template.footer' />
+
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script>
+<script>
+    //菜品列表背景色设置
+    $(".step-shop-menu").hover(function()
+    {
+        $(this).attr("style","background-color:#FFE4D8");
+    },
+    function()
+    {
+        $(this).attr("style","background-color:''");
+    });
+
+    $(".ctgmenu").click(function () {
+        var tag = $(this);
+
+        $(".ctgmenu").each(function () {
+            $(this).attr('class', 'ctgmenu');
+        });
+
+
+        $(tag).attr('class', 'ctgmenu ctgactive');
+
+        $(".li-first").each(function () {
+            if ($(tag).attr('curindex') == $(this).attr('id').substring(4))
+                $(this).css('display', 'block');
+            else
+                $(this).css('display', 'none');
+        });
+    });
+
+    $(function(){
+        $(".step-shop-menu").live("click",function(event){
+            if(event.target.tagName.toLowerCase() != 'input' && event.target.tagName.toLowerCase() != 'a')
+            $(this).find("[name='my-add-button']").trigger("click");
+        });
+    });
+</script>
+</body>

@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+/*浮动客服代码*/
+.folat_server {position: fixed; TOP: 132px; RIGHT: 1px; _position: absolute;z-index:100;}
+.folat_server a {color: #00a0e9}
+.folat_server a:hover {color: #ff8100; TEXT-DECORATION: none}
+.folat_server .floatL {position: relative; width: 28px;float:left}
+.folat_server .floatL A {text-indent: -9999px;display:block;font-size: 0px}
+.folat_server .floatR {background: url(float_bg.gif)}
+.folat_server .tp {background: url(float_bg.gif)}
+.folat_server .cn {background: url(float_bg.gif)}
+.folat_server .floatR {padding-bottom: 15px; width: 130px; background-repeat:no-repeat; background-position:-131px bottom;float:left;overflow:hidden}
+.folat_server .tp {background-repeat:no-repeat; background-position: 0% 0%; height: 10px}
+.folat_server .cn {background-repeat:repeat-y; background-position: -262px 0px}
+.folat_server .cn H3 {text-indent:-9999px; height: 36px; font-size: 0px}
+.folat_server .cn UL {padding:0 14px; margin:0;}
+.folat_server .cn UL LI {border-bottom:#e6e5e4 1px solid;LINE-height:36px; WORD-WRAP: break-word;height: 36px;OVERFLOW: hidden;WORD-BREAK: normal;text-align:left}
+.folat_server .cn UL LI img {vertical-align:middle}
+.folat_server .titZx {background: url(float_s.gif) no-repeat;margin-left: -15px;}
+.folat_server .titDh {background: url(float_s.gif) no-repeat}
+.folat_server .titDc {background: url(float_s.gif) no-repeat}
+.folat_server .icoZx {background: url(float_s.gif) no-repeat}
+.folat_server .icoFf {background: url(float_s.gif) no-repeat}
+/*.folat_server .icoTl {background: url(float_s.gif) no-repeat}*/
+.folat_server .btnOpen {background: url(float_s.gif) no-repeat}
+.folat_server .btnOpen_n {background: url(float_s.gif) no-repeat}
+.folat_server .btnCtn {background: url(float_s.gif) no-repeat}
+.folat_server .titZx {background-position: 5px -10px}
+.folat_server .titDh {background-position: 5px -66px}
+.folat_server .titDc {background-position: 5px -124px}
+.folat_server .icoZx {background-position: 2px -154px}
+.folat_server .icoTc {background-position: 0px -323px}
+.folat_server .icoFf {background-position: 2px -213px}
+.folat_server .icoTl {padding-left: 5px; display: block;FONT-FAMILY: 'MicroSoft YaHei','宋体',Verdana'Simsun'; background-position: 2px -266px;float: left}
+.folat_server .btnOpen {background-position: -30px -396px}
+.folat_server .btnOpen_n {background-position: 0px -530px}
+.folat_server .btnCtn {background-position: 0px -396px}
+.folat_server .icoZx {padding-left: 28px; display: block; float: left}
+.folat_server .icoTc {padding-left: 28px; display: block; float: left}
+.folat_server .icoFf {padding-left: 28px; display: block; float: left}
+.folat_server .btnOpen {position: relative; width: 28px; height: 118px; TOP: 80px; LEFT: 2px}
+.folat_server .btnOpen_n {position: relative; width: 28px; height: 118px; TOP: 80px; LEFT: 2px}
+.folat_server .btnCtn {position: relative; width: 28px; height: 118px; TOP: 80px; LEFT: 2px}
+.folat_server .btnOpen {TOP:118px;LEFT:1px}
+.folat_server .btnOpen_n {TOP:118px;LEFT:1px}
+.folat_server .btnCtn {TOP:118px;LEFT:2px}
+.folat_server UL LI H3.titDc A {width:80px; display:block;height: 36px}
+.folat_server UL LI.top {BORDER-BOTTOM:#ace5f9 1px solid}
+.folat_server UL LI.bot {BORDER-BOTTOM-STYLE: none}
+.folat_server UL.TS {PADDING-BOTTOM: 0px; padding-left: 0px; width: 164px; PADDING-RIGHT: 0px; background: url(webZx_bg.jpg) no-repeat;height:65px;padding-top:0px}
+.folat_server UL LI.TS-in {BORDER-BOTTOM-STYLE: none; padding-left: 5px; height: 50px; PADDING-TOP: 8px}

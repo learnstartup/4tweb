@@ -1,0 +1,582 @@
+<!doctype html>
+<html>
+<head>
+    <template source='header1' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js">
+    </script>
+    <script src="{@G:url.extres}/4tschool/js/jquery.raty.min.js"></script>
+
+    <style type="text/css">
+        body,div,ul{ 
+            padding:0; 
+            margin:0;
+        }
+        
+        #container{
+            width:646px;
+            margin:2px;
+            height: auto;
+        }
+
+        .tab{ 
+            padding:0; 
+            margin:0;  
+        }
+
+        .tab li{ 
+            list-style:none; 
+            float:left;
+            padding:0; 
+            margin-right:10px; 
+            line-height:30px; 
+            height:30px; 
+            width:85px; 
+            text-align:center;
+            text-decoration: none;
+        }
+
+        .content{ 
+            float:none; 
+            padding:13px; 
+            border:solid 1px #ccc; 
+            clear:both; 
+        }
+
+        div.content div{
+            height: auto;
+        }
+
+        .content div{ 
+            border-top:0px; 
+            height:60px;
+        }
+        .content .description{
+            text-align: center;
+        }
+
+        .tab_selected{ 
+            border-left:solid 1px #ccc; 
+            background-color:#ffffff; 
+            border-right:solid 1px #ccc; 
+            border-top:solid 1px #ccc; 
+            border-bottom:0px; 
+            bottom:-1px; 
+            position:relative; 
+            z-index:1
+        }
+
+        .tab_current{  
+            text-decoration:underline;
+        }
+
+        #mer-comment ul li{
+            color:black;
+            width:605px;
+            height:140px;
+            margin-top:3px;
+        }
+
+        #mer-comment ul li.feedback_merchandise_message{
+            margin: 10px 0;
+            padding: 5px;
+            height: auto;
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: #CCC;
+            border-right-color: #CCC;
+            border-bottom-color: #CCC;
+            border-left-color: #CCC;
+        }
+        #comment_tab{
+            line-height:30px;
+        }
+
+        #comment_tab tr th{
+            width:65px;
+        }
+
+        #comment_tab tr td textarea{
+            width:550px;
+        }
+
+        #submitbox {
+            background: none repeat scroll 0 0 #F87D0B;
+            border: 0 none;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+
+        #submitbox:hover {
+            color: #fff;
+        }
+
+        #page{
+            margin:10px;
+        }
+
+        #footerstyle{
+            position: absolute;
+            margin-left: 76px;
+            width: 890px;
+        }
+
+       </style>
+
+       <!--# if($schoolInfo['openshundai'] == 0 ) {#-->
+        <style>
+            .step-content, .setp-banner, .step-shop-menu {
+                width:645px;
+            }
+            html,body{
+                width:100%;
+                height:100%;
+            }        
+        </style>
+        <!--# } #-->
+       <script language="javascript" type="text/javascript">
+           $(
+            function() {
+                $(".content div:gt(0)").hide();
+                $(".tab li").css("cursor", "pointer");
+                $(".tab li").hover(function() {
+                    $(this).addClass("tab_current");
+                }, function() {
+                    $(this).removeClass("tab_current");
+                }).click(
+                    function() {
+                        $(this).addClass("tab_selected").siblings().removeClass("tab_selected");
+                        $(".content div").eq($(this).index()).siblings().hide().end().show();
+                    }
+                )
+                $('.tab_page_selected').click(function(){
+                    if($(this).html() != '菜品描述')
+                    {
+                        $('#page').css({'display':''});
+                    }
+                    else
+                    {
+                        $('#page').css({'display':'none'});
+                    }
+                    
+                })
+            }
+           );
+       </script>
+</head>
+<body>
+<div class="clear"></div>
+
+<div class="wrap-sd">
+<div class="sdrow">
+<template source='header2' load="true"/>
+<div id="wrapper" class="twelvecol" style="width:76%">
+<div class="step-left">
+    <div class="step-incidentally-header">
+        评论概要
+    </div> 
+    <div class="step-incidentally-menu" style="margin-left:5px;">
+        <li>*菜品的评论功能仅开放给在线购买成功的客户, 敬请关注</li>
+        <li><img width="135px" height="100px" src={$mInfo['imageurl']}></li>
+        <li>总评论数: {$count==''?0:$count}个</li>
+        <li><span>口味: <div id="servicescore" name="servicescore" class="score" data-score="{$mOverAll['servicescore']==''?3:$mOverAll['servicescore']}"></div></span><li>
+        <li style="margin-top:-2px;">服务: 
+            <div id="tastescore" name="tastescore" class="score" data-score="{$mOverAll['tastescore']==''?3:$mOverAll['tastescore']}">
+            </div>
+        <li>
+    </div>
+</div>
+<div class="step-content">
+    <div class="my-step-left">
+        <div class="step-fenge">
+            <div class="setp-banner">
+                <ul class="step-shop-left">
+                <li class="step-title">
+                        <span> 菜品: <a style="color: #FF4400" id="dish-name" title="{$mInfo['name']}" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$mInfo['id']&schoolid=$schoolInfo['schoolid']}">{$mInfo['name']}</a></span>
+                        <span>
+                            ￥{$mInfo['price']}/{$mInfo['unit']}
+                        </span>
+                        <span><small>
+                            <form class="jcart" action="" method="post">
+                                <input type="hidden" value="{$mInfo['id']}"
+                                       name="my-item-id">
+                                <input type="hidden" value="{$mInfo['name']}" name="my-item-name">
+                                <input type="hidden" value="{$mInfo['currentprice']}" name="my-item-price">
+                                <input type="hidden" value="1" name="my-item-qty">
+                                <input type="hidden" value="{$shop['id']}"
+                                       name="my-vendor-guid">
+                                <input type="hidden" value="{$shop['name']}" name="my-vendor-name">
+                                <input type="hidden" value="1" name="my-box-qty">
+                                <input type="hidden" value="1" name="my-box-unitprice">
+                                <input type="hidden" value="{$mInfo['shoppromoid']}" name="my-promo">
+                                
+                                <input type="hidden"
+                                       value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&&schoolid=$schoolInfo['schoolid']&name=run}"
+                                       name="my-item-url">
+                                <input type="hidden" value="{$mInfo['needPackingPrice']}" name="my-needPackingPrice">
+                                <input type="hidden" value="{$shop['startingprice']}" name="my-startingprice">
+
+                                <input type="hidden" name="jcartToken"
+                                       value="<?php echo $_SESSION['jcartToken'];?>"/>
+                                <input type="hidden" name="rooturl" id="rooturl" value="{$rooturl}"/>
+                                <div style="width:100%">
+                                    <!--# if($mInfo['remainder'] > 0) { #-->
+                                        <!--# if($shop['openorder'] == 1 && $schoolInfo['openorder'] == 1 && $mInfo['isopen'] == 1 && $mInfo['isshopopen'] == 1) {  #-->
+                                            <small><input id="my-add-button" class="btn" type="submit" value="来一份" name="my-add-button">&nbsp;
+                                        <!--# } #-->
+                                    <!--# } else { #-->
+                                         <small><input class="btn"  type="submit" value="缺货" disabled="disabled"></small>
+                                    <!--# } #-->
+                                    电话：
+                                    <!--# if(!empty($shop['phonenumber']) && $shop['phonenumber'] != '无') {#-->
+                                        {$shop['phonenumber']} 
+                                     <!--# } #--> 
+                                     &nbsp;
+                                     <!--# if(!empty($shop['contactnumber']) && $shop['contactnumber'] != '无') {#-->
+                                        {$shop['contactnumber']} 
+                                     <!--# } #--> 
+                                </div>
+                            </form>
+                         </small></span>
+                    </li>
+                <li>
+                        <big>商家: <a style="color: #FF4400" href="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}">{$shop['name']}{$shop['isactive']?'':'(商家已下架)'}</a></big>
+                        <small style="padding-right:2px;padding-bottom:10px;font-style:italic;font-size:12px">请注意, 价格仅供参考, 以商家最终价格为准</small>
+
+                </li>
+                <!--# if(!empty($timeList)) {#-->
+                    <li>外卖时间:
+                        <!--# foreach($timeList as $mkey => $item) { #-->
+                            <!--<?php echo "<br/>"; ?>-->
+                            {$item['begintime']} - {$item['endtime']}
+                        <!--# } #--> 
+                    </li>
+
+                <!--# } #-->
+
+                    <li><template source='jiathis' load="true"/></li>
+                      
+                </ul>
+                <ul class="step-shop-right" style="font-size:13px">
+                    
+                    <li style="padding-right:100px;" class="step-notice-open"><b>{$shop['openorder']==0?'此商家不送外卖':"此商家送外卖"}
+                     <!--# if($shop['hasterminal'] == 1 && $schoolInfo['openorder'] == 1 ) {#-->
+                        ,支持在线下单
+
+                     <!--# } #--> 
+                    </b></li>
+
+                    <!--# if($shop['openorder'] == 1) {#-->
+                    <li>起送金额：<font color="#FF4400"><b>{$shop['startingprice']}元</b></font>
+                        <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            <img alt="diancanyo.com - 点餐哟" width="20px" height="20px" title='商家电话' src="themes/extres/4tschool/images/Phone_page.png">
+                        </a>
+                    </li>
+                    <li>外卖打包费：每份<font color="#FF4400">{$shop['packingprice'] + $shop['deliveryprice']}</font>元(注: 商家行为)</li>
+                    <!--# } #--> 
+
+                    <!--# if($shop['hasterminal'] == 1 && $schoolInfo['openorder'] == 1 ) {#-->
+                    <li>支持在线下单：<font color="#FF4400"><b>{$shop['hasterminal'] == 1?"是":"否"}</b></font>
+                    </li>
+                    <!--# } #-->
+
+                    <li>
+                        <div id="marked" style="display: {$isFavorite?'block':'none'}">
+                            <font color="#FF4400"><span>[已收藏]</span></font>
+                        </div>
+                        <div id="mark" style="display: {$isFavorite?'none':'block'}">
+                            <a id="add_favorites" href="{$userId}">[点击收藏]</a>
+
+                            <form action="{@url:app/4tschool/Shopdetails/myFavorite}" id="schoolordersForm"
+                                  method="post">
+                                <input type="hidden" name="shopId" value="{$shop['id']}">
+                                <input type="hidden" name="mId" value="{$mInfo['id']}">
+                                <input type="hidden" class="bookmarkMUrl" name="bookmarkMUrl"
+                                       value="{@url:app/4tschool/shopdetails/myFavorite}">
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="container" class="step-sign">
+           <div class="tab">
+                <ul style="background-color:#FFE4D8;font-size:13px">
+                    <li class="tab_selected tab_page_selected">菜品描述</li>
+                    <li class="tab_page_selected">评论列表(<!--# echo  $count #-->)</li>
+                </ul>
+           </div>
+           <div class="content" style="font-size:12px;">
+                <div class="<?php if(empty($mInfo['merchandisedescription'])) echo "description"; ?>">
+                    <!-- <input id="addToCart" type="hidden" value="{$cartMid}"> -->
+                    <!--# if ($mInfo['merchandisedescription']) { #-->
+                        <?php echo $mInfo['merchandisedescription']; ?>
+                    <!--# } else { #-->
+                    尚无描述
+                    <!--# } #-->
+                </div>
+                <div id="mer-comment" class="<?php if(empty($messageList)) echo "description"; ?>">
+                    <!--# if ($messageList) { #-->
+                    <!--#foreach ($messageList as $key => $item) {#-->
+                        <ul class="feedback_loop">
+                            <li class="feedback_merchandise_message">
+                                <span>
+                                    {$item['comment']}
+                                </span><br/>
+                                口味:
+                                <span id="tastescore" name="tastescore" class="score" data-score="{$item['tastescore']}"></span><br/>
+                                服务:
+                                <span id="servicescore" name="servicescore" class="score" data-score="{$item['servicescore']}"></span><br/>
+                                <span style="color: #FE6833;">
+                                    {$item['username']} 
+                                </span>
+                                <span class="feedback_ut">评价于{$item['createdon']}</span>
+                            </li>
+
+                        </ul>
+                    <!--# } #--> 
+                    <!--# } else { #-->
+                    <!--# if(empty($userId)){ #-->
+                        尚无评论, 亲可以注册后获得评论一次的机会.  >> <a href="{@url:u/register/run}"><font color="red">注册</font></a>
+                        <!--# }else{ #-->
+                        尚无评论
+                        <!--# } #-->
+                    <!--# } #--> 
+                </div>
+           </div>
+           <div id="page" style="display:none">
+                <page tpl="TPL:common.page" load="true" page='$page' count='$count' args="$args" per='$perPage' url='app/4tschool/shopdetails/mdetail?selected=comment' />
+                <form action="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&page=1&mid=$mInfo['id']&schoolid=$schoolInfo['schoolid']&selected=comment}" id="addcommentForm" method="post">
+                <input type="hidden" class="addcommenturl" name="addcommenturl" value="{@url:app/4tschool/shopdetails/mdetail?mid=$mInfo['id']&schoolid=$schoolInfo['schoolid']}">
+                    <div style="padding:10px;<?php if(empty($docomment)) echo "display:none"; ?>"> 
+                        <table id="comment_tab">
+                            <tr> 
+                                <th>评论</th>
+                                <td>
+                                    <textarea name="comment" class="comment"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="tastescore">口味</label></th>
+                                <td class="tastescoreTd">
+                                    <div id="tastescoredit" name="tastescore" class="score" data-score=""></div>
+                                    <input type="hidden" name="tastescoreshow" class="tastescoreshow" value="2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="servicescore">服务</label></th>
+                                <td>
+                                    <div id="servicescoredit" name="servicescore" class="score" data-score=""></div>
+                                    <input type="hidden" name="servicescoreshow" class="servicescoreshow" value="2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    <input type="submit" value="提交" id="submitbox" name="submitbox"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div style="width:98%">
+    <template source='footer'/>
+</div>
+
+</div>
+</div>
+</div><div style="margin-top:8px;">
+    <img src="themes/extres/4tschool/images/cartoon_final.png"/>
+</div>
+<div class="clear"></div>
+
+<div class="step-right">
+    <div id="sidebar" class="my-step-right">
+        <!--# if(empty($topAnn) == false) {#-->
+         <!-- 最新公告 -->
+        <div class="my-info" style="display:none">
+           
+                <table width="100%" class="menu-express">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td style="font-size:13px">
+                            <span><strong>最新公告:</strong>
+                              <a target="_blank" href="{@url:app/4tschool/announcedetails/run}&id={$topAnn['aid']}"><font>{$topAnn['subject']}</font></a>
+                            <span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+        <!--# } #-->
+        
+        <!-- BEGIN JCART -->
+        <div id="jcart">
+            {$jcart->display_cart()}
+        </div>
+        <!-- END JCART -->
+
+        <div class="my-info">
+            <div id="cart_anchor" type="hidden"></div>
+            <form method="post" action="{@url:app/4tschool/orderpreview/run}" id="orderInfo">
+                <table width="100%" class="menu-express">
+                    <tbody>
+                    <tr>
+                        <td align="left">
+                             <input type="button" value="清空" name="clearCart" id="clearCart" class="fancybox" style="margin:0px;background-color:#EC7B48">
+                        </td>
+                        <td align="right">
+
+                            <!--# if($schoolInfo['openorder'] == 1 ) {#-->
+                            <input type="submit" value="结算" name="confirmOrder" id="confirmOrder" class="fancybox" style="margin:0px">
+                            <!--# } #-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $("#add_favorites").click(function (event) {
+            event.preventDefault();
+
+            var userid = $("#add_favorites").attr("href");
+            //not login
+            if (userid == '' || userid == 0){
+                location.href="{@url:u/login/run}";
+                return;
+            }
+
+            var postUrl = $(".bookmarkMUrl").val();
+            $.post(postUrl,
+                    $('#schoolordersForm').serialize(),
+                    function (msg) {
+                        if (msg) {
+                            $("#mark").remove();
+                            $("#marked").show();
+                        }
+                    });
+        });
+    });
+
+    $("#submitbox").click('submit', function (event){
+
+         var comment = $(".comment").val();
+
+         var tastescore = $("#tastescoredit").raty('score');
+         if(undefined == tastescore)
+         {
+            tastescore = 3;
+         }
+         $('.tastescoreshow').val(tastescore);
+
+         var servicescore = $("#servicescoredit").raty('score');
+         if(undefined == servicescore)
+         {
+            servicescore = 3;
+         }
+         $('.servicescoreshow').val(servicescore);
+
+         if(comment == '')
+         {
+            alert("亲, 评论不能为空！");
+            return false;
+         }
+
+    })
+
+    function getRootPath(){
+        
+       var pathName = window.location.pathname.substring(1);
+       var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+       //return window.location.protocol + '//' + window.location.host + '/'+ webName + '/';
+       alert(window.location.protocol + '//' + window.location.host + '/'+ webName);
+       
+    } 
+
+    $('#tastescore').raty({ 
+      score: 4,
+      click: function(score, evt) {
+          $(".tastescoreshow").val(score);
+        }
+
+
+     });
+
+    $('#servicescore').raty({ 
+      score: 4,
+      click: function(score, evt) {
+          $(".servicescoreshow").val(score);
+        }
+
+
+     });
+    
+    var rooturl = $('#rooturl').val()+'/themes/extres/4tschool/images/';
+    $('.score').raty({
+       readOnly  : true,
+       starHalf : rooturl+'star-half.png',
+       starOff  : rooturl+'star-off.png',
+       starOn   : rooturl+'star-on.png',
+      score: function() {
+        return $(this).attr('data-score');
+      }
+    });
+
+    $('#comment_tab .score').raty({
+       starHalf : rooturl+'star-half.png',
+       starOff  : rooturl+'star-off.png',
+       starOn   : rooturl+'star-on.png',
+      score: function() {
+        return $(this).attr('data-score');
+      }
+    });
+    
+    //clear the shopping cart
+    $("#clearCart").click(function () {
+        $.ajax({
+            type: "POST", dataType: "text", async: false, url: "{$BASE_URL}",
+            data: {"jcartEmpty": "1"},
+            success: function (data) {
+                $('#jcart').html(data);
+                repositionCart();
+            },
+            error: function (res, msg, err) {
+                alert(err);
+            }
+        });
+    });
+
+    //控制菜名多时被排挤
+    var maxwidth = 9;
+    if($("#dish-name").text().length > maxwidth)
+    {
+        $("#dish-name").text($("#dish-name").text().substring(0,maxwidth));
+        $("#dish-name").html($("#dish-name").html()+'...');
+    }
+</script>
+</html>

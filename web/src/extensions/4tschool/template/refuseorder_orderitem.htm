@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+<head>
+	<template source='TPL:admin.common.head'/>
+	<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/styles.css?v={@G:version}" type="text/css" media="screen">
+	<script src="{@G:url.extres}/4tschool/js/jquery.ui.totop.js" type="text/javascript"></script>
+	<script src="{@G:url.extres}/4tschool/js/jquery.slides.min.js" type="text/javascript"></script>
+	<script src="{@G:url.extres}/4tschool/js/jquery.colorbox-min.js"></script>
+	<script type="text/javascript" src="{@G:url.extres}/4tschool/js/scroll.js">
+	</script>
+	<script src="{@G:url.extres}/4tschool/js/main.js?v={@G:version}" type="text/javascript">
+	</script>
+</head>
+<body style="background:url('')">
+<div class="clear"></div>
+
+<div id="normalorder" class="order_detail">
+
+    <div id="divorderhead" class="order_news"> 
+
+	    <p>
+	    
+	    订单号：{$order['ordernumber']}（{$allStatus[$order['status']]}）&nbsp;
+	
+	    <input type=button class="returnBack" value='返回'>&nbsp;
+
+	    <!--# if ($isCancelOrderStatus || $canCancelUser) { #-->
+        <input type=button name="cancelbutton" value="取消订单" id="detail_cancelorder" class="cancel"></input>&nbsp;
+        
+        <input type=button name="submitbutton" value="确定订单" id="" class="submit"></input>
+        <!--# } #-->
+    	  <a name="expressinfo"></a>
+            <p class="p_space">
+	            
+             <span class="">配送员：<span>{$order['deliveruser']==""?"未分配":$order['deliveruser']}</span></span><span>配送员电话：<span>{$deliveryMobile}</span></span><span>投诉电话：<span>{$schoolextra['complaintsline']}</span></span><span></span> 
+        </p>   
+	  
+	        <!--自营快递、货到付款 开始-->
+            
+                 <table width="0" border="0" cellspacing="0" cellpadding="0" class="order_news_list">
+                  <tbody>
+                  	<tr class="title">
+                  		<td class="row1">处理时间</td>
+                    	<td>最新状态</td>
+                    	<td>改变人</td>
+                  	</tr>
+
+                  	<!--# if ($orderhistories) { #-->
+					<!--#foreach ($orderhistories as $key => $item) {#-->
+
+                    <tr>
+                     	<td class="row1">{$item['changedate']}</td>
+                     	<td>{$allStatus[$item['statusto']]}</td>
+                     	<td>{$item['username']}</td>
+                     </tr>  
+                     <!--#}#-->
+					<!--# } else { #-->
+					<tr>
+                     	<td colspan="3"><span>无最新状态！</span></td>
+                    
+                     </tr>  
+						
+					<!--# } #-->
+                    </tbody>
+                </table>
+	</div>
+	
+	<a id="receiver"></a>
+	<div id="nousediv" style="height:10px"></div>
+	<div class="order_detail_frame">
+   <form action="{@url:app/4tschool/schoolusersorder/bookmarkShop}" id="schoolordersForm" method="post">
+	<input type="hidden" class="bookmarkShopUrl" name="bookmarkShopUrl" value="{@url:app/4tschool/schoolusersorder/bookmarkShop}">
+	<input type="hidden" class="cancelOrderUrl" name="cancelOrderUrl" value="{@url:app/4tschool/schoolusersorder/cancelOrder}">
+	<input type="hidden" class="submitOrderUrl" name="submitOrderUrl" value="{@url:app/4tschool/schoolusersorder/updateOrderStatus}">
+	<input type="hidden" class="myOrderUrl" name="myOrderUrl" value="{@url:app/4tschool/refuseorder/run}">
+	<input type="hidden" class="orderid" name="orderid" value="{$order['id']}">
+
+    <!--收货人信息修改开始-->
+    <h2 style=" visibility:visible">收货人信息
+    </h2>        
+     <ul class="ditail_frame_p" id="receiver_label_content" style="display:block">
+      <li><span id="label_name">{$order['towho']}</span>，<span id="label_address">{$order['to']}</span><span id="omit_digua">，</span><span id="label_fixtel"></span><span id="omit_tudou"></span><span id="label_mobile">{$order['tomobile']}</span>
+      </li>
+    </ul>    
+		 <h2>送货方式</h2>
+		 <ul class="ditail_frame_p">
+		 	<li></li>
+		 	<li>{$deliveryMethods[$order['paymethod']]}</li>
+		 </ul>
+	<div class="ditail_frame ditail_frame_nopadding" id="5799691562">
+        <div class="business_bag">
+              <h2>商品清单</h2>
+        </div>       
+    </div>
+    <div class="business_package_first">        
+    </div>
+         <div class="merch_bord">
+            <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+                <tbody>
+                <tr>
+                  <td class="tab_w">&nbsp;</td>
+                  <td class="tab_w1">菜品名称</td>
+                  <td class="tab_w7">流水号</td>
+                  <td class="tab_w7">单品积分</td>
+                  <td class="tab_w3">优惠价</td>
+                  <td class="tab_w6">数量</td>
+                  <td class="tab_w4">小计</td>
+                  <td class="tab_w5">操作</td>
+                </tr>
+              </tbody>
+            </table>
+		    <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">
+	            <tbody>
+	            	<!--# if ($orderItems) { #-->
+	            	<!--#foreach ($orderItems as $key => $item) {#-->
+	            	<tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+	            		<td class="tab_w">
+	            			<a name="productpic" target="_blank" href="index.php?m=app&c=shopdetails&shopid={$item['shopid']}&app=4tschool" target="">
+	            			<img width="67px" height="30px" src="{$item['imageurl']}" title="{$item['name']}">
+	            			</a>
+	            			<input type="hidden" name="shopids[]" value="{$item['shopid']}">
+	            		</td>
+	            		<td class="tab_w1">
+	            			<a name="productname" target="_blank" href="index.php?m=app&c=shopdetails&shopid={$item['shopid']}&app=4tschool">{$item['shopname']}---{$item['mname']}</a>
+	            		</td>
+	            		<td class="tab_w7">{$item['sequence']}</td>
+	            		<td class="tab_w7">{$item['integral']}</td>
+	            		<td class="tab_w3"><span>￥{$item['price']}({$item['packingprice']==0?"无打包费用":"含打包费用"})</span></td>
+	            		<td class="tab_w6">{$item['quatity']}{$item['unit']}</td>
+	            		<td class="tab_w4">￥{$item['price'] * $item['quatity']}</td>
+	            		<td class="tab_w5">评价</td>
+	            	</tr>
+		            <!--#}#-->
+		            <!--# } else { #-->
+					<span class="noresult">没有符合条件的结果！</span>
+					<!--# } #-->
+		 		</tbody>
+			</table>
+		</div>
+	    <div class="ditail_frame_notop">
+	    <div class="price_total">商品金额合计：<span>￥{$order['ordermoney']}</span></div>
+	    </div>
+</form>
+</div>
+</div>
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".addwishlist").click(function(event)
+	{
+		event.preventDefault();
+
+		//update data for each order's delivery
+		var postUrl = $(".bookmarkShopUrl").val();
+		$.post(postUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+		event.preventDefault();
+	});
+
+	$(".returnBack").click(function(event)
+	{
+		window.location.href = $(".myOrderUrl").val();
+		event.preventDefault();
+
+	});
+
+	$(".cancel").click(function(event)
+	{
+		//need to check status first
+		var pageUrl = $(".cancelOrderUrl").val();
+		var orderid = $(".orderid").val();
+
+		if(confirm("你确定要取消订单吗?") == false)
+		{
+			event.preventDefault();
+			return;
+		}
+
+		$.post(pageUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					window.location.href = $(".myOrderUrl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+		event.preventDefault();
+		
+	});
+
+	$(".submit").click(function(event)
+	{
+
+		//need to check status first
+		var pageUrl = $(".submitOrderUrl").val();
+		var orderid = $(".orderid").val();
+
+		if(confirm("你确定要下订单吗?") == false)
+		{
+			event.preventDefault();
+			return;
+		}
+
+		$.post(pageUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					window.location.href = $(".myOrderUrl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+		event.preventDefault();
+	});
+});
+</script>
+</body>
+</html>

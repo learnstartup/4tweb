@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+<style type="text/css">
+
+</style>
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/styles.css?v={@G:version}" type="text/css" media="screen">
+</head>
+<body style="background:url('')">
+<template load="true" source="links"/>
+<div class="clear"></div>
+<div class="wrapper" style="margin-top:10px;margin-left:10px">
+	<div class="centersidebar" id="orderList" style="width:1000px">
+	<div class="myddorder_tab" style="padding-left:0px"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red">请仔细查看拒签订单列表，确保该订单是否为合理的拒签订单，谢谢</span>
+		<div class="clear"></div>
+	</div><br/>
+	<form action="{@url:app/4tschool/Schoolusersorder/schoolOrder}" id="schoolordersForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/Schoolusersorder/schoolOrder}">
+	
+	<div class="clear"></div>
+
+	<template source='refuseorderlist' load="false" />
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/Refuseorder/run' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".closeInfo").click(function(event)
+	{
+		$(".alert-info").hide();
+		event.preventDefault();
+	});
+
+	$(".assignSingle").click(function(event)
+	{
+		//get the itemid and get the people in this school, then assign
+		$(".assignDelivery").show();
+		var liElement = $(this).parent().parent();
+		var checkBoxInRow = $(liElement).find('.checkSingle')[0];
+		if(checkBoxInRow)
+			$(checkBoxInRow).attr("checked","checked");
+
+		event.preventDefault();
+
+	});
+
+	//get checked items
+	function getCheckedItems()
+	{
+		var checkedItems =new Array()
+		$(".checkSingle").each(function(i,item)
+		{
+			var checked = $(item).attr("checked");
+			if(checked == "checked")
+			{
+				var itemId = $(item).attr('name');
+				checkedItems.push(itemId);
+
+			}
+		});
+
+		return checkedItems;
+	}
+	
+	//check and show ppl to assign
+	$('.checkSingle').click(function(event)
+	{
+		var currentchecked = $(this).attr("checked");
+		if(currentchecked == "checked")
+		{
+			$(".assignDelivery").show();
+		}
+
+		var allChecked = true;
+		$(".checkSingle").each(function(i,item)
+		{
+			var checked = $(item).attr("checked");
+			if(checked != "checked")
+			{
+				allChecked = false;
+			}
+		});
+
+	});
+
+	//focus to clear
+	$("#searchKey").focus(function(event)
+	{
+		$(this).val('');
+	});
+
+	//change date range
+	$(".chooseOrderShoprange").change(function(event){
+		searchPage();
+	});
+
+	//change date range
+	$(".choosenDaterange").change(function(event){
+		searchPage();
+	});
+
+	//change status of order
+	$(".choosenStatusCategory").change(function(event){
+		searchPage();
+	});
+
+	//input and search
+	$(".btn_search").click(function(event)
+	{
+		event.preventDefault();
+		searchPage();
+	});
+
+	//school area chane
+	$(".carea").change(function(event)
+	{
+		searchPage();
+	});
+
+
+	//school area chane
+	$(".cassignstatus").change(function(event)
+	{
+		searchPage();
+	});
+
+	//post data and search
+	function searchPage()
+	{
+		var chooseOrderShoprange = $(".chooseOrderShoprange").val();
+		var choosenDateRange = $(".choosenDaterange").val();
+		var choosenStatusCategory = $(".choosenStatusCategory").val();
+		var searchTxt = $('#searchKey').val();
+		var schoolArea = $(".carea").val();
+		var cassignstatus = $(".cassignstatus").val();
+
+		var orderShopRangeUrl = "&chooseOrderShoprange=" + chooseOrderShoprange;
+		var dateRangeUrl = "&choosenDaterange=" + choosenDateRange;
+		var statusCategoryRangeUrl = "&choosenStatusCategory=" + choosenStatusCategory;
+		var searchUrl = "&searchTxt=" + searchTxt;
+		var areaUrl = "";
+		var assignStatusUrl = "&cassignstatus=" + cassignstatus;
+
+		window.location.href = $(".pageurl").val() + orderShopRangeUrl + dateRangeUrl + statusCategoryRangeUrl + searchUrl + areaUrl + assignStatusUrl; 
+	}
+
+});
+</script>
+</body>
+</html>

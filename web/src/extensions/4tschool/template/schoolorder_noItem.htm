@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<script src="{@G:url.extres}/4tschool/js/jquery.timer.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/notify/jquery.noty.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/notify/layouts/top.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/notify/themes/defaulttheme.js" type="text/javascript"></script>
+
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red">订单缺货列表, 请联系订单人, 并进行换货流程，谢谢</span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/schoolorder/noItem}" id="schoolordersForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/schoolorder/noItem}">
+	<input type="hidden" class="checkNewNoItemUrl" name="checkNewNoItemUrl" value="{@url:app/4tschool/schoolorder/getNewlyComingNoItemOrder}">
+	<input type="hidden" class="lastRetrived" name="lastRetrived" value="{$lastRetrived}">
+	<div class="myddorder_search clearfix">
+		<div class="time_box">
+			<select id="o_area" style="z-index:0;display:none" class="carea" name="carea">
+				<option <?php if(0 == $carea) echo "selected"; ?>  value='0'>所有区域</option>
+				<!--#foreach($areaList as $key => $value) {#-->
+				<option 
+					<?php if($value['id'] == $carea) echo "selected"; ?> value="{$value['id']}" >{$value['areaname']}
+				</option>
+			<!--#}#-->
+			</select>
+
+			<select id="o_time" style="z-index:0;" class="choosenDaterange" name="choosenDaterange">
+				<!--#foreach($orderRange as $key => $value) {#-->
+				<option 
+					<?php if($key == $choosenDaterangeid) echo "selected"; ?> value="{$key}" >{$value}
+				</option>
+				<!--#}#-->
+			</select>
+
+			<input type="hidden" name="choosenStatusCategory" class="choosenStatusCategory" value="7"></input>
+
+			
+		</div>
+		<div class="myddorder_inquiry">
+			<input id="searchKey" class="text gray" style="width: 130px;" type="text" value="{$searchTxt==''?'订单号、收货人姓名':$searchTxt}">
+			<input type="submit" id="searchBtn" class="btn_search" value="查询">
+			
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+
+	<template source='orderlist' load="true" />
+
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/schoolorder/run' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+
+var MyTimer = new (function() {
+    var $stopwatch, // Stopwatch element on the page
+        incrementTime = 70, // Timer speed in milliseconds
+        currentTime = 0, // Current time in hundredths of a second
+        updateTimer = function() {
+            $stopwatch.html(formatTime(currentTime));
+            currentTime += incrementTime / 10;
+
+            if(currentTime > 6000 ) //1 min
+            {
+            	MyTimer.resetStopwatch(); //stop watch
+
+            	//retrive if no item
+            	//update data for each order's delivery
+				var postUrl = $(".checkNewNoItemUrl").val();
+				$.post(postUrl, 
+					$('#schoolordersForm').serialize(), 
+					function(returndata) {
+						returndata=eval("("+returndata+")");
+
+						if(returndata.success)
+						{
+							if(returndata.data > 0)
+							{
+								//if bigger than 0, mean new no item order coming
+								//show notification
+								generate('有' + returndata.data + '个缺货订单等待您处理, 请刷新页面','top');	
+							}
+						}
+
+						currentTime = 0;
+						MyTimer.Timer.toggle();
+				});
+            	
+            }
+        },
+        init = function() {
+            $stopwatch = $('#stopwatch');
+            MyTimer.Timer = $.timer(updateTimer, incrementTime, true);
+        };
+    this.resetStopwatch = function() {
+        currentTime = 0;
+        this.Timer.stop().once();
+    };
+    $(init);
+});
+
+function formatTime(time) {
+    var min = parseInt(time / 6000),
+        sec = parseInt(time / 100) - (min * 60),
+        hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+}
+
+// Common functions
+function pad(number, length) {
+    var str = '' + number;
+    while (str.length < length) {str = '0' + str;}
+    return str;
+}
+
+  function generate(information,layout) {
+  	var n = noty({
+  		text: information,
+  		type: 'warning',
+      	dismissQueue: true,
+  		layout: layout,
+  		theme: 'defaultTheme'
+  	});
+  	console.log('html: '+n.options.id);
+	}
+
+$(".assignSingle").click(function(event)
+{
+	//get the itemid and get the people in this school, then assign
+	$(".assignDelivery").show();
+	var liElement = $(this).parent().parent();
+	var checkBoxInRow = $(liElement).find('.checkSingle')[0];
+	if(checkBoxInRow)
+		$(checkBoxInRow).attr("checked","checked");
+
+	event.preventDefault();
+
+});
+
+
+//get checked items
+function getCheckedItems()
+{
+	var checkedItems =new Array()
+	$(".checkSingle").each(function(i,item)
+	{
+		var checked = $(item).attr("checked");
+		if(checked == "checked")
+		{
+			var itemId = $(item).attr('name');
+			checkedItems.push(itemId);
+
+		}
+	});
+
+	return checkedItems;
+}
+
+//check and show ppl to assign
+$('.checkSingle').click(function(event)
+{
+	var currentchecked = $(this).attr("checked");
+	if(currentchecked == "checked")
+	{
+		$(".assignDelivery").show();
+	}
+
+	var allChecked = true;
+	$(".checkSingle").each(function(i,item)
+	{
+		var checked = $(item).attr("checked");
+		if(checked != "checked")
+		{
+			allChecked = false;
+		}
+	});
+
+});
+
+$(".checkAll").click(function(event)
+{
+	if($(".checkAll").attr("checked") == "checked")
+	{
+		$(".assignDelivery").show();
+	}
+	else
+	{
+		$(".assignDelivery").hide();
+	}
+});
+
+//focus to clear
+$("#searchKey").focus(function(event)
+{
+	$(this).val('');
+});
+
+
+//change date range
+$(".choosenDaterange").change(function(event){
+	searchPage();
+});
+
+//change status of order
+$(".choosenStatusCategory").change(function(event){
+	searchPage();
+});
+
+//input and search
+$(".btn_search").click(function(event)
+{
+	event.preventDefault();
+	searchPage();
+});
+
+//school area chane
+$(".carea").change(function(event)
+{
+	searchPage();
+});
+
+
+//school area chane
+$(".cassignstatus").change(function(event)
+{
+	searchPage();
+});
+
+//post data and search
+function searchPage()
+{
+	var choosenDateRange = $(".choosenDaterange").val();
+	var choosenStatusCategory = $(".choosenStatusCategory").val();
+	var searchTxt = $('#searchKey').val();
+	var schoolArea = $(".carea").val();
+
+	var dateRangeUrl = "&choosenDaterange=" + choosenDateRange;
+	var statusCategoryRangeUrl = "&choosenStatusCategory=" + choosenStatusCategory;
+	var searchUrl = "&searchTxt=" + searchTxt;
+	var areaUrl = "&carea=" + schoolArea;
+
+	window.location.href = $(".pageurl").val() + dateRangeUrl + searchUrl + areaUrl + statusCategoryRangeUrl; 
+}
+
+</script>

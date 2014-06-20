@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+	<head>
+		<template source='TPL:admin.common.head' />
+	</head>
+	<body>
+		<div class="wrap">
+			<template load="true" source="links"/>
+			<div class="h_a">提示信息</div>
+			<div class="mb10 prompt_text">
+				<ol>
+					<li>请输入正确商店ID</li>
+				</ol>
+			</div>
+			<div class="h_a">搜索</div>
+			<div class="search_type cc mb10">
+				<form class="" action="{@url:app/4tschool/shoparea/run}" method="post">
+					<input type='hidden' name='search' value="search">
+					<label>商店ID:</label>	
+					<input type="text" name="shopId" value="{$shopId}"/>
+					<button type="submit" class="btn btn_submit J_ajax_submit_btn">搜索</button>
+				</form>			
+			</div>
+			<div class="table_list" style="">
+				<form class="" action="{@url:app/4tschool/shoparea/run}" method="post">
+					<table width="100%">
+						<thead>
+							<tr>
+								<td>
+									<input type='hidden' name='save' value="save">
+									<input type='hidden' name='hiddenshopid' value="{$shopId}">
+									关联状态
+								</td>
+								<td>商家名</td>
+								<td>学校</td>
+							</tr>
+						</thead>
+						<!--# if ($shopMsg) { #-->
+						<!--#foreach($allSchool as $key => $item) {#-->
+						<tr>
+							<td>
+								<input type="checkbox" class="shopschoolcheckbox" {$item['status']==1?'checked':''} name="shop[{$key}]"/>
+								<input type="hidden" name="shopareaid[{$key}]" value="{$item['shopareaid']}"/>
+								<input type="hidden" name="schoolid[{$key}]" value="{$item['schoolid']}"/>
+							</td>
+							<td>{$item['shopname']}</td>
+							<td>{$item['name']}</td>
+						</tr>
+						<!--#}#-->
+						<tr>
+							<td colspan="3">
+								<button type="submit" id="check_if_less_one" class="btn btn_submit J_ajax_submit_btn">保存</button>
+							</td>
+						</tr>
+
+						<!--# } else { #-->
+						<tbody>
+							<tr><td colspan="3" class="tac">啊哦，目前没有记录哟！</td></tr>
+						</tbody>
+						<!--# } #-->
+
+					</table>
+				</form>	
+			</div>
+			<div class="p10" style="display:none">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/shopstatusrecord/run' args='$args'/>
+			</div>
+		</div>
+		<div>
+			<template source='TPL:admin.common.footer' />
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+$('#check_if_less_one').click(function(event){
+	var count = 0;
+	$('.shopschoolcheckbox').each(function(){
+		if($(this).attr('checked') == 'checked')
+		{
+			count++;
+		}
+		
+	});
+	if(count < 1){
+		alert("请至少选择一个关联");
+		event.preventDefault();
+	}
+})
+</script>

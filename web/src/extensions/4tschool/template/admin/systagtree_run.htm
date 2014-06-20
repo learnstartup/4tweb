@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+	<template load="true" source="links"/>
+	<div class="h_a">
+	<input type="hidden" id="ajaxUrl_switch_type" value="{@url:app/4tschool/systagtree/getSysTagTreeVersionByType}">
+		类型：
+    <select id="selType">
+	  <!--#foreach($treeType as $key => $value) {#-->
+			<option <?php if($key == 0) echo "selected=selected"; ?> value="{$key}" >{$value}
+			</option>
+	  <!--#}#-->
+    </select>		
+		版本：
+    <select id="selVersion">
+	  <!--#foreach($treeVersion as $key => $value) {#-->
+			<option <?php if($key == count($treeVersion)) echo "selected=selected"; ?> value="{$key}" >{$value}
+			</option>
+	  <!--#}#-->
+    </select>
+        <input type="hidden" id="ajaxUrl_create" value="{@url:app/4tschool/systagtree/createNewType}">    
+		创建新类型：
+		<input id="txtCreateNewType" />
+	    <button id="btnCreateNewType">Create</button>
+	</div>
+	
+  <div style="margin:5px">
+  <input type="hidden" id="ajaxUrl_save" value="{@url:app/4tschool/systagtree/saveAsNewVersion}">
+  <input type="hidden" id="ajaxUrl_switch_ver" value="{@url:app/4tschool/systagtree/getSysTagTreeById}">
+  <input type="hidden" id="sysTagTree" value="{$treeList}">
+  <!-- <label id='debug'>debug:</label> -->
+  </div>
+  <div style="width:750px">
+   <div style = "width:380px;min-height:150px;background-color:#E6E6E6;float:left">
+   	<div>
+      <select id="txtNode">
+	      <!--#foreach($tagList as $key => $value) {#-->
+			<option value="{$value['id']}" >{$value['name']}
+			</option>
+	      <!--#}#-->
+      </select>
+      <button id="btnCreateNode">Create</button>
+      <span>Search:</span>
+      <input id="txtQuery" value=""/>
+   	</div>
+   	  <span style="color:red">Current Version</span>
+ 	  <div id = "tree_current"> </div>
+      <span>版本描述:</span>
+      <input id="txtDescription"/>
+      <button id="btnSave">Save</button>
+   </div>
+   <div style = "width:350px;min-height:150px;background-color:#E6E6E6; float:right">
+   	  <span style="color:red">Latest Version</span>
+ 	  <div id = "tree_latest"></div>
+   </div>
+  </div>
+</div>
+
+	<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>
+	
+</div>
+<template source='TPL:admin.common.footer' />
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/plugins/jstree.js">
+</script>
+<script type="text/javascript">
+var baseJson = [
+    {
+		title : 'root'
+	}
+];
+
+$(document).ready(function () {
+	//get tree with the latest version
+	var json;
+
+	if ($("#sysTagTree").val()!="null")
+	   json=$.parseJSON($.parseJSON($("#sysTagTree").val()).json);
+
+	if (json) {
+		    // var json=$.parseJSON($.parseJSON(r).json);
+		    buildTree($("#tree_current"),json,false);
+		    buildTree($("#tree_latest"),json,false);
+	};
+
+
+	//search in the tree
+	$("#txtQuery").keyup(function (e) {
+		var keyword;
+		var key = (e.keyCode) || (e.which) || (e.charCode);//兼容IE(e.keyCode)和Firefox(e.which)
+		if (key==13) {
+		   keyword = $(this).val();
+		}
+		else if (key==27) {
+		   $(this).val("");
+		   keyword=$(this).val();
+		};
+		$("#tree_current").jstree("search", keyword);
+	});
+
+	//save the tree as a new version
+	$("#btnSave").click(function () {
+		if ($("#tree_current").children().length==0) {alert("无效的版本，请重新选择！");return;};
+
+		var description=$("#txtDescription").val();
+		if (description.length==0) {alert("请填写版本描述！");return;};		
+
+		var type=$.trim($("#selType").find("option:selected").text());
+
+		var tree = $("#tree_current").jstree("get_json", -1);
+
+		//if the title of root node is "root", not include
+		if (tree[0].title=="root") tree=tree[0].children;
+
+		var ajaxUrl = $("#ajaxUrl_save").val();
+		$.post(ajaxUrl,{"data":tree,"des":description,"type":type}, function (r) {
+			if (r>0) {alert("保存成功")};
+			location.replace(location.href);
+		});
+	});
+
+	//create a new node in the tree
+	$("#btnCreateNode").click(function () {
+
+		var node={title : $("#txtNode").find("option:selected").text(),
+		          a_attr:{id:$("#txtNode").val()}
+		         };
+
+		var tree=$.jstree.reference($("#tree_current"));
+
+		tree.create_node(tree.get_selected(),node,"last",function(new_node){
+			var n=new_node;
+		});
+
+		if (tree.is_closed(tree.get_selected())) {
+			tree.open_node(tree.get_selected());
+		};
+
+	});
+
+    //switch type
+	$("#selType").change(function(){
+		var type=$.trim($(this).find("option:selected").text());
+		var ajaxUrl = $("#ajaxUrl_switch_type").val();
+
+		$.post(ajaxUrl,{"type":type}, function (r) {
+			if (r)  $("#selVersion").find("option").remove();
+
+			var treeVersionList=$.parseJSON(r);
+
+			for(var i in treeVersionList)
+			{
+			   $("<option value='"+treeVersionList[i].id+"'>"+treeVersionList[i].value+"</option>").appendTo($("#selVersion"));							
+			}
+
+			$("#selVersion").trigger('change');
+		});			
+	});	
+    
+    //switch version
+	$("#selVersion").change(function(){
+		var id=$(this).find("option:selected").val();
+		var ajaxUrl = $("#ajaxUrl_switch_ver").val();
+
+		$.post(ajaxUrl,{"id":id}, function (r) {		    
+		    var json=$.parseJSON($.parseJSON(r).json);
+		    buildTree($("#tree_current"),json,true);
+		    buildTree($("#tree_latest"),json,true);
+		});			
+	});
+     
+    function buildTree(obj,data,isRebuild)
+    {
+          	if (isRebuild) {
+          		$(obj).off('mousedown','a');
+          		$(obj).jstree('destroy');
+          	};
+          	
+            $(obj).jstree({
+	            "json" : {
+		            "data" : data
+	            },
+	            "search" : {
+		            "case_sensitive" : true,
+		            "show_only_matches" : false
+	            },
+
+	            "plugins" : ["json", "ui", "dnd", "crrm", "search", "contextmenu"]
+
+            }).bind("select_node.jstree", function (e, element) {
+	            if (element.node.context.attributes['href'] != undefined)
+		            var href = element.node.context.attributes['href'].nodeValue;
+	            // if (href!='#')window.open(data.node.context.attributes['href'].nodeValue);
+            });
+
+		    var tree=$.jstree.reference($(obj));
+
+		    tree.refresh();
+    }
+
+    $("#btnCreateNewType").click(function(){
+    	var type=$("#txtCreateNewType").val();
+    	if (type.length==0) {alert("请填写类型名称！");return;};
+    	var ajaxUrl=$("#ajaxUrl_create").val();	
+
+    	$.post(ajaxUrl,{"type":type, "data":baseJson},function(r){
+    		if (r>0) {    			
+    			alert("创建成功");
+    			location.replace(location.href);
+    		};
+    	});
+    });
+
+});
+</script>
+</body>
+</html>

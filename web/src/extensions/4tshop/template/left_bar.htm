@@ -1,0 +1,17 @@
+<div class="mydnew_sidel" style="background-color:white">
+
+<!--#foreach ($myMenus as $key => $item) {#-->
+<div class="mydnew_sidel_title">
+	<h3>{$key}</h3>
+</div>
+<ul class="my_content">
+	 <!--#foreach ($item as $eachkey => $eachMenu) {#-->
+		<li><a class="{$eachMenu['name'] == $selectedMenu?'current':''}" href="{$eachMenu['link']}" >
+			{$eachMenu['name']}		
+		</a>
+		</li>
+	<!--#}#-->
+</ul>
+
+<!--#}#-->
+</div>

@@ -1,0 +1,523 @@
+DROP TABLE IF EXISTS pw_4t_tag;
+CREATE TABLE `pw_4t_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Âä®ÊÄÅID',
+  `name` varchar(20) NOT NULL DEFAULT '' COMMENT 'tagÂêç',
+  `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Á±ªÂûã:1-Á≥ªÁªü,0-ÈùûÁ≥ªÁªü',
+  `createdate` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `lastupdatetime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÊúÄÂêéÊõ¥Êñ∞Êó∂Èó¥',
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT 'TagË°®';
+
+DROP TABLE IF EXISTS pw_4t_merchandise;
+CREATE TABLE `pw_4t_merchandise` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Âä®ÊÄÅID',
+  `shopid` int(10) unsigned NOT NULL COMMENT 'Â§ñÈîÆshopid',
+  `tagid` int(10) unsigned NOT NULL COMMENT 'Â§ñÈîÆtagid',
+  `name` varchar(20) NOT NULL DEFAULT '' COMMENT 'ÂïÜÂìÅÂêç',
+  `price` decimal(10,0) DEFAULT 0 COMMENT '‰ª∑Ê†º',
+  `unit` char(10) NOT NULL DEFAULT '' COMMENT 'Âçï‰Ωç',
+  `remainder` int NOT NULL DEFAULT 0 COMMENT 'Ââ©‰ΩôÊï∞Èáè',
+  `ordercount` int NOT NULL DEFAULT 0 COMMENT 'Â∑≤ÂçñÂá∫Êï∞Èáè',
+  `imageurl` varchar(200) NOT NULL DEFAULT '' COMMENT 'ÂõæÁâáÁõ∏ÂØπË∑ØÂæÑ',
+  `description` varchar(2000) NOT NULL DEFAULT '' COMMENT 'ÂïÜÂìÅÊèèËø∞',
+  `createdate` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `lastupdatetime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÊúÄÂêéÊõ¥Êñ∞Êó∂Èó¥',
+  KEY `shopid` (`shopid`),
+  KEY `tagid` (`tagid`),
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT 'ÂïÜÂìÅË°®';
+
+DROP TABLE IF EXISTS pw_4t_shop;
+CREATE TABLE `pw_4t_shop`(
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Âä®ÊÄÅID',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT 'ÂïÜÂ∫óÂêç',
+  `address` varchar(500) NOT NULL DEFAULT '' COMMENT 'Âú∞ÂùÄ',
+  `area` int(10) NOT NULL DEFAULT 0 COMMENT 'Âå∫Âüü',
+  `phonenumber` varchar(15) NOT NULL DEFAULT '' COMMENT 'ÁîµËØùÂè∑Á†Å',
+  `contactnumber` varchar(15) NOT NULL DEFAULT '' COMMENT 'Â∫ßÊú∫Âè∑Á†Å',
+  `openorder` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'ÂºÄÊîæËÆ¢È§ê:1-ÂºÄÊîæ,0-ÂÖ≥Èó≠',
+  `orderbegin` time NOT NULL DEFAULT '090000' COMMENT 'ÊØèÊó•ËÆ¢È§êÂºÄÂßãÊó∂Èó¥',
+  `orderend` time NOT NULL DEFAULT '180000' COMMENT 'ÊØèÊó•ËÆ¢È§êÁªìÊùüÊó∂Èó¥',
+  `createdate` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `lastupdatetime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ÊúÄÂêéÊõ¥Êñ∞Êó∂Èó¥',
+  `description` varchar(2000) NOT NULL DEFAULT '' COMMENT 'ÂïÜÂ∫óÊèèËø∞',
+  `ordercount` int(10) NOT NULL DEFAULT 0 COMMENT 'ËÆ¢ÂçïÊÄªÊï∞',
+  `isactive` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Á±ªÂûã:1-Ê¥ªÂä®ÁöÑ,0-ÈùûÊ¥ªÂä®ÁöÑ',
+  PRIMARY KEY (`id`) 
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT 'shopË°®';
+
+DROP TABLE IF EXISTS pw_4t_order;
+CREATE TABLE IF NOT EXISTS `pw_4t_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `schoolid` int(11) NOT NULL,
+  `ordernumber` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `orderdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) NOT NULL,
+  `paymethod` int(11) NOT NULL,
+  `delivermethod` int(11) NOT NULL,
+  `to` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `deliverby` int(11) NOT NULL,
+  `delivercontact` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `savingtotal` decimal(10,0) NOT NULL,
+  `ordermoney` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`,`ordernumber`,`orderdate`,`status`,`paymethod`,`deliverby`),
+  KEY `schoolid` (`schoolid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(1,1,342221111,80971,1,2,2,'µÿ÷∑790',21,'µÁª∞∫≈¬Î 23',1,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(2,1,342221112,80971,1,4,1,'µÿ÷∑679',39,'µÁª∞∫≈¬Î 10',4,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(3,1,342221113,80971,1,7,2,'µÿ÷∑831',39,'µÁª∞∫≈¬Î 26',4,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(4,1,342221114,80971,1,7,1,'µÿ÷∑197',48,'µÁª∞∫≈¬Î 11',5,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(5,1,342221115,80971,1,8,2,'µÿ÷∑850',36,'µÁª∞∫≈¬Î 21',5,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(6,1,342221116,80971,1,8,2,'µÿ÷∑134',10,'µÁª∞∫≈¬Î 50',2,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(7,1,342221117,80971,1,8,2,'µÿ÷∑317',42,'µÁª∞∫≈¬Î 13',2,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(8,1,342221118,80971,1,3,2,'µÿ÷∑585',8,'µÁª∞∫≈¬Î 16',2,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(9,1,342221119,80971,1,4,2,'µÿ÷∑288',35,'µÁª∞∫≈¬Î 9',4,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(10,1,342221120,80971,1,7,2,'µÿ÷∑600',12,'µÁª∞∫≈¬Î 27',1,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(11,1,342221121,80971,1,4,2,'µÿ÷∑362',26,'µÁª∞∫≈¬Î 32',1,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(12,1,342221122,80971,1,5,1,'µÿ÷∑279',18,'µÁª∞∫≈¬Î 50',5,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(13,1,342221123,80971,1,3,1,'µÿ÷∑632',15,'µÁª∞∫≈¬Î 42',1,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(14,1,342221124,80971,1,3,2,'µÿ÷∑382',15,'µÁª∞∫≈¬Î 15',2,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(15,1,342221125,80971,1,6,2,'µÿ÷∑586',41,'µÁª∞∫≈¬Î 23',3,19);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(16,1,342221126,80971,1,5,2,'µÿ÷∑186',10,'µÁª∞∫≈¬Î 35',5,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(17,1,342221127,80971,1,2,2,'µÿ÷∑557',9,'µÁª∞∫≈¬Î 10',1,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(18,1,342221128,80971,1,3,1,'µÿ÷∑196',28,'µÁª∞∫≈¬Î 23',4,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(19,1,342221129,80971,1,1,1,'µÿ÷∑902',35,'µÁª∞∫≈¬Î 6',5,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(20,1,342221130,80971,1,8,2,'µÿ÷∑121',27,'µÁª∞∫≈¬Î 42',4,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(21,1,342221131,80971,1,1,2,'µÿ÷∑896',4,'µÁª∞∫≈¬Î 1',3,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(22,1,342221132,80971,1,3,2,'µÿ÷∑843',11,'µÁª∞∫≈¬Î 46',5,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(23,1,342221133,80971,1,5,2,'µÿ÷∑69',24,'µÁª∞∫≈¬Î 30',5,23);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(24,1,342221134,80971,1,7,1,'µÿ÷∑417',4,'µÁª∞∫≈¬Î 33',5,4);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(25,1,342221135,80971,1,7,2,'µÿ÷∑999',11,'µÁª∞∫≈¬Î 42',3,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(26,1,342221136,80971,1,1,1,'µÿ÷∑171',48,'µÁª∞∫≈¬Î 19',2,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(27,1,342221137,80971,1,6,2,'µÿ÷∑350',33,'µÁª∞∫≈¬Î 45',3,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(28,1,342221138,80971,1,8,1,'µÿ÷∑25',25,'µÁª∞∫≈¬Î 40',3,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(29,1,342221139,80971,1,2,2,'µÿ÷∑187',12,'µÁª∞∫≈¬Î 39',1,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(30,1,342221140,80971,1,2,2,'µÿ÷∑574',25,'µÁª∞∫≈¬Î 50',5,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(31,1,342221141,80971,1,5,1,'µÿ÷∑275',14,'µÁª∞∫≈¬Î 50',3,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(32,1,342221142,80971,1,6,1,'µÿ÷∑280',13,'µÁª∞∫≈¬Î 27',2,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(33,1,342221143,80971,1,3,2,'µÿ÷∑984',44,'µÁª∞∫≈¬Î 22',4,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(34,1,342221144,80971,1,4,1,'µÿ÷∑111',47,'µÁª∞∫≈¬Î 40',1,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(35,1,342221145,80971,1,6,2,'µÿ÷∑966',44,'µÁª∞∫≈¬Î 41',4,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(36,1,342221146,80971,1,2,1,'µÿ÷∑892',5,'µÁª∞∫≈¬Î 8',5,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(37,1,342221147,80971,1,4,1,'µÿ÷∑411',33,'µÁª∞∫≈¬Î 18',4,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(38,1,342221148,80971,1,3,1,'µÿ÷∑494',39,'µÁª∞∫≈¬Î 30',5,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(39,1,342221149,80971,1,2,2,'µÿ÷∑733',37,'µÁª∞∫≈¬Î 2',5,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(40,1,342221150,80971,1,7,1,'µÿ÷∑620',36,'µÁª∞∫≈¬Î 38',4,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(41,1,342221151,80971,1,4,2,'µÿ÷∑24',50,'µÁª∞∫≈¬Î 43',4,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(42,1,342221152,80971,1,5,2,'µÿ÷∑638',11,'µÁª∞∫≈¬Î 27',4,19);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(43,1,342221153,80971,1,2,1,'µÿ÷∑4',10,'µÁª∞∫≈¬Î 47',3,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(44,1,342221154,80971,1,4,1,'µÿ÷∑806',5,'µÁª∞∫≈¬Î 5',2,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(45,1,342221155,80971,1,8,2,'µÿ÷∑17',20,'µÁª∞∫≈¬Î 32',4,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(46,1,342221156,80971,1,5,2,'µÿ÷∑358',4,'µÁª∞∫≈¬Î 25',5,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(47,1,342221157,80971,1,3,1,'µÿ÷∑529',7,'µÁª∞∫≈¬Î 23',5,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(48,1,342221158,80971,1,7,2,'µÿ÷∑870',11,'µÁª∞∫≈¬Î 3',5,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(49,1,342221159,80971,1,7,1,'µÿ÷∑714',50,'µÁª∞∫≈¬Î 31',2,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(50,1,342221160,80971,1,7,1,'µÿ÷∑72',4,'µÁª∞∫≈¬Î 7',2,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(51,1,342221161,80971,1,1,1,'µÿ÷∑861',29,'µÁª∞∫≈¬Î 4',5,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(52,1,342221162,80971,1,2,1,'µÿ÷∑422',12,'µÁª∞∫≈¬Î 42',3,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(53,1,342221163,80971,1,6,2,'µÿ÷∑955',33,'µÁª∞∫≈¬Î 3',3,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(54,1,342221164,80971,1,8,1,'µÿ÷∑491',41,'µÁª∞∫≈¬Î 48',5,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(55,1,342221165,80971,1,2,2,'µÿ÷∑299',42,'µÁª∞∫≈¬Î 23',1,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(56,1,342221166,80971,1,8,2,'µÿ÷∑805',21,'µÁª∞∫≈¬Î 28',4,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(57,1,342221167,80971,1,3,1,'µÿ÷∑614',22,'µÁª∞∫≈¬Î 19',5,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(58,1,342221168,80971,1,6,2,'µÿ÷∑746',4,'µÁª∞∫≈¬Î 16',4,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(59,1,342221169,80971,1,1,2,'µÿ÷∑345',25,'µÁª∞∫≈¬Î 6',5,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(60,1,342221170,80971,1,3,1,'µÿ÷∑652',28,'µÁª∞∫≈¬Î 40',2,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(61,1,342221171,80971,1,6,2,'µÿ÷∑372',2,'µÁª∞∫≈¬Î 16',2,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(62,1,342221172,80971,1,2,2,'µÿ÷∑463',16,'µÁª∞∫≈¬Î 1',4,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(63,1,342221173,80971,1,6,1,'µÿ÷∑765',24,'µÁª∞∫≈¬Î 47',5,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(64,1,342221174,80971,1,3,1,'µÿ÷∑767',44,'µÁª∞∫≈¬Î 6',5,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(65,1,342221175,80971,1,3,2,'µÿ÷∑22',22,'µÁª∞∫≈¬Î 46',5,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(66,1,342221176,80971,1,3,1,'µÿ÷∑504',50,'µÁª∞∫≈¬Î 21',4,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(67,1,342221177,80971,1,7,2,'µÿ÷∑872',44,'µÁª∞∫≈¬Î 36',4,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(68,1,342221178,80971,1,8,2,'µÿ÷∑158',36,'µÁª∞∫≈¬Î 10',4,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(69,1,342221179,80971,1,6,1,'µÿ÷∑367',7,'µÁª∞∫≈¬Î 31',1,23);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(70,1,342221180,80971,1,3,1,'µÿ÷∑712',14,'µÁª∞∫≈¬Î 42',4,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(71,1,342221181,80971,1,2,2,'µÿ÷∑663',18,'µÁª∞∫≈¬Î 5',5,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(72,1,342221182,80971,1,2,1,'µÿ÷∑840',25,'µÁª∞∫≈¬Î 15',1,4);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(73,1,342221183,80971,1,8,2,'µÿ÷∑840',7,'µÁª∞∫≈¬Î 8',3,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(74,1,342221184,80971,1,4,1,'µÿ÷∑775',40,'µÁª∞∫≈¬Î 15',4,23);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(75,1,342221185,80971,1,5,2,'µÿ÷∑370',8,'µÁª∞∫≈¬Î 20',5,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(76,1,342221186,80971,1,1,2,'µÿ÷∑189',28,'µÁª∞∫≈¬Î 37',2,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(77,1,342221187,80971,1,7,2,'µÿ÷∑430',11,'µÁª∞∫≈¬Î 2',1,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(78,1,342221188,80971,1,8,2,'µÿ÷∑851',47,'µÁª∞∫≈¬Î 38',5,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(79,1,342221189,80971,1,8,1,'µÿ÷∑332',25,'µÁª∞∫≈¬Î 5',5,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(80,1,342221190,80971,1,6,2,'µÿ÷∑418',13,'µÁª∞∫≈¬Î 32',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(81,1,342221191,80971,1,6,1,'µÿ÷∑406',50,'µÁª∞∫≈¬Î 8',4,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(82,1,342221192,80971,1,6,2,'µÿ÷∑559',31,'µÁª∞∫≈¬Î 45',1,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(83,1,342221193,80971,1,4,2,'µÿ÷∑268',3,'µÁª∞∫≈¬Î 49',4,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(84,1,342221194,80971,1,2,1,'µÿ÷∑922',10,'µÁª∞∫≈¬Î 28',4,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(85,1,342221195,80971,1,4,1,'µÿ÷∑563',11,'µÁª∞∫≈¬Î 26',3,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(86,1,342221196,80971,1,7,2,'µÿ÷∑267',4,'µÁª∞∫≈¬Î 36',5,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(87,1,342221197,80971,1,2,2,'µÿ÷∑279',30,'µÁª∞∫≈¬Î 36',1,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(88,1,342221198,80971,1,4,2,'µÿ÷∑880',13,'µÁª∞∫≈¬Î 8',4,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(89,1,342221199,80971,1,2,1,'µÿ÷∑90',47,'µÁª∞∫≈¬Î 6',5,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(90,1,342221200,80971,1,8,2,'µÿ÷∑844',10,'µÁª∞∫≈¬Î 1',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(91,1,342221201,80971,1,7,1,'µÿ÷∑202',50,'µÁª∞∫≈¬Î 15',1,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(92,1,342221202,80971,1,4,2,'µÿ÷∑939',10,'µÁª∞∫≈¬Î 48',2,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(93,1,342221203,80971,1,4,1,'µÿ÷∑450',44,'µÁª∞∫≈¬Î 49',1,19);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(94,1,342221204,80971,1,3,1,'µÿ÷∑81',48,'µÁª∞∫≈¬Î 45',3,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(95,1,342221205,80971,1,7,2,'µÿ÷∑318',32,'µÁª∞∫≈¬Î 15',5,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(96,1,342221206,80971,1,2,1,'µÿ÷∑609',37,'µÁª∞∫≈¬Î 9',1,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(97,1,342221207,80971,1,1,1,'µÿ÷∑963',41,'µÁª∞∫≈¬Î 44',1,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(98,1,342221208,80971,1,5,1,'µÿ÷∑689',23,'µÁª∞∫≈¬Î 14',1,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(99,1,342221209,80971,1,3,1,'µÿ÷∑183',32,'µÁª∞∫≈¬Î 29',4,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(100,1,342221210,80971,1,3,2,'µÿ÷∑533',31,'µÁª∞∫≈¬Î 4',1,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(101,1,342221211,80971,1,3,2,'µÿ÷∑65',9,'µÁª∞∫≈¬Î 38',4,4);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(102,1,342221212,80971,1,7,2,'µÿ÷∑753',25,'µÁª∞∫≈¬Î 8',4,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(103,1,342221213,80971,1,7,1,'µÿ÷∑770',48,'µÁª∞∫≈¬Î 35',5,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(104,1,342221214,80971,1,5,2,'µÿ÷∑129',20,'µÁª∞∫≈¬Î 32',4,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(105,1,342221215,80971,1,3,1,'µÿ÷∑285',50,'µÁª∞∫≈¬Î 45',5,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(106,1,342221216,80971,1,1,2,'µÿ÷∑259',10,'µÁª∞∫≈¬Î 32',4,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(107,1,342221217,80971,1,6,2,'µÿ÷∑481',18,'µÁª∞∫≈¬Î 11',1,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(108,1,342221218,80971,1,1,1,'µÿ÷∑555',20,'µÁª∞∫≈¬Î 40',2,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(109,1,342221219,80971,1,1,2,'µÿ÷∑351',17,'µÁª∞∫≈¬Î 28',4,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(110,1,342221220,80971,1,5,2,'µÿ÷∑736',8,'µÁª∞∫≈¬Î 14',4,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(111,1,342221221,80971,1,7,1,'µÿ÷∑198',31,'µÁª∞∫≈¬Î 46',1,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(112,1,342221222,80971,1,4,2,'µÿ÷∑685',44,'µÁª∞∫≈¬Î 23',3,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(113,1,342221223,80971,1,6,2,'µÿ÷∑762',12,'µÁª∞∫≈¬Î 33',5,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(114,1,342221224,80971,1,2,2,'µÿ÷∑970',42,'µÁª∞∫≈¬Î 11',4,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(115,1,342221225,80971,1,6,2,'µÿ÷∑258',15,'µÁª∞∫≈¬Î 28',4,20);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(116,1,342221226,80971,1,3,1,'µÿ÷∑294',32,'µÁª∞∫≈¬Î 13',1,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(117,1,342221227,80971,1,7,2,'µÿ÷∑749',30,'µÁª∞∫≈¬Î 12',5,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(118,1,342221228,80971,1,2,2,'µÿ÷∑789',5,'µÁª∞∫≈¬Î 16',1,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(119,1,342221229,80971,1,5,1,'µÿ÷∑416',13,'µÁª∞∫≈¬Î 48',5,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(120,1,342221230,80971,1,6,1,'µÿ÷∑1',39,'µÁª∞∫≈¬Î 7',5,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(121,1,342221231,80971,1,4,1,'µÿ÷∑89',33,'µÁª∞∫≈¬Î 14',2,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(122,1,342221232,80971,1,2,1,'µÿ÷∑42',20,'µÁª∞∫≈¬Î 4',2,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(123,1,342221233,80971,1,2,1,'µÿ÷∑703',10,'µÁª∞∫≈¬Î 33',5,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(124,1,342221234,80971,1,2,1,'µÿ÷∑919',46,'µÁª∞∫≈¬Î 17',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(125,1,342221235,80971,1,6,1,'µÿ÷∑671',1,'µÁª∞∫≈¬Î 12',2,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(126,1,342221236,80971,1,8,1,'µÿ÷∑271',7,'µÁª∞∫≈¬Î 35',2,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(127,1,342221237,80971,1,8,1,'µÿ÷∑155',33,'µÁª∞∫≈¬Î 24',4,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(128,1,342221238,80971,1,8,2,'µÿ÷∑224',18,'µÁª∞∫≈¬Î 39',1,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(129,1,342221239,80971,1,6,2,'µÿ÷∑206',2,'µÁª∞∫≈¬Î 3',2,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(130,1,342221240,80971,1,6,1,'µÿ÷∑202',13,'µÁª∞∫≈¬Î 10',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(131,1,342221241,80971,1,6,2,'µÿ÷∑103',31,'µÁª∞∫≈¬Î 30',4,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(132,1,342221242,80971,1,2,1,'µÿ÷∑436',13,'µÁª∞∫≈¬Î 24',3,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(133,1,342221243,80971,1,2,2,'µÿ÷∑483',4,'µÁª∞∫≈¬Î 43',2,23);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(134,1,342221244,80971,1,8,2,'µÿ÷∑548',13,'µÁª∞∫≈¬Î 44',2,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(135,1,342221245,80971,1,6,1,'µÿ÷∑869',34,'µÁª∞∫≈¬Î 4',3,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(136,1,342221246,80971,1,7,2,'µÿ÷∑186',40,'µÁª∞∫≈¬Î 6',5,3);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(137,1,342221247,80971,1,4,2,'µÿ÷∑691',13,'µÁª∞∫≈¬Î 35',4,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(138,1,342221248,80971,1,1,1,'µÿ÷∑340',8,'µÁª∞∫≈¬Î 16',1,12);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(139,1,342221249,80971,1,7,2,'µÿ÷∑531',7,'µÁª∞∫≈¬Î 5',1,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(140,1,342221250,80971,1,4,1,'µÿ÷∑267',32,'µÁª∞∫≈¬Î 39',4,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(141,1,342221251,80971,1,5,2,'µÿ÷∑923',44,'µÁª∞∫≈¬Î 50',1,8);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(142,1,342221252,80971,1,2,1,'µÿ÷∑716',22,'µÁª∞∫≈¬Î 40',5,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(143,1,342221253,80971,1,2,1,'µÿ÷∑829',19,'µÁª∞∫≈¬Î 49',1,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(144,1,342221254,80971,1,7,2,'µÿ÷∑338',45,'µÁª∞∫≈¬Î 3',5,13);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(145,1,342221255,80971,1,6,2,'µÿ÷∑726',18,'µÁª∞∫≈¬Î 39',2,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(146,1,342221256,80971,1,8,2,'µÿ÷∑634',48,'µÁª∞∫≈¬Î 18',2,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(147,1,342221257,80971,1,4,2,'µÿ÷∑934',36,'µÁª∞∫≈¬Î 8',4,7);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(148,1,342221258,80971,1,2,1,'µÿ÷∑806',11,'µÁª∞∫≈¬Î 18',5,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(149,1,342221259,80971,1,4,2,'µÿ÷∑846',20,'µÁª∞∫≈¬Î 28',2,16);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(150,1,342221260,80971,1,7,1,'µÿ÷∑486',16,'µÁª∞∫≈¬Î 23',4,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(151,1,342221261,80971,1,7,2,'µÿ÷∑291',8,'µÁª∞∫≈¬Î 39',2,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(152,1,342221262,80971,1,8,1,'µÿ÷∑273',21,'µÁª∞∫≈¬Î 45',5,5);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(153,1,342221263,80971,1,2,1,'µÿ÷∑320',25,'µÁª∞∫≈¬Î 34',1,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(154,1,342221264,80971,1,4,2,'µÿ÷∑641',16,'µÁª∞∫≈¬Î 25',2,23);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(155,1,342221265,80971,1,3,1,'µÿ÷∑161',47,'µÁª∞∫≈¬Î 46',2,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(156,1,342221266,80971,1,4,2,'µÿ÷∑363',11,'µÁª∞∫≈¬Î 49',5,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(157,1,342221267,80971,1,8,1,'µÿ÷∑541',8,'µÁª∞∫≈¬Î 50',1,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(158,1,342221268,80971,1,6,1,'µÿ÷∑988',19,'µÁª∞∫≈¬Î 50',4,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(159,1,342221269,80971,1,6,2,'µÿ÷∑95',11,'µÁª∞∫≈¬Î 32',1,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(160,1,342221270,80971,1,1,1,'µÿ÷∑519',10,'µÁª∞∫≈¬Î 7',3,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(161,1,342221271,80971,1,5,2,'µÿ÷∑30',1,'µÁª∞∫≈¬Î 48',1,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(162,1,342221272,80971,1,5,2,'µÿ÷∑720',8,'µÁª∞∫≈¬Î 1',5,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(163,1,342221273,80971,1,3,2,'µÿ÷∑278',33,'µÁª∞∫≈¬Î 32',1,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(164,1,342221274,80971,1,7,1,'µÿ÷∑592',38,'µÁª∞∫≈¬Î 43',5,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(165,1,342221275,80971,1,1,1,'µÿ÷∑889',1,'µÁª∞∫≈¬Î 39',3,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(166,1,342221276,80971,1,4,1,'µÿ÷∑950',7,'µÁª∞∫≈¬Î 15',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(167,1,342221277,80971,1,4,2,'µÿ÷∑380',13,'µÁª∞∫≈¬Î 10',4,1);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(168,1,342221278,80971,1,4,2,'µÿ÷∑80',35,'µÁª∞∫≈¬Î 21',4,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(169,1,342221279,80971,1,7,2,'µÿ÷∑889',41,'µÁª∞∫≈¬Î 31',3,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(170,1,342221280,80971,1,2,1,'µÿ÷∑704',48,'µÁª∞∫≈¬Î 17',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(171,1,342221281,80971,1,8,1,'µÿ÷∑767',22,'µÁª∞∫≈¬Î 31',4,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(172,1,342221282,80971,1,3,1,'µÿ÷∑693',32,'µÁª∞∫≈¬Î 30',2,19);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(173,1,342221283,80971,1,4,2,'µÿ÷∑634',50,'µÁª∞∫≈¬Î 22',5,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(174,1,342221284,80971,1,7,1,'µÿ÷∑457',38,'µÁª∞∫≈¬Î 26',1,24);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(175,1,342221285,80971,1,4,2,'µÿ÷∑262',32,'µÁª∞∫≈¬Î 21',4,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(176,1,342221286,80971,1,6,1,'µÿ÷∑856',47,'µÁª∞∫≈¬Î 4',3,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(177,1,342221287,80971,1,5,2,'µÿ÷∑22',14,'µÁª∞∫≈¬Î 17',1,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(178,1,342221288,80971,1,5,2,'µÿ÷∑190',37,'µÁª∞∫≈¬Î 12',4,2);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(179,1,342221289,80971,1,2,2,'µÿ÷∑257',44,'µÁª∞∫≈¬Î 27',3,9);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(180,1,342221290,80971,1,1,1,'µÿ÷∑833',4,'µÁª∞∫≈¬Î 36',5,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(181,1,342221291,80971,1,2,2,'µÿ÷∑286',47,'µÁª∞∫≈¬Î 34',3,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(182,1,342221292,80971,1,1,2,'µÿ÷∑291',34,'µÁª∞∫≈¬Î 4',3,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(183,1,342221293,80971,1,6,1,'µÿ÷∑188',49,'µÁª∞∫≈¬Î 50',5,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(184,1,342221294,80971,1,4,1,'µÿ÷∑301',27,'µÁª∞∫≈¬Î 34',3,15);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(185,1,342221295,80971,1,2,1,'µÿ÷∑980',28,'µÁª∞∫≈¬Î 50',5,14);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(186,1,342221296,80971,1,2,1,'µÿ÷∑354',19,'µÁª∞∫≈¬Î 46',3,11);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(187,1,342221297,80971,1,8,2,'µÿ÷∑160',4,'µÁª∞∫≈¬Î 21',3,10);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(188,1,342221298,80971,1,3,2,'µÿ÷∑667',20,'µÁª∞∫≈¬Î 28',5,18);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(189,1,342221299,80971,1,5,2,'µÿ÷∑332',29,'µÁª∞∫≈¬Î 49',1,17);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(190,1,342221300,80971,1,2,2,'µÿ÷∑677',19,'µÁª∞∫≈¬Î 12',5,22);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(191,1,342221301,80971,1,3,1,'µÿ÷∑481',24,'µÁª∞∫≈¬Î 7',2,6);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(192,1,342221302,80971,1,6,1,'µÿ÷∑475',49,'µÁª∞∫≈¬Î 3',4,25);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(193,1,342221303,80971,1,2,2,'µÿ÷∑42',45,'µÁª∞∫≈¬Î 18',3,4);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(194,1,342221304,80971,1,4,2,'µÿ÷∑384',27,'µÁª∞∫≈¬Î 41',2,21);
+INSERT INTO `pw_4t_order`(`id`, `userid`, `ordernumber`,`schoolid`, `status`, `paymethod`, `delivermethod`, `to`, `deliverby`, `delivercontact`, `savingtotal`, `ordermoney`) VALUES(195,1,342221305,80971,1,4,1,'µÿ÷∑810',17,'µÁª∞∫≈¬Î 47',2,7);
+
+DROP TABLE IF EXISTS `pw_4t_order_item`;
+CREATE TABLE IF NOT EXISTS `pw_4t_order_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderid` int(11) NOT NULL,
+  `merchandiseid` int(11) NOT NULL,
+  `quatity` int(11) NOT NULL,
+  `priceoriginal` decimal(10,0) NOT NULL,
+  `priceofferdescription` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `saving` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orderid` (`orderid`),
+  KEY `merchandiseid` (`merchandiseid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+TRUNCATE TABLE pw_4t_order_item;#SQL for table data(pw_4t_order_item)
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(1,54,43,14,5,7,'’€ø€6',5,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(2,60,388,14,1,12,'’€ø€6',11,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(3,37,459,14,1,19,'’€ø€8',9,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(4,54,218,14,5,4,'’€ø€9',11,7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(5,2,340,14,1,4,'’€ø€8',9,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(6,27,405,14,5,20,'’€ø€7',3,-17);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(7,36,51,14,1,17,'’€ø€6',6,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(8,49,300,14,4,11,'’€ø€7',9,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(9,18,151,14,2,16,'’€ø€6',13,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(10,46,237,14,2,8,'’€ø€7',9,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(11,43,242,14,3,5,'’€ø€6',3,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(12,22,58,14,3,3,'’€ø€9',11,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(13,36,259,14,2,15,'’€ø€9',11,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(14,15,248,14,5,17,'’€ø€8',7,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(15,16,214,14,5,5,'’€ø€8',7,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(16,56,287,14,4,15,'’€ø€8',6,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(17,40,181,14,1,12,'’€ø€6',8,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(18,27,147,14,1,13,'’€ø€9',13,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(19,49,367,14,2,3,'’€ø€7',12,9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(20,11,314,14,2,19,'’€ø€7',6,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(21,49,5,14,4,16,'’€ø€9',3,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(22,23,141,14,3,5,'’€ø€7',13,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(23,7,450,14,1,18,'’€ø€7',11,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(24,14,341,14,3,14,'’€ø€9',6,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(25,9,22,14,3,11,'’€ø€7',8,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(26,39,278,14,3,6,'’€ø€7',7,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(27,1,92,14,5,7,'’€ø€6',7,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(28,25,376,14,1,20,'’€ø€9',3,-17);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(29,38,53,14,2,8,'’€ø€6',10,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(30,18,37,14,2,13,'’€ø€9',10,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(31,41,145,14,5,14,'’€ø€8',13,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(32,11,232,14,1,3,'’€ø€8',6,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(33,18,33,14,2,5,'’€ø€9',9,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(34,22,472,14,1,9,'’€ø€8',9,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(35,17,412,14,4,6,'’€ø€9',10,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(36,25,222,14,1,8,'’€ø€6',13,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(37,25,179,14,5,5,'’€ø€8',13,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(38,30,233,14,5,11,'’€ø€7',4,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(39,55,289,14,1,9,'’€ø€6',12,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(40,15,367,14,3,14,'’€ø€8',6,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(41,20,243,14,4,4,'’€ø€7',7,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(42,3,297,14,2,8,'’€ø€6',8,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(43,50,158,14,4,19,'’€ø€7',8,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(44,5,203,14,3,16,'’€ø€9',8,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(45,33,178,14,1,6,'’€ø€7',2,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(46,11,26,14,2,17,'’€ø€8',2,-15);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(47,57,353,14,5,11,'’€ø€6',10,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(48,35,242,14,4,16,'’€ø€9',11,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(49,33,465,14,3,20,'’€ø€6',13,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(50,21,479,14,5,9,'’€ø€6',7,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(51,11,484,14,2,10,'’€ø€9',3,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(52,5,302,14,1,4,'’€ø€9',2,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(53,15,291,18,5,4,'’€ø€8',10,6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(54,24,158,18,2,5,'’€ø€7',10,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(55,28,357,18,1,16,'’€ø€6',2,-14);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(56,44,124,18,4,18,'’€ø€8',6,-12);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(57,17,19,18,4,10,'’€ø€6',8,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(58,51,208,18,5,6,'’€ø€9',11,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(59,60,214,18,5,11,'’€ø€7',5,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(60,17,42,18,1,15,'’€ø€9',4,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(61,42,185,18,5,19,'’€ø€6',3,-16);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(62,20,465,18,3,19,'’€ø€7',9,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(63,11,477,18,2,4,'’€ø€8',9,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(64,57,143,18,4,10,'’€ø€7',12,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(65,49,238,18,5,4,'’€ø€6',12,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(66,37,337,18,2,16,'’€ø€7',2,-14);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(67,27,67,18,1,3,'’€ø€8',8,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(68,14,19,18,5,18,'’€ø€9',8,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(69,27,311,18,5,3,'’€ø€8',6,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(70,21,118,18,5,13,'’€ø€6',8,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(71,5,494,18,2,18,'’€ø€8',6,-12);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(72,60,83,18,2,13,'’€ø€6',2,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(73,44,303,18,3,8,'’€ø€6',7,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(74,29,258,18,5,12,'’€ø€9',9,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(75,9,105,18,5,11,'’€ø€9',2,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(76,55,305,18,4,9,'’€ø€9',7,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(77,4,75,18,1,5,'’€ø€6',9,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(78,12,369,18,1,18,'’€ø€6',8,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(79,27,404,18,2,10,'’€ø€7',5,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(80,19,3,18,4,9,'’€ø€8',10,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(81,55,358,18,4,13,'’€ø€6',11,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(82,2,387,18,4,17,'’€ø€8',2,-15);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(83,52,25,18,4,17,'’€ø€9',7,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(84,16,411,18,2,14,'’€ø€9',12,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(85,39,353,18,4,4,'’€ø€6',12,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(86,43,418,18,2,11,'’€ø€9',11,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(87,31,8,18,3,20,'’€ø€9',4,-16);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(88,19,344,18,3,12,'’€ø€7',13,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(89,50,151,18,1,9,'’€ø€7',6,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(90,6,485,18,1,5,'’€ø€7',8,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(91,58,441,18,3,19,'’€ø€9',12,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(92,16,244,18,2,12,'’€ø€8',3,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(93,32,290,18,5,12,'’€ø€6',5,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(94,29,21,18,1,3,'’€ø€6',10,7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(95,45,224,18,3,9,'’€ø€9',10,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(96,51,444,18,4,11,'’€ø€9',3,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(97,20,276,18,5,5,'’€ø€7',5,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(98,45,50,18,5,19,'’€ø€7',7,-12);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(99,51,410,18,3,3,'’€ø€7',11,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(100,39,206,18,5,5,'’€ø€8',7,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(101,14,54,18,3,12,'’€ø€7',4,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(102,33,8,18,5,14,'’€ø€9',5,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(103,14,140,18,4,7,'’€ø€8',11,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(104,6,155,18,3,13,'’€ø€8',3,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(105,43,258,18,5,7,'’€ø€8',2,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(106,2,124,18,1,3,'’€ø€7',12,9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(107,12,165,18,4,9,'’€ø€7',12,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(108,9,237,18,2,7,'’€ø€9',7,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(109,43,67,18,5,16,'’€ø€7',4,-12);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(110,39,15,18,2,9,'’€ø€7',8,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(111,43,495,18,5,9,'’€ø€8',7,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(112,28,27,18,2,17,'’€ø€7',6,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(113,16,456,18,1,4,'’€ø€7',9,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(114,8,338,18,3,5,'’€ø€6',13,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(115,49,138,18,4,19,'’€ø€6',11,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(116,15,336,18,1,18,'’€ø€7',12,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(117,28,365,18,3,16,'’€ø€9',6,-10);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(118,28,295,18,2,4,'’€ø€6',6,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(119,34,233,18,4,19,'’€ø€8',4,-15);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(120,49,198,18,2,4,'’€ø€9',7,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(121,57,148,18,2,18,'’€ø€6',4,-14);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(122,27,128,18,3,3,'’€ø€7',10,7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(123,35,132,18,5,3,'’€ø€6',2,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(124,53,300,18,2,7,'’€ø€7',9,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(125,35,367,18,5,5,'’€ø€9',8,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(126,50,250,18,4,15,'’€ø€6',4,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(127,32,199,18,4,11,'’€ø€6',12,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(128,22,130,18,3,18,'’€ø€8',13,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(129,51,476,18,3,11,'’€ø€6',4,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(130,40,396,18,1,3,'’€ø€6',11,8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(131,36,201,18,2,17,'’€ø€6',12,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(132,47,388,18,5,5,'’€ø€8',7,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(133,34,9,18,3,16,'’€ø€9',3,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(134,52,447,18,2,14,'’€ø€9',13,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(135,40,181,18,1,7,'’€ø€6',5,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(136,48,265,18,4,11,'’€ø€6',12,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(137,40,144,18,3,3,'’€ø€9',9,6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(138,44,118,18,2,7,'’€ø€8',13,6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(139,52,36,18,4,9,'’€ø€8',2,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(140,55,331,18,5,8,'’€ø€8',4,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(141,16,307,18,5,6,'’€ø€8',3,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(142,46,303,18,3,20,'’€ø€6',9,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(143,21,40,18,4,11,'’€ø€7',8,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(144,44,328,18,3,13,'’€ø€8',12,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(145,2,21,18,5,11,'’€ø€9',4,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(146,30,163,18,3,10,'’€ø€6',9,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(147,30,189,18,5,16,'’€ø€9',11,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(148,39,313,18,4,18,'’€ø€7',7,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(149,43,275,18,3,16,'’€ø€8',7,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(150,22,247,18,4,9,'’€ø€7',7,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(151,14,389,18,5,5,'’€ø€7',7,2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(152,60,250,18,2,20,'’€ø€8',7,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(153,21,58,18,2,19,'’€ø€9',2,-17);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(154,20,465,18,4,17,'’€ø€8',4,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(155,38,161,18,5,17,'’€ø€8',4,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(156,12,230,18,2,9,'’€ø€7',7,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(157,1,309,18,1,16,'’€ø€9',10,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(158,8,154,18,3,15,'’€ø€9',4,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(159,48,286,18,3,10,'’€ø€8',4,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(160,38,89,18,2,17,'’€ø€9',10,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(161,46,325,18,1,20,'’€ø€9',9,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(162,40,76,18,3,10,'’€ø€6',8,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(163,44,366,18,5,9,'’€ø€6',13,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(164,53,215,18,5,5,'’€ø€6',4,-1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(165,10,392,18,2,6,'’€ø€8',11,5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(166,56,1,18,2,18,'’€ø€6',3,-15);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(167,1,141,18,2,4,'’€ø€8',11,7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(168,56,113,18,2,10,'’€ø€8',6,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(169,32,17,18,5,20,'’€ø€9',11,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(170,43,409,18,2,8,'’€ø€7',9,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(171,46,186,18,4,18,'’€ø€8',5,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(172,1,316,18,3,4,'’€ø€8',7,3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(173,18,146,18,5,8,'’€ø€6',2,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(174,48,5,18,4,9,'’€ø€7',9,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(175,6,63,18,5,8,'’€ø€8',12,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(176,39,200,18,5,12,'’€ø€6',7,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(177,40,159,18,5,10,'’€ø€8',8,-2);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(178,26,266,18,1,12,'’€ø€6',4,-8);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(179,13,144,18,3,6,'’€ø€6',7,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(180,59,351,18,5,17,'’€ø€9',10,-7);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(181,49,442,18,2,9,'’€ø€8',4,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(182,17,232,18,4,20,'’€ø€8',6,-14);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(183,33,206,18,4,16,'’€ø€8',12,-4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(184,18,228,18,5,13,'’€ø€9',2,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(185,28,466,18,2,11,'’€ø€7',12,1);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(186,59,291,18,2,3,'’€ø€9',3,0);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(187,35,391,18,2,20,'’€ø€9',9,-11);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(188,55,99,18,4,3,'’€ø€6',7,4);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(189,29,436,18,1,9,'’€ø€9',3,-6);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(190,56,223,18,2,16,'’€ø€9',13,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(191,10,92,18,4,14,'’€ø€6',5,-9);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(192,39,157,18,2,18,'’€ø€7',5,-13);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(193,4,1,18,5,16,'’€ø€9',11,-5);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(194,42,468,18,4,10,'’€ø€9',7,-3);
+INSERT INTO `pw_4t_order_item`(`id`, `orderid`, `merchandiseid`,`schoolareaid`, `quatity`, `priceoriginal`, `priceofferdescription`, `price`, `saving`) VALUES(195,22,266,18,1,5,'’€ø€8',11,6);
+
+
+DROP TABLE IF EXISTS `pw_4t_school_opened`;
+CREATE TABLE  `pw_4t_school_opened` (
+`schoolid` INT NOT NULL ,
+`opened` BIT( 1 ) NOT NULL ,
+PRIMARY KEY (  `schoolid` )
+) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_bin;
+INSERT INTO  `pw_4t_school_opened` (
+`schoolid` ,
+`opened`
+)
+VALUES (
+'11016', b '1'
+), (
+'11017', b '1'
+);
+
+DROP TABLE IF EXISTS `pw_4t_school_area`;
+CREATE TABLE IF NOT EXISTS `pw_4t_school_area` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `schoolid` int(11) NOT NULL,
+  `areaname` varchar(200) NOT NULL,
+  `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `schoolid` (`schoolid`),
+  KEY `areaname` (`areaname`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+
+DROP TABLE IF EXISTS `pw_4t_school_people`;
+CREATE TABLE IF NOT EXISTS `pw_4t_school_people` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `schoolid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `type` char(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `schoolid` (`schoolid`,`userid`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `pw_4t_my_favorite`;
+CREATE TABLE  `pw_4t_my_favorite` (
+`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`userid` INT NOT NULL ,
+`shopid` INT NOT NULL ,
+`merchandiseid` INT NOT NULL ,
+`createdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+INDEX (  `userid` ,  `shopid` ,  `merchandiseid` )
+) ENGINE = INNODB;

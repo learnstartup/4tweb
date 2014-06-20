@@ -1,0 +1,145 @@
+/*#
+===================
+@explain: 勋章
+@copyright: Copyright 2012,phpwind.com
+@author: longwenid@gmail.com
+$Id: medal.css 20067 2012-10-23 05:59:30Z yanchixia $
+===================
+#*/
+
+/*
+===================
+结构
+===================
+*/
+.dongta_page{
+	min-height:400px;
+}
+.dongta_content{
+	padding:0 10px;
+}
+
+
+/*
+===================
+列表
+===================
+*/
+.dongta_rank{
+	padding:10px 0;
+	overflow:hidden;
+}
+.dongta_rank h2{
+	font-size:12px;
+	border-bottom:1px solid #e9e9e9;
+	line-height:30px;
+	height:30px;
+	padding:3px 15px;
+	background:#f6f6f6;
+}
+.dongta_rank ul{
+	padding:15px 0 15px 10px;
+	margin:0;
+	list-style:none;
+}
+.dongta_rank_act li{
+	list-style:none;
+	float:left;
+	width:90px;
+	padding:5px 10px;
+	text-align:center;
+	line-height:24px;
+	height:24px;
+	overflow:hidden;
+	border:2px solid #e4e4e4;
+	margin:0 5px 10px;
+}
+.dongta_rank_act li label{
+	display:block;
+	cursor:pointer;
+}
+.dongta_rank_act li.selected{
+	background:url(../images/radio_disabled.png) right bottom no-repeat;
+	border-color:#ff5500;
+}
+.dongta_rank_act li img{
+	vertical-align:middle;
+	margin-right:5px;
+}
+
+
+.dongta_rank_all ol{
+	padding:15px 10px;
+}
+.dongta_rank_all li{
+	cursor:pointer;
+	list-style:none;
+	float:left;
+	width:110px;
+	display:inline;
+	height:140px;
+	overflow:hidden;
+	margin:0 5px 10px;
+	border:2px solid #e4e4e4;
+	position:relative;
+}
+.dongta_rank_all li.selected{
+	border-color:#ff5500;
+}
+.dongta_rank_all li.selected em{
+	background: url(../images/radio_disabled.png) no-repeat scroll right bottom transparent;
+	bottom:0;
+	height: 8px;
+	position: absolute;
+	right: 0;
+	width: 10px;
+}
+.dongta_rank_all li img{
+	vertical-align:top;
+}
+
+/*用户名*/
+.dongta_rank_all .name{
+	background:#f7f7f7;
+	text-align:center;
+	display:block;
+	line-height:30px;
+	height:30px;
+	overflow:hidden;
+}
+
+
+/*谁动了*/
+.dongta_list{
+	border-bottom:1px dashed #e4e4e4;
+}
+.dongta_list dl{
+	padding:15px 10px;
+}
+.dongta_list dt{
+	float:left;
+	width:70px;
+}
+.dongta_list dt img{
+	vertical-align:top;
+}
+.dongta_list dd{
+	float:left;
+	width:550px;
+	padding-top:12px;
+	font-size:14px;
+}
+.dongta_list dd strong{
+	margin-right:5px;
+}
+.dongta_list dd .time{
+	padding-left:20px;
+	color:#999;
+}
+
+
+
+
+
+
+

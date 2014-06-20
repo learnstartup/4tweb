@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="false" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red">请确保订单订单已被及时处理，谢谢</span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/schoolorder/myresponsibles}" id="schoolordersForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/schoolorder/myresponsibles}">
+	<input type="hidden" class="updateStatusUrl" name="updateStatusUrl" value="{@url:app/4tschool/schoolorder/updateOrderStatus}">
+	<div class="myddorder_search clearfix">
+		<div class="time_box">
+			<select id="o_area" style="z-index:0;display:none" class="carea" name="carea">
+				<option <?php if(0 == $carea) echo "selected"; ?>  value='0'>所有区域</option>
+				<!--#foreach($areaList as $key => $value) {#-->
+				<option 
+					<?php if($value['id'] == $carea) echo "selected"; ?> value="{$value['id']}" >{$value['areaname']}
+				</option>
+			<!--#}#-->
+			</select>
+
+			<select id="o_time" style="z-index:0;" class="choosenDaterange" name="choosenDaterange">
+				<!--#foreach($orderRange as $key => $value) {#-->
+				<option 
+					<?php if($key == $choosenDaterangeid) echo "selected"; ?> value="{$key}" >{$value}
+				</option>
+				<!--#}#-->
+			</select>
+
+			<select id="o_status" style="z-index:0;" class="choosenStatusCategory" name="choosenStatusCategory">
+				<!--#foreach($orderStatusCategory as $key => $value) {#-->
+				<option 
+					<?php if($key == $choosenStatusCategoryid) echo "selected"; ?> value="{$key}" >{$value}
+				</option>
+			<!--#}#-->
+			</select>
+
+		</div>
+		<div class="myddorder_inquiry">
+			<input id="searchKey" class="text gray" style="width: 130px;" type="text" value="{$searchTxt==''?'订单号、收货人姓名':$searchTxt}">
+			<input type="submit" id="searchBtn" class="btn_search">
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+
+	<div class="assignDelivery form-actions" style="display:none">
+		<span>订单状态: </span>
+		<select id="o_orderstatus" style="z-index:0;" class="orderstatus" name="orderstatus">
+			<option value=0 <?php if(0 == $key) echo "selected"; ?>> 请选择订单状态</option>
+			<!--#foreach($deliverStatus as $key => $value) {#-->
+			<option 
+						<?php if($sorderstatus == $key) echo "selected"; ?> value="{$key}" >{$value}
+			</option>
+			<!--#}#-->
+		</select>
+		<span class="bootstrap">
+			<button type="button" class="btn btn-primary btn-assign">设置状态</button>
+		</span>
+		
+	</div>
+
+	<template source='orderlist' load="true" />
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/schoolorder/myresponsibles' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".assignSingle").click(function(event)
+	{
+		//get the itemid and get the people in this school, then assign
+		$(".assignDelivery").show();
+		var liElement = $(this).parent().parent();
+		var checkBoxInRow = $(liElement).find('.checkSingle')[0];
+		if(checkBoxInRow)
+			$(checkBoxInRow).attr("checked","checked");
+
+		event.preventDefault();
+
+	});
+
+	$(".btn-assign").click(function(event)
+	{
+		var selectedStatus = $(".orderstatus").val();
+		if(0 == selectedStatus)
+		{
+			alert("请选择订单状态");
+			event.preventDefault();
+			return;
+		}
+
+		var checkItemIds = getCheckedItems();
+		if(checkItemIds.length == 0)
+		{
+			event.preventDefault();
+			return;
+		}
+
+		//update data for each order's delivery
+		var postUrl = $(".updateStatusUrl").val();
+		$.post(postUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+	});
+
+	//get checked items
+	function getCheckedItems()
+	{
+		var checkedItems =new Array()
+		$(".checkSingle").each(function(i,item)
+		{
+			var checked = $(item).attr("checked");
+			if(checked == "checked")
+			{
+				var itemId = $(item).attr('name');
+				checkedItems.push(itemId);
+
+			}
+		});
+
+		return checkedItems;
+	}
+	
+	//check and show ppl to assign
+	$('.checkSingle').click(function(event)
+	{
+		var currentchecked = $(this).attr("checked");
+		if(currentchecked == "checked")
+		{
+			$(".assignDelivery").show();
+		}
+
+		var allChecked = true;
+		$(".checkSingle").each(function(i,item)
+		{
+			var checked = $(item).attr("checked");
+			if(checked != "checked")
+			{
+				allChecked = false;
+			}
+		});
+
+	});
+
+	$(".checkAll").click(function(event)
+	{
+		if($(".checkAll").attr("checked") == "checked")
+		{
+			$(".assignDelivery").show();
+		}
+		else
+		{
+			$(".assignDelivery").hide();
+		}
+	});
+
+	//focus to clear
+	$("#searchKey").focus(function(event)
+	{
+		$(this).val('');
+	});
+
+	//change date range
+	$(".choosenDaterange").change(function(event){
+		searchPage();
+	});
+
+	//change status of order
+	$(".choosenStatusCategory").change(function(){
+		searchPage();
+	});
+
+	//input and search
+	$(".btn_search").click(function(event)
+	{
+		event.preventDefault();
+		searchPage();
+	});
+
+	//school area chane
+	$(".carea").change(function(event)
+	{
+		searchPage();
+	});
+
+
+	//school area chane
+	$(".cassignstatus").change(function(event)
+	{
+		searchPage();
+	});
+
+	//post data and search
+	function searchPage()
+	{
+		var choosenDateRange = $(".choosenDaterange").val();
+		var choosenStatusCategory = $(".choosenStatusCategory").val();
+		var searchTxt = $('#searchKey').val();
+		var schoolArea = $(".carea").val();
+		var cassignstatus = $(".cassignstatus").val();
+
+		var dateRangeUrl = "&choosenDaterange=" + choosenDateRange;
+		var statusCategoryRangeUrl = "&choosenStatusCategory=" + choosenStatusCategory;
+		var searchUrl = "&searchTxt=" + searchTxt;
+		var areaUrl = "&carea=" + schoolArea;
+		var assignStatusUrl = "";
+
+		window.location.href = $(".pageurl").val() + dateRangeUrl + statusCategoryRangeUrl + searchUrl + areaUrl + assignStatusUrl; 
+	}
+
+});
+</script>

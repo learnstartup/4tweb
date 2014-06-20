@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+
+	<div class="centersidebar" id="orderList">
+	
+	<form action="{@url:app/4tschool/agentshoporder/orderdetail}" id="schoolordersForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/agentshoporder/orderdetail}">
+	<input type="hidden" class="updateResponsibleUrl" name="updateResponsibleUrl" value="{@url:app/4tschool/schoolorder/updateOrderResponsible}">
+	<input type="hidden" class="updateStatusUrl" name="updateStatusUrl" value="{@url:app/4tschool/schoolorder/updateOrderStatus}">
+	<div class="myddorder_search clearfix">
+		<div>
+			<label>时间段: </label>
+			<input name="startDate" type="text" disabled="disabled" id="fromTime" class="input length_2 mr20" value="{$startDate}">
+			<span class="mr20">至</span>
+			<input name="endDate" type="text" disabled="disabled" id="toTime" value="{$endDate}" class="input length_2">
+		</div>
+		<div class="myddorder_inquiry">
+			<input id="searchKey" class="text gray" style="width: 130px;" type="hidden" value="{$searchTxt==''?'订单号、收货人姓名':$searchTxt}">
+			<input type="hidden" id="searchBtn" class="btn_search" value="查询">
+		</div>
+	</div>
+	<template source='orderlist' load="true" />
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/agentshoporder/orderdetail' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	//focus to clear
+	$("#searchKey").focus(function(event)
+	{
+		$(this).val('');
+	});
+
+	//change date range
+	$(".choosenDaterange").change(function(event){
+		searchPage();
+	});
+
+	//change status of order
+	$(".choosenStatusCategory").change(function(event){
+		searchPage();
+	});
+
+	//input and search
+	$(".btn_search").click(function(event)
+	{
+		event.preventDefault();
+		searchPage();
+	});
+
+	//school area chane
+	$(".carea").change(function(event)
+	{
+		searchPage();
+	});
+
+
+	//school area chane
+	$(".cassignstatus").change(function(event)
+	{
+		searchPage();
+	});
+
+	//post data and search
+	function searchPage()
+	{
+		var choosenDateRange = $(".choosenDaterange").val();
+		var choosenStatusCategory = $(".choosenStatusCategory").val();
+		var searchTxt = $('#searchKey').val();
+		var schoolArea = $(".carea").val();
+		var cassignstatus = $(".cassignstatus").val();
+
+		var dateRangeUrl = "&choosenDaterange=" + choosenDateRange;
+		var statusCategoryRangeUrl = "&choosenStatusCategory=" + choosenStatusCategory;
+		var searchUrl = "&searchTxt=" + searchTxt;
+		var areaUrl = "&carea=" + schoolArea;
+		var assignStatusUrl = "&cassignstatus=" + cassignstatus;
+
+		window.location.href = $(".pageurl").val() + dateRangeUrl + statusCategoryRangeUrl + searchUrl + areaUrl + assignStatusUrl; 
+	}
+
+});
+</script>

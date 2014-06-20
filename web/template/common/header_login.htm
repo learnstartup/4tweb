@@ -1,0 +1,15 @@
+<!--# if (!$loginUser->isExists()) { #-->
+<div class="header_login">
+	<a rel="nofollow" href="{@url:u/login/run}">登录</a><a rel="nofollow" href="{@url:u/register/run}">注册</a>
+</div>
+<!--# } else {
+	if ($pwforum && $pwforum->isForum()) {
+		$ifJsFastPost = '';
+		$_tmpfid = $pwforum->fid;
+	} else {
+		$ifJsFastPost = "J_head_forum_post";
+		$_tmpfid = 0;
+	}
+#-->
+	
+<!--# } #-->

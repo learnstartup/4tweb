@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <template source='TPL:admin.common.head'/>
+</head>
+<body>
+<div class="wrap" style="width:1580px;height:900px;color:#333">
+    <template load="true" source="links"/>
+    <div class="nav">
+        <div class="return"><a href="{@url:app/4tschool/push/run}">返回上一级</a></div>
+    </div>
+    <div class="h_a">提示信息</div>
+    <div class="mb10 prompt_text">
+        <ol>
+            <li>状态为开时, 推送则有效</li>
+            <li>编辑内容请排好内容</li>
+        </ol>
+    </div>
+    <div class="h_a">添加推送信息</div>
+    <form class="J_ajaxForm" id="J_push_form" data-role="list" action="{@url:app/4tschool/push/add?id=$pushList['id']}" method="post">
+        <input type='hidden' name='submitype' value="do">
+        <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/push/edit?id=$pushList['id']}">
+        <input type="hidden" name="page" value="{$page}">
+        <div class="table_full">
+            <table width="100%">
+                <colgroup>
+                    <col class="th">
+                    <col width="1420px">
+                </colgroup>
+                <tr>
+                    <th>高校</th>
+                    <td>
+                        <span class="must_red">*</span>
+                        <select class="schoolid length_5" name="schoolid">
+                            <option value="">---请选择学校---</option>
+                            <!--#foreach($allSchool as $item) {#-->
+                            <option class="school{$item['schoolid']}"
+                            <?php if($item['schoolid'] == $pushList['schoolid']) echo "selected"; ?>
+                            value="{$item['schoolid']}" >{$item['name']}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>类型</th>
+                    <td>
+                        <span class="must_red">*</span>
+                        <select name="type">
+                            <option value="">---请选择---</option>
+                            <!--#foreach($pushTypeList as $key => $item) {#-->
+                            <option value="{$key+1}" <?php if($pushList['type'] == ($key+1)) echo "selected"; ?>>{$item}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>标题</th>
+                    <td><span class="must_red">*</span><input name="title" type="text" class="input length_5" value="{$pushList['title']}"></td>
+                </tr>
+                <tbody id="J_announce_content" class="J_radio_tbody">
+                <tr>
+                    <th>内容</th>
+                    <td colspan="2">
+                        <span class="must_red">*</span>
+                        <textarea id="J_textarea" name="content" style="width:600px;height:400px">{$pushList['content']}
+                        </textarea>
+                    </td>
+                </tr>
+                </tbody>
+                <tr>
+                    <th>状态</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="status" value="1" {@Pw::ifcheck($pushList['status'] ==1)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="status" value="0" {@Pw::ifcheck($pushList['status'] ==0)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="pop_bottom">
+            <button type="submit" class="btn btn_submit" id="J_push_sub">提交</button>
+        </div>
+    </form>
+</div>
+<template source='TPL:admin.common.footer'/>
+<script>
+
+    Wind.js(GV.JS_ROOT + '/pages/push/pushSub.js?v=' + GV.JS_VERSION);
+                    
+</script>
+</body>
+</html>\

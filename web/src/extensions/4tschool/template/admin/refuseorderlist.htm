@@ -1,0 +1,214 @@
+<!--# if ($count > 0) { #-->
+<br/>
+<span style="padding:3px;font-size:15px;color:blue">共查询到{$count}条记录,涉及金额<strong style="color:red">{$orderTotalMoney}元</strong>,每页显示{$perPage}条 </span>
+<!--# } #-->
+<br/>
+<input type="hidden" value="{@url:app/4tschool/refuseorder/run}" id="refuseorderurl"/>
+<ul class="myddorder_list">
+	   <!--# if ($orderList) { #-->
+		<!--#foreach ($orderList as $key => $item) {#-->
+	   <li onmouseout="this.style.background='none'" style="width:1000px" onmouseover="this.style.background='#f4f4f4'" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
+	   	<div class="orderinfo">
+	   		<span class="list_input">
+	   			<!--# if ($showcheckbox && $status == 'open') { #-->
+	   			<input name=checkeditem[{$item['id']}]} class="checkSingle" type="checkbox"></checkbox>
+	   			<!--# } #-->
+	   		</span>
+	   		<span class="list_order" style="width:200px">来自{$item['schoolname']}<br/><a href="{@url:app/4tschool/refuseorder/orderitem?orderid=$item['id']}" >订单号:{$item['ordernumber']}</a></span>
+	   		<span class="list_name" style="width:200px">收货人:{$item['towho']}</span>
+	   		<span class="list_name">电话:{$item['tomobile']}</span>
+			<span class="list_way">流水号:{$item['sequence']}</span>
+			<span class="list_total"><strong style="color:red">共计: ￥{$item['ordermoney']}</strong></span>
+			<span class="list_time"> {$item['orderdate']}</span>
+			<span class="list_operation">
+
+				<!--# if (!$finishedStatus[$item['status']]) { #-->
+				<strong  style="color:red">
+				<!--# } #-->
+
+				{$allStatus[$item['status']]}
+				<!--# if ($allowChangeResponsible) { #-->
+				<a href="" class="mr10 assignSingle" title="点击分配或者更改">{$item['deliveruser'] ==''?'[点击分配]':$item['deliveruser']}</a>
+				<!--# } else { #-->
+				<!-- {$item['deliveruser'] ==''?'[无配送人]':$item['deliveruser']} -->
+				<!--# } #-->
+
+				<!--# if (!$finishedStatus[$item['status']]) { #-->
+				</strong>
+				<!--# } #-->
+
+				<!--# if ($item['firstorder']) { #-->
+				<strong style="color:#4966D1">
+					(首次下单)
+				</strong>
+				<!--# } #-->
+
+			</span>
+			<br/>
+			<span class="list_estimatedelivery" style="padding:8px;">
+				配送地址: {$item['to']}
+				
+			</span>
+			<span class="list_note" style="padding-left:5px;"><strong style="color:red">备注: {$item['note']==""?"无":$item['note']}</strong>&nbsp;&nbsp;</span>
+			<input type="button" value="用户签收" class="submit" name="submit"/>&nbsp;&nbsp;
+			<input type="hidden" value="{@url:app/4tschool/refuseorder/orderSubmit}&orderid={$item['id']}&userid={$item['userid']}"/>
+			<input type="hidden" value="{@url:app/4tschool/refuseorder/orderRefuse}&orderid={$item['id']}&userid={$item['userid']}"/>
+			<input type="button" value="用户拒签" class="cancel" name="cancel"/>
+			</div>
+			<br/>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabl_merch orderitemtable">  	 
+			            <tbody>
+			            	<!--# if ($orderItems) { #-->
+			            	<!--#foreach ($orderItems as $key => $orderitem) {#-->
+			            	<!--# if ($orderitem['orderid'] == $item['id']) { #-->
+			            	<tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+			            		<td class="tab_w">
+			            			<input type="hidden" name="shopids[]" value="{$orderitem['shopid']}">
+			            		</td>
+			            		<td class="tab_w1">
+			            			{$orderitem['shopname']} -- {$orderitem['mname']} -- ({$orderitem['sequence']})
+			            			<!--# if ($orderitem['promoUsed'] != '') { #-->
+			            				<br/>
+			            				<strong style="color:red">{$orderitem['promoUsed']}</strong>
+
+			            			<!--# } #-->
+			            		</td>
+			            		<td class="tab_w7">{$orderitem['quatity']}{$orderitem['unit']}</td>
+			            		<td class="tab_w7" style="width:230px">积分:{$orderitem['integral']}</td>
+			            		<td><span>单价:￥{$orderitem['price']}({$orderitem['packingprice']==0?"无外卖费用":"含外卖费用"})</span></td>
+			            		<td class="tab_w7" style="width:100px"><strong>共计￥{$orderitem['totalMoney']}
+
+			            		</strong>
+			            		</td>
+			            		<td>
+			            			&nbsp;<strong style="color:red">{$allStatus[$orderitem['status']]==""?"已授理":$allStatus[$orderitem['status']]}</strong> &nbsp;
+
+			            			 <!--# if ($allowChangeItem) { #-->
+
+			            			<!--# if ($orderitem['status']=="-1") { #-->
+			            				<a href="{@url:app/4tschool/schoolorder/changeItem?orderid=$item['id']&orderItemId=$orderitem['id']}" class="changeItem">进行换货>></input>
+
+			            			<!--# } #-->
+			            			<!--# } #-->
+
+			            		</td>
+			            </tr>
+			            <!--# } #-->
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span class="noresult">没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+	   </li>
+	   <!--#}#-->
+		<!--# } else { #-->
+			<span class="noresult">没有符合条件的结果！</span>
+		<!--# } #-->
+	</ul>
+
+	<script type="text/javascript">
+	
+	Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".cancel").click(function(event)
+	{
+		//need to check status first
+		var pageUrl = $(this).prev().val();
+
+		if(confirm("你确定该订单是拒签的订单吗?") == false)
+		{
+			event.preventDefault();
+			return;
+		}
+
+		$.get(pageUrl, 
+			$('#refuseorder').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					window.location.href = $("#refuseorderurl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+		event.preventDefault();
+		
+	});
+
+	// $(".submit").click(function(event)
+	// {
+	// 	//need to check status first
+	// 	var pageUrl = $(".submitOrderUrl").val();
+	// 	var orderid = $(".orderid").val();
+
+	// 	if(confirm("你确定该订单是签收的订单吗?") == false)
+	// 	{
+	// 		event.preventDefault();
+	// 		return;
+	// 	}
+
+	// 	$.post(pageUrl, 
+	// 		$('#schoolordersForm').serialize(), 
+	// 		function(returndata) {
+	// 			returndata=eval("("+returndata+")");
+
+	// 			if(returndata.success)
+	// 			{
+	// 				alert(returndata.data);
+	// 				window.location.href = $(".myOrderUrl").val();
+	// 			}else
+	// 			{
+	// 				alert(returndata.data);
+	// 			}
+
+				
+	// 			$(".btn-assign").append(returndata);
+	// 	});
+
+	// 	event.preventDefault();
+		
+	// });
+
+	$(".submit").click(function(event)
+	{
+		//need to check status first
+		var pageUrl = $(this).next().val();
+
+		if(confirm("你确定该订单是签收的订单吗?") == false)
+		{
+			event.preventDefault();
+			return;
+		}
+
+		$.get(pageUrl, 
+			$('#refuseorder').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					window.location.href = $("#refuseorderurl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+		event.preventDefault();
+		
+	});
+});
+</script>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>不能存在两种是</li>
+			</ol>
+		</div>
+		<div class="mb10" style="display:none"><a class="btn J_dialog" href="{@url:app/4tschool/shop/add}" title="添加兑换" role="button"><span class="add"></span>添加兑换</a></div>
+		<div class="h_a" style="display:none">搜索</div>
+		<div class="search_type cc mb10" style="display:none">
+			<form class="J_ajaxForm" action="{@url:app/4tschool/giftexchange/run}" method="post">
+				<input type="hidden" name="page" value="{$page}">
+				<input type='hidden' name='type' value="do">	
+				<button type="submit" class="btn btn_submit">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>用户ID</td>
+						<td>用户名</td>
+						<td>联系人</td>
+                        <td>联系电话</td>
+                        <td>QQ</td>
+						<td>地址</td>
+						<td>兑换礼物</td>
+						<td>兑换成功?</td>
+						<td>创建时间</td>
+						<td>最后一次更新时间</td>
+						<td>异常兑换?</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($giftExchangeInfo) { #-->
+				<!--#foreach ($giftExchangeInfo as $key => $item) {#-->
+				<tr>
+					<td>{$item['userid']}</td>
+					<td>{$item['username']}</td>
+					<td>{$item['contact']}</td>
+                    <td>{$item['phonenumber']}</td>
+                    <td>{$item['qq']}</td>
+					<td>{$item['address']}</td>
+					<td>
+						<?php foreach ($prizeInfo as $key => $value)
+						{
+							if($key == $item['productid'])
+								echo $value['name'];
+						}
+						?>
+					</td>
+					<td>{$item['exchangesuccess']==1?'是':'否'}</td>
+					<td>{$item['createtime']}</td>
+					<td>{$item['updatetime']}</td>
+					<td>{$item['exceptionexchange']==1?'是':'否'}</td>
+					<td>
+						<a href="{@url:app/4tschool/giftexchange/edit?id=$item['id']}" class="mr10 J_dialog" title="编辑兑换">[编辑]</a>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前还没有兑换哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+			<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' args='$args' url='app/4tschool/shop/run' />
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

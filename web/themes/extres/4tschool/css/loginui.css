@@ -1,0 +1,214 @@
+body {
+margin: 0;
+min-height: 100%;
+_height: 100%;
+}
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, pre {
+margin: 0;
+}
+body {
+color: #666;
+font-size: 14px;
+font-family: Arial,Helvetica,sans-serif;
+-webkit-font-smoothing: antialiased;
+line-height: 1.5;
+}
+body {
+min-width: 960px;
+}
+
+.guokr {
+background: url(/skin/imgs/4-guokr-bg.png) no-repeat scroll center top #d6eff9;
+height: 10px;
+}
+
+.gheader-wp {
+border-bottom: 2px solid #f2f2f2;
+}
+
+.gheader-wp .gheader-wp-b {
+border-bottom: 1px solid #e0e0e0;
+}
+
+.gheader-wp .gheader {
+width: 960px;
+}
+
+.gheader-wp .gheader, .gheader-wp .homegheader {
+height: 50px;
+position: relative;
+margin: 10px auto 0;
+}
+
+.gheader-wp .gheader-logo {
+background: url(../images/4-logo.png) no-repeat scroll 0 0 transparent;
+height: 35px;
+width: 118px;
+line-height: 10em;
+overflow: hidden;
+}
+
+.gfl {
+float: left;
+-display: inline;
+}
+
+a {
+color: #0078b6;
+text-decoration: none;
+}
+
+.gmotto {
+float: right;
+width: 290px;
+height: 20px;
+margin: 10px 30px 0 0;
+_display: inline;
+}
+
+.gspan-1, .gspan-2, .gspan-3, .gspan-4, .gspan-5, .gspan-6, .gspan-7, .gspan-8, .gspan-9, .gspan-10, .gspan-11, .gspan-12, .gspan-13, .gspan-14, .gspan-15, .gspan-16, .gspan-17, .gspan-18, .gspan-19, .gspan-20, .gspan-21, .gspan-22, .gspan-23, .gspan-24, .gspan-25, .gspan-26, .gspan-27, .gspan-28, .gspan-29, .gspan-30, .gspan-31, .gspan-32 {
+display: inline;
+float: left;
+position: relative;
+margin-left: 5px;
+margin-right: 5px;
+}
+
+.grow {
+display: block;
+min-height: 1%;
+}
+.grow {
+margin-left: auto;
+margin-right: auto;
+width: 960px;
+}
+
+.grow:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}
+
+.gform .gform-box {
+margin-bottom: 20px;
+overflow: hidden;
+}
+
+.gform {
+line-height: 32px;
+}
+
+.gmt30 {
+margin-top: 30px;
+}
+
+.grow .gprefix-2 {
+padding-left: 60px;
+}
+.grow .gspan-19 {
+width: 560px;
+}
+.grow .gprefix-3 {
+padding-left: 90px;
+}
+.grow .gspan-7 {
+width: 200px;
+}
+.side {
+background: url("../images/reg_side.png") 0 0 no-repeat;
+height: 277px;
+}
+
+.side-connect {
+margin: 30px 0;
+}
+
+
+.connect-sina, .connect-renren, .connect-qq {
+background: url("../images/4-button.png");
+display: block;
+margin-top: 10px;
+text-indent: -9999px;
+outline: 0;
+height: 40px;
+width: 168px;
+}
+
+.connect-renren {
+background-position: 0 -180px;
+}
+
+.connect-sina {
+background-position: 0 -100px;
+}
+
+.connect-qq {
+background-position: 0 -140px;
+}
+
+.gbottom {
+font-size: 12px;
+color: #999;
+background-color: #fff;
+position: relative;
+z-index: 100;
+clear: both;
+line-height: 35px;
+margin: 30px auto 0;
+overflow: hidden;
+padding-bottom: 20px;
+text-align: center;
+width: 960px;
+}
+
+.gbottom .gbottom-nav {
+margin: 0 auto;
+overflow: hidden;
+}
+
+.gbottom .gbottom-nav a {
+margin: 0 10px;
+}
+
+.gbottom .gbottom-i {
+border-top: 1px solid #ececec;
+}
+
+.gform input, .gform label, .gform span {
+font-size: 14px;
+vertical-align: middle;
+}
+
+.gform label {
+width: 72px;
+height: 32px;
+float: left;
+margin-right: 10px;
+text-align: right;
+clear: both;
+}
+
+.gbtxt, .gstxt, .gttxt {
+line-height: 20px;
+padding: 4px 5px;
+width: 250px;
+background-color: #FFF;
+border: #ddd 1px solid;
+-webkit-box-shadow: 0 2px 0 #f5f5f5 inset;
+-moz-box-shadow: 0 2px 0 #f5f5f5 inset;
+box-shadow: 0 2px 0 #f5f5f5 inset;
+-webkit-transition: border linear .2s,box-shadow linear .2s;
+-moz-transition: border linear .2s,box-shadow linear .2s;
+transition: border linear .2s,box-shadow linear .2s;
+}
+
+.gstxt {
+padding: 2px 5px;
+}
+
+.gform .gform-submit {
+margin: 10px 0 0 82px;
+}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+	<div class="h_a">提示信息</div>
+	<div class="mb10 prompt_text">
+		<ol>
+			<li>以下列表列出了所有开放的高校</li>
+			<li>编辑对应的人</li>
+		</ol>
+	</div>
+	<div class="table_list">
+		<table width="80%">
+			<thead>
+				<tr>
+					<td>高校</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+		<!--# if ($openSchools) { #-->
+		<!--#foreach ($openSchools as $key => $item) {#-->
+			<tr>
+				<td>{$item['name']}</td>
+				<td>
+					<a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/setup?schoolid=$item['schoolid']}" class="mr10" title="学校设置">[学校设置]</a>
+					&nbsp;
+					<a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/people?schoolid=$item['schoolid']&type=master}" class="mr10" title="区域总负责人管理">[代理人]</a>
+					&nbsp;
+				     <a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/people?schoolid=$item['schoolid']&type=orderdispatch}" class="mr10" title="订单分配人管理">[订单分配人]</a>
+				     &nbsp;
+				     <a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/people?schoolid=$item['schoolid']&type=delivery}" class="mr10" title="配送人管理">[配送人]</a>
+				     <--&nbsp;-->
+				      <a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/group?schoolid=$item['schoolid']&type=delivery}" class="mr10" title="配送组管理">[配送组]</a>
+				      <--&nbsp;-->
+				      <a class="mr10" href="{@url:app/4tschool/schoolpeople/peopleingroup?schoolid=$item['schoolid']&type=delivery}" class="mr10" title="配送人员组分配">[配送人员组分配]</a>
+				     &nbsp;
+				     <a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/people?schoolid=$item['schoolid']&type=areaorderget}" class="mr10" title="区域下订单人">[区域下订单人]</a>
+				     &nbsp;
+				     <a class="mr10 J_dialog" href="{@url:app/4tschool/schoolpeople/people?schoolid=$item['schoolid']&type=shopaccount}" class="mr10" title="商家帐号列表">[商家帐号列表]</a>
+			</tr>
+		<!--#}#-->
+		<!--# } else { #-->
+			<tbody>
+				<tr><td colspan="7" class="tac"> 没有符合条件的结果！</td></tr>
+			</tbody>
+		<!--# } #-->
+		</table>
+	</div>
+	<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>
+	
+</div>
+<template source='TPL:admin.common.footer' />
+<script>
+$(".choosenProvinceid").change(function()
+{
+	searchchange(true,false);
+	
+});
+
+$(".choosenSchoolid").change(function()
+{
+	searchchange(true,true);
+	
+});
+
+$(".search").click(function(){
+	searchchange(true,true);	
+});
+
+function searchchange(showP,showS)
+{
+	var provincepara = '&choosenProvinceid='+$(".choosenProvinceid").val();
+	if(!showP)
+	{
+		provincepara = "";	
+	}
+	var schoolpara = '&choosenSchoolid='+$(".choosenSchoolid").val(); 
+	if(!showS)
+	{
+		schoolpara = "";		
+	}
+	window.location.href= $(".pageurl").val()+ provincepara + schoolpara; 
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<!--
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li></li>
+				<li></li>
+			</ol>
+		</div>
+		-->
+		<div class="mb10"><a class="btn J_dialog" href="{@url:app/4tschool/merchandise/add?shopid=$choosenShopid}" title="添加菜品" role="button"><span class="add"></span>添加菜品</a></div>
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="" action="{@url:app/4tschool/merchandise/run?id=$choosenShopid}" method="post">
+				<input type="hidden" name="type" value="search">
+				<input type="hidden" name="page" value="{$page}">
+				<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/merchandise/run}">
+				<label>商家:</label>
+				<select class="choosenShopid" name="choosenShopid">
+					<!--#foreach($shopList as $item) {#-->
+					<option <?php if($item['id'] == $choosenShopid) echo "selected"; ?> value="{$item['id']}" >{$item['name']}</option>
+					<!--#}#-->
+				</select>
+				<label>SID：</label><input name="searchShopid" type="text" class="input length_2 mr10" value={$choosenShopid}>
+				<button type="submit" class="btn btn_submit J_ajax_submit_btn">搜索</button>
+				<select class="selectedFilter" name="selectedFilter">
+					<!--#foreach($specialList as $key => $item) {#-->
+					<option <?php if ($key.'_'.$item['value']==$args['selectedFilter']) echo "selected"?> value="{$key}_{$item['value']}" >{$item['name']}</option>
+					<!--#}#-->
+				</select>				
+			</form>			
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>菜名</td>
+						<td>需要打包费用</td>
+						<td>价格</td>
+						<td>单位</td>
+						<td>剩余数量</td>
+						<td>已卖出数量</td>
+						<td>推荐?</td>
+						<td>上架?</td>
+						<td>精品?</td>
+						<td>标签</td>
+						<td>功能</td>
+					</tr>
+				</thead>
+				<!--# if ($merchandiseList) { #-->
+				<!--#foreach ($merchandiseList as $key => $item) {#-->
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['needPackingPrice']==1?"是":"否"}</td>
+					<td>{$item['price']}</td>
+					<td>{$item['unit']}</td>
+					<td>{$item['remainder']}</td>
+					<td>{$item['ordercount']}</td>
+					<td>{$item['recommend']==1?"是":"否"}</td>
+					<td>{$item['active']==1?"是":"否"}</td>
+					<td>{$item['isstar']==1?"是":"否"}</td>
+					<td>{$item['tagid']}</td>
+					<td><a href="{@url:app/4tschool/merchandise/edit?id=$item['id']}" class="mr10 J_dialog" title="编辑菜品">[编辑]</a>
+						<a href="{@url:app/4tschool/merchandise/imgupload?sid=$choosenShopid&mid=$item['id']&url=$item['imageurl']}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+						<label>{@Pw::strlen($item['imageurl'])==0?"无图":"有图"}</label>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前该商家还没有菜单哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/merchandise/run' args='$args'/>
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+<script>
+	$(".choosenShopid").change(function()
+	{
+		searchchange(true,false);
+	
+	});
+	$(".search").click(function(){
+		searchchange(true);	
+	});
+	function searchchange(showP)
+	{
+		var shoppara = '&choosenShopid='+$(".choosenShopid").val();
+		if(!showP)
+		{
+			provincepara = "";	
+		}
+		window.location.href= $(".pageurl").val()+shoppara+'&isall=all'; 
+	}
+	$(".selectedFilter").change(function(){
+	    window.location.href= $(".pageurl").val()+'&selectedFilter='+$(".selectedFilter").val()+'&choosenShopid='+$(".choosenShopid").val();	
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>点餐哟</title>
+        <link rel="stylesheet" type="text/css" href="../css/themes/default/jquery.mobile-1.4.0.min.css">
+        <script src="../js/jquery.js"></script>
+        <!--这里加入项目中其他的引用-->
+        <script>
+            document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+                //                WeixinJSBridge.call('hideOptionMenu');
+                WeixinJSBridge.call('hideToolbar');
+            });
+        </script>
+        <script src="../js/jquery.mobile-1.4.0.min.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,user-scalable=no" />
+    </head>
+    <body>
+        <div data-role="header" data-position="fixed">
+            <!--<a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-carat-l">返回</a>-->
+            <h1>我的收藏</h1>
+        </div>        
+        <div data-role="content">
+            <h1>TODO::我的收藏</h1>
+                <!--<p>正在开发中。。。</p>
+                <a href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow">确定</a>
+                <a href="javascript:void(0);" data-role="button">取消</a> -->
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1></h1>
+        </div>
+    </body>
+    <template source='footer' load="true"/>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="{@G:url.extres}/4tschool/js/jquery.raty.min.js"></script>
+  <style>
+    .dialog-addcomment-form td{
+      padding:10px;
+      width: 100px;
+    }
+  </style>
+
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<div class="spacer"></div>
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shopcomment/mynocomment}">
+	<div class="clear"></div>
+	<div class="merch_bord">
+            <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+                <tbody>
+                <tr>
+                  <td class="tab_w">&nbsp;</td>
+                  <td class="tab_w1">菜品名称</td>
+                  <td class="tab_w7">数量</td>
+                  <td class="tab_w3">价格</td>
+                  <td class="tab_w4">小计</td>
+                  <td class="tab_w4">购买时间</td>
+                  <td class="tab_w5">操作</td>
+                </tr>
+              </tbody>
+          </table>
+			  <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">  	 
+			            <tbody>
+			            	<!--# if ($toBeComment) { #-->
+			            	<!--#foreach ($toBeComment as $key => $item) {#-->
+			            	<tr>
+			            		<td class="tab_w">
+			            			<a name="productpic" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}">
+			            			<img width="67px" class="reviewmimage" height="30px" src="{$item['imageurl']}" title="{$item['name']}">
+			            			</a>
+			            		</td>
+			            		<td class="tab_w1">
+			            			<a name="productname" class="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}" target="" title="{$item['mname']}">{$item['mname']}</a>
+			            		</td>
+			            		<td class="tab_w7">{$item['quatity']}{$item['unit']}</td>
+			            		<td class="tab_w3"><span>￥{$item['price']}</span></td>
+			            		<td class="tab_w4">￥{$item['price'] * $item['quatity']}</td>
+				            	<td class="tab_w4">{$item['orderdate']}</td>
+				            	<td class="tab_w5">
+				            		<span class="tab_w5_online">
+				            			<a href="{$item['orderid']};{$item['merchandiseid']}" target="" id="product_comment" name="product_comment" class="reviewcomment" onmouseover="">评价</a>
+				            			&nbsp;<!--# if($item['openorder'] == 1 && $schoolInfo['openorder'] == 1 && $item['isopen'] == 1 && $item['isshopopen'] == 1 && $item['hasterminal'] == 1) { #-->
+                          |&nbsp;
+				            			<a href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&type=m&mid=$item['merchandiseid']&schoolid=$schoolId}" target="" id="product_buyagain" name="product_buyagain" class="reviewbuyagain" onmouseover="">再买一次</a>
+                          <!--# } #-->
+				            		</span>
+				            	</td>
+			            </tr>
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span>没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+		 </div>
+     <div>
+        <page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/shopcomment/mynocomment' args='$args' />
+     </div>
+
+<div id="dialog-addcomment-form" style="display:none" title="为您订购的菜品添加评论">
+  <form  action="{@url:app/4tschool/shopcomment/doaddcomment}" id="addcommentForm" method="post">
+  <input type="hidden" class="addcommenturl" name="addcommenturl" value="{@url:app/4tschool/shopcomment/doaddcomment}">
+  <fieldset>
+  	<table width="100%" style="line-height:30px;">
+      <tr style="padding:10px">
+        <td style="padding:10px;width:100px;"></td>
+        <td class="mimageTd">
+          
+        </td>
+      </tr>
+  		<tr style="padding:10px">
+  			<td><label for="mname">菜品名</label></td>
+  			<td class="mnametd">
+  			</td>
+  		</tr>
+  		<tr>
+  			<td><label for="tastescore">口味</label></td>
+  			<td class="tastescoreTd">
+          <div id="tastescore" name="tastescore" class="score" data-score=""></div>
+          <input type="hidden" name="tastescoreshow" class="tastescoreshow" value="3">
+  			</td>
+  		</tr>
+      <tr>
+        <td><label for="servicescore">服务</label></td>
+        <td>
+            <div id="servicescore" name="servicescore" class="score" data-score=""></div>
+            <input type="hidden" name="servicescoreshow" class="servicescoreshow" value="3">
+        </td>
+      </tr>
+      <tr>
+        <td><label for="comment">评价</label></td>
+        <td>
+            <input TYPE="hidden" NAME="rooturl" id="rooturl" VALUE="{$rooturl}"/>
+            <input type="hidden" name="orderidmid" class="orderidmid">
+            <textarea name="comment" class="comment" rows="3" cols="40"></textarea>
+        </td>
+      </tr>
+
+  	</table>
+
+  </fieldset>
+  </form>
+</div>
+	<div class="spacer"></div>
+</div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $( "#dialog-addcomment-form" ).dialog({
+      autoOpen: false,
+      height: 386,
+      width: 526,
+      modal: true,
+      buttons: {
+        "提交评论": function() {
+
+         var orderidmid = $(".orderidmid").val();
+
+         var comment = $(".comment").val();
+
+         var tastescore = $("#tastescore").raty('score');
+         if(undefined == tastescore)
+         {
+            tastescore = 3;
+         }
+         $('.tastescoreshow').val(tastescore);
+
+         var servicescore = $("#servicescore").raty('score');
+         if(undefined == servicescore)
+         {
+            servicescore = 3;
+         }
+         $('.servicescoreshow').val(servicescore);
+
+          //update data for each order's delivery
+          var postUrl = $(".addcommenturl").val();
+          $.post(postUrl, 
+            $('#addcommentForm').serialize(), 
+            function(returndata) 
+            {
+              returndata = eval("("+returndata+")");
+
+              if(returndata.success)
+              {
+                alert(returndata.data);
+                $( "#dialog-addcomment-form" ).dialog( "close" );
+
+                //refresh the page
+                window.location.href = $(".pageurl").val();
+                
+              }else
+              {
+                alert(returndata.data);
+              }
+              
+          });
+          
+        },
+        "取消": function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      close: function() {
+        
+      }
+    });
+
+    $(".reviewcomment").each(function(index,element)
+    {
+        $(element).click(function(event){
+
+          event.preventDefault();
+          var orderidmid = $(this).attr("href");
+          var mimage = $.find('.reviewmimage')[index];
+          var mname = $.find(".productname")[index];
+          //set popup td's image
+          $(".mimageTd").html(mimage);
+          $(".mnametd").html(mname);
+          $(".orderidmid").val(orderidmid);
+
+          $( "#dialog-addcomment-form" ).dialog( "open" );
+        });
+
+        
+    });
+
+    $('#tastescore').raty({ 
+      score: 4,
+      click: function(score, evt) {
+          $(".tastescoreshow").val(score);
+        }
+
+
+     });
+
+    $('#servicescore').raty({ 
+      score: 4,
+      click: function(score, evt) {
+          $(".servicescoreshow").val(score);
+        }
+
+
+     });
+
+    var rooturl = $('#rooturl').val()+'/themes/extres/4tschool/images/';
+    $('.score').raty({
+       starHalf : rooturl+'star-half.png',
+       starOff  : rooturl+'star-off.png',
+       starOn   : rooturl+'star-on.png',
+      score: function() {
+        return $(this).attr('data-score');
+      }
+    });
+  
+});
+</script>
+<template source='footer' />

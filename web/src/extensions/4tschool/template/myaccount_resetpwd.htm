@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/resetpwd}" id="myResetPWDForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/resetpwd}">
+    <input type="hidden" class="checkpwdstrongurl" name="checkpwdstrongurl" value="{@url:app/4tschool/myaccount/checkPwdStrong}">
+    <input type="hidden" class="checkpwdurl" name="checkpwdurl" value="{@url:app/4tschool/myaccount/checkpwd}">
+    <input type="hidden" class="securitycenterurl" name="checkpwdurl" value="{@url:app/4tschool/myaccount/securitycenter}">
+	<div class="clear"></div>
+		<div class="account_right">
+            <h4>修改登录密码</h4>
+            <p class="verification_list">
+            <label>设置新密码:</label>
+             <!-- ver_fillin_error-->
+                <input class="ver_fillin newpwd" name="pwd" id="pwd" type="password" onpaste="return false">
+                <span id="span_ver_hint_1" class="pwd_area ver_hint" style="display: inline;">{$pwdReg}</span>
+                <span id="span_ver_error" class="pwd_area ver_pwd_error" style="display: none;">请设置登录密码</span>
+                <span id="span_ver_hint_2" class="pwd_area  ver_hint pwdstrong" style="display: none;"></span>
+                <span id="span_msg_level" class="pwd_area msg_level" style="display: none;"></span>
+            </p>
+
+            <p class="verification_list">
+                <label>确认新密码:</label>
+                <input class="ver_fillin rePwd" name="rePwd" id="rePwd" type="password">
+                <span id="span_ver_hint_confirm" class="newpwd_area ver_hint" style="display: inline;"></span>
+                <span id="span_ver_error_confirm" class="newpwd_area ver_newpwd_error" style="display: none;">请输入一致的新登录密码</span>
+                <span id="span_ver_ok_confirm" class="newpwd_area  ver_ok" style="display: none;">&nbsp;</span>
+            </p>
+            <input id="action" type="hidden" name="action" value="change_password">
+            <p class="verification_list_btn">
+                <a class="ver_next" href="">下一步</a>
+            </p>
+    </div>
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".newpwd").keyup(function(event)
+	{
+		event.preventDefault();
+        newpwdKeyup();
+
+	});
+
+    $(".newpwd").focus(function(event)
+    {
+        event.preventDefault();
+        newpwdKeyup(); 
+
+    });
+
+
+
+    //newpwd keyup function
+    function newpwdKeyup()
+    {
+        var newpwd = $(".newpwd").val();
+        if(newpwd == '')
+        {
+            $("span.pwd_area").hide();
+            $("span.ver_pwd_error").show();
+            return;
+        }
+
+        $("span.pwd_area").hide();
+        $("span.ver_hint").show();
+
+        //update data for each order's delivery
+        var postUrl = $(".checkpwdstrongurl").val();
+        $.post(postUrl, 
+            $('#myResetPWDForm').serialize(), 
+            function(returndata) {
+                returndata=eval("("+returndata+")");
+
+                if(returndata.success)
+                {
+                    $(".pwdstrong").show().html(returndata.data);
+                }else
+                {
+                    alert(returndata.data);
+                }
+
+        });
+    }
+
+
+    $(".rePwd").keyup(function(event)
+    {
+        event.preventDefault();
+        newRepwdKeyup();
+
+    });
+
+    $(".rePwd").focus(function(event)
+    {
+        event.preventDefault();
+        newRepwdKeyup(); 
+
+    });
+
+    //newRepwd keyup function
+    function newRepwdKeyup()
+    {
+        var rePwd = $(".rePwd").val();
+        var newpwd = $(".newpwd").val();
+
+        if(rePwd == '')
+        {
+            $("span.newpwd_area").hide();
+            $("span.ver_newpwd_error").show();
+            return;
+        }
+
+        if(rePwd != newpwd)
+        {
+            $("span.newpwd_area").hide();
+            $("span.ver_newpwd_error").show();
+            return;
+        }
+
+        $("span.newpwd_area").hide();
+       
+    }
+
+
+    $(".ver_next").click(function(event)
+    {
+        event.preventDefault();
+
+        var newpwd = $(".newpwd").val();
+        if(newpwd == '')
+        {
+            $("span.pwd_area").hide();
+            $("span.ver_pwd_error").show();
+
+            return;
+        }
+
+        var rePwd = $(".rePwd").val();
+        if(rePwd == '' || rePwd != newpwd)
+        {
+            $("span.newpwd_area").hide();
+            $("span.ver_newpwd_error").show();
+
+            return;
+        }
+
+        //check pwd if match the rule
+        //update data for each order's delivery
+        var postUrl = $(".checkpwdurl").val();
+        $.post(postUrl, 
+            $('#myResetPWDForm').serialize(), 
+            function(returndata) {
+                returndata=eval("("+returndata+")");
+
+                if(returndata.success)
+                {
+                    alert(returndata.data) ;
+                    //redirect to security center page
+                    var url = $(".securitycenterurl").val();
+                    window.location.href = url;
+                }else
+                {
+                    alert(returndata.data);
+                }
+
+        });
+
+        
+    });
+
+    $(document).ready(function(event)
+    {
+        $("span.pwd_area").hide();
+        $("span.newpwd_area").hide();
+
+        $("span.ver_hint").show();
+    });
+
+});
+</script>

@@ -1,0 +1,91 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录 | 统一登录系统 | 分享哟平台 高校订餐专家</title>
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/loginui.css">
+    <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="gheader-wp">
+    <div class="gheader-wp-b">
+        <div class="gheader" id="gheader">
+            <a class="gheader-logo gfl" id="guokrLogo" href="http://www.guokr.com/" title="分享哟平台 高校订餐专家">分享哟订餐</a>
+            <img class="gmotto" src="https://static.guokr.com/skin/imgs/motto.png" alt="加入分享哟平台，成为省吃新青年！">
+        </div>
+    </div>
+        </div>
+        <div class="wrap grow gmt30 gpack">
+            <div class="gspan-19 gprefix-2 main">
+    <h1>欢迎登录分享哟平台</h1>
+    
+    <form class="gform" id="loginForm" action="" method="POST" novalidate="true">
+        <input id="csrf_token" name="csrf_token" type="hidden" value="20130407113618##373da93f6928e41988f2c67c1df2d4d7cd7c3473">
+        <div>
+    <label for="email">邮箱</label>
+<div class="gform-box">
+    <input autofocus="" class="gstxt" id="email" maxlength="40" name="email" required="" type="email" value="">
+            <span class="tip">邮箱是必填的</span>
+        </div>
+    <label for="password">密码</label>
+<div class="gform-box">
+     <input class="gstxt" id="password" name="password" required="" type="password" value="">
+   <span class="tip">密码是必填的</span>
+     
+ </div>
+            
+    <p class="gform-box gform-rem">
+        <input checked="" id="permanent" name="permanent" type="checkbox" value="y">
+        
+        <label for="permanent">记住我（网吧或别人的电脑请不要勾选）</label>
+        
+        <span class="tip"></span>
+    </p>
+            <p>
+                <input type="submit" class="gform-submit greg-btn" value="登录">
+                <a class="gform-forget_pw" href="/email/forgot_password/?success=%2Foauth2%2Fauthorize%2F%3Fclient_id%3D32353%26redirect_uri%3Dhttp%253A%252F%252Fwww.guokr.com%252F%26response_type%3Dcookie%26suppress_prompt%3D1">忘记密码？</a>
+            </p>
+        </div>
+    </form>
+
+            </div>
+            <div class="gspan-7 gprefix-3 side">
+                
+    
+                你还可以用第三方帐号登录
+                <div class="side-connect">
+                    <a class="connect-sina" href="/weibo/sign_in/?success=%2Foauth2%2Fauthorize%2F%3Fclient_id%3D32353%26redirect_uri%3Dhttp%253A%252F%252Fwww.guokr.com%252F%26response_type%3Dcookie%26suppress_prompt%3D1">微博帐号登录</a>
+                    <a class="connect-qq" href="/qq/sign_in/?success=%2Foauth2%2Fauthorize%2F%3Fclient_id%3D32353%26redirect_uri%3Dhttp%253A%252F%252Fwww.guokr.com%252F%26response_type%3Dcookie%26suppress_prompt%3D1">qq帐号登录</a>
+                </div>
+                
+    <p>
+        还没有帐号？<a id="changeVcode" href="{@url:app/4tschool/login/register}">马上注册一个</a>
+    </p>
+
+            </div>
+        </div>
+
+
+        <div class="gbottom">
+    <div class="gbottom-nav">
+        <a href="">关于我们</a>
+        <a href="">加入分享哟</a>
+        <a href="">媒体报道</a>
+        <a href="">帮助中心</a>
+        <a href="">内容专区</a>
+        <a href="">免责声明</a>
+        <a href="">联系我们</a>
+        </div>
+    <div class="gbottom-i">©2013分享哟&nbsp;赣ICP备03043251号-2&nbsp;江西省公安厅7787877888</div>
+</div>
+    </div>
+  
+   <script src="https://static.guokr.com/js/I.js"></script>
+   <script src="https://static.guokr.com/js/main.js"></script>
+    
+    <script src="https://static.guokr.com/js/login-reg.js"></script>
+
+
+</body></html>

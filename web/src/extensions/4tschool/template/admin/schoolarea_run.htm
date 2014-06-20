@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+	<template load="true" source="links"/>
+	<div class="h_a">提示信息</div>
+	<div class="mb10 prompt_text">
+		<ol>
+			<li>搜索省份得到高校列表</li>
+			<li>编辑和添加当前选中高校的区域</li>
+		</ol>
+	</div>
+	<div class="mb10">
+		<a class="btn J_dialog" href="{@url:app/4tschool/schoolarea/add?choosenSchoolid=$choosenSchoolid&choosenProvinceid=$choosenProvinceid}" title="添加区域" role="button"><span class="add"></span>添加区域</a></div>
+	<div class="h_a">搜索</div>
+	<div class="search_type cc mb10">
+		<form action="{@url:app/4tschool/schoolarea/run?choosenSchoolid=$choosenSchoolid&choosenProvinceid=$choosenProvinceid}" method="post">
+		<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/schoolarea/run}">
+		<input type="hidden" name="page" value="{$page}">
+		<input type="hidden" name="hdschoolid" value="{$choosenSchoolid}">
+		<input type="hidden" name="hdprovinceid" value="{$choosenProvinceid}">
+		<label>省份：</label>
+		<select class="choosenProvinceid" name="choosenProvinceid">
+			<!--#foreach($allArea as $item) {#-->
+				<option <?php if($item['areaid'] == $choosenProvinceid) echo "selected"; ?> value="{$item['areaid']}" >{$item['name']}</option>
+			<!--#}#-->
+		</select>
+		<label>高校：</label>
+		<select class="choosenSchoolid" name="choosenSchoolid">
+			<!--#foreach($allSchool as $item) {#-->
+			<option class="province{$item['areaid']}"  <?php if($item['schoolid'] == $choosenSchoolid) echo "selected"; ?> value="{$item['schoolid']}" >{$item['name']}</option>
+			<!--#}#-->
+		</select>
+		<button type="submit" class="btn search" name="search" value="search">搜索</button>
+		</form>
+	</div>
+	<div class="table_list">
+		<table width="100%">
+			<thead>
+				<tr>
+					<td>高校</td>
+					<td>区域</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+		<!--# if ($areaList) { #-->
+		<!--#foreach ($areaList as $key => $item) {#-->
+			<tr>
+				<td>{$item['name']}</td>
+				<td>{$item['areaname']}</td>
+				<td><a href="{@url:app/4tschool/schoolarea/edit?id=$item['id']&choosenSchoolid=$choosenSchoolid&choosenProvinceid=$choosenProvinceid}" class="mr10 J_dialog" title="编辑">[编辑]</a>
+			</tr>
+		<!--#}#-->
+		<!--# } else { #-->
+			<tbody>
+				<tr><td colspan="7" class="tac"> 没有符合条件的结果！</td></tr>
+			</tbody>
+		<!--# } #-->
+		</table>
+	</div>
+	<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>
+	
+</div>
+<template source='TPL:admin.common.footer' />
+<script>
+$(".choosenProvinceid").change(function()
+{
+	searchchange(true,false);
+	
+});
+
+$(".choosenSchoolid").change(function()
+{
+	searchchange(true,true);
+	
+});
+
+$(".search").click(function(){
+	searchchange(true,true);	
+});
+
+function searchchange(showP,showS)
+{
+	var provincepara = '&choosenProvinceid='+$(".choosenProvinceid").val();
+	if(!showP)
+	{
+		provincepara = "";	
+	}
+	var schoolpara = '&choosenSchoolid='+$(".choosenSchoolid").val(); 
+	if(!showS)
+	{
+		schoolpara = "";		
+	}
+	window.location.href= $(".pageurl").val()+ provincepara + schoolpara; 
+}
+</script>
+</body>
+</html>

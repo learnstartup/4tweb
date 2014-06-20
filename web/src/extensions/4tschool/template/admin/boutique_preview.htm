@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+	
+
+<form id="form" method="post" action="{@url:app/4tschool/boutique/preview}">
+	<!--# if($boutique['type']=='B'){ #-->
+	<img src={$boutique['imgurl']} style="width: 580px; height: 280px;">
+	<!--# } #-->
+
+	<!--# if($boutique['type']=='C'){ #-->
+	<img src={$boutique['imgurl']} style="width: 196px; height: 120px;">
+	<!--# } #-->	
+	
+</form>
+
+</div>
+<template source='TPL:admin.common.footer' />
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="true" />
+
+	<div id="orderList" class="account_right">
+		<h2>我的积分</h2>
+		<div class="mydangdang_noword">
+			<div class="mydangdang_noword_text2"><span class="s14">您的当前积分是：<span class="red14_b">{$myCredit[0]['credit']==''?'0.00':$myCredit[0]['credit']}</span></span><br>
+			</div>
+		</div>
+		
+		<div id="main_list">
+			<div class="myintegral_details" style="background-image:none">
+			<ul class="title clearfix">
+			<li class="list1">积分日期</li>
+			<li id="li_choiceType" class="list2">原有积分</li>
+			<li class="list2">新增积分</li>
+			<li class="list3">剩余积分</li>
+			<li class="list4">详情</li>
+			</ul>
+
+			<!--# if ($creditHistory) { #-->
+			<!--#foreach ($creditHistory as $key => $item) {#-->
+			<table border="0" style="z-index:0" cellspacing="0" cellpadding="0" onmouseout="javascript:this.className='';" onmouseover="javascript:this.className='bg_current';" class="">
+			<tbody><tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+			<td class="list1">{$item['createdate']}</td>
+			<td class="list2">{$item['creditoriginal']}</td>
+			<td class="list2">{$item['creditincome']}</td>
+			<td class="list3">{$item['creditleft']}</td>
+			<td class="list4">{$item['description']}</td>
+			</tr>
+			</tbody></table>
+
+			<!--#}#-->
+		    <!--# } else { #-->
+					<span>没有符合条件的结果！</span>
+			<!--# } #-->
+			</div>
+			<div class="spacer"></div>
+			<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/myaccount/mycredit' args='$args' />
+			<div class="spacer"></div>
+			<p class="myintegral_tips">积分有效期：积入之日起至次年年底</p>
+			<div class="turnpage"><div>（共{$count}条）</div></div>
+			<div class="clear"></div>
+			</div>
+
+	</div>
+	
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".deleteAddress").click(function(event)
+	{
+		event.preventDefault();
+		var id = $("#btn_id").val();
+
+		$(".addressToDelete").val(id);
+
+		if(confirm("确定删除选中的地址吗?") == false)
+		{
+			return;
+		}	
+
+		//update data for each order's delivery
+		var postUrl = $(".deleteAddressUrl").val();
+		$.post(postUrl, 
+			$('#myAddressForm').serialize(), 
+			function(returndata) {
+
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	$(".editAddress").click(function(event)
+	{
+		var id = $("#btn_id").val();
+
+		$(".addressToDelete").val(id);
+
+		var pageurl = $(".pageurl").val();
+		var redirectionUrl = pageurl + "&editid=" +id;
+		window.location.href = redirectionUrl;
+
+	});
+
+	$(".saveAddress").click(function(event)
+	{
+		//do validation
+		var dataNotValid = validateData();
+
+		if(dataNotValid)
+			alert("请输入完整的信息");
+		else
+		{
+
+			//submit data
+			//update data for each order's delivery
+			var postUrl = $(".updateAddressUrl").val();
+			
+			$.post(postUrl, 
+				$('#myAddressForm').serialize(), 
+				function(returndata) {
+
+					returndata = eval("("+returndata+")");
+
+					if(returndata.success)
+					{
+						alert(returndata.data);
+						//refresh the page
+						searchPage();
+					}else
+					{
+						alert(returndata.data);
+					}
+
+			});
+		}
+
+		event.preventDefault();
+	});
+
+	$(".hint").each(function(event)
+	{
+		$(this).hide();
+	});
+
+	function validateData()
+	{
+		var rnameNotValid = ($.trim($("#txt_ship_man").val()) == '');
+		var raddressNotValid = ($.trim($("#txt_addr_detail").val()) == '');
+		var rphoneNotValid = ($.trim($("#txt_ship_tel").val()) == '');
+
+		if(rnameNotValid)
+			$("#vaild_ship_man").show();
+
+		if(raddressNotValid)
+			$("#valid_addressdetail").show();
+
+		if(rphoneNotValid)
+			$("#vaild_tel").show();
+
+		return rnameNotValid ||  raddressNotValid || rphoneNotValid;
+	}
+
+	function searchPage()
+	{
+		window.location.href = $(".pageurl").val();
+	}
+
+});
+</script>

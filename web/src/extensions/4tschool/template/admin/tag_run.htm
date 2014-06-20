@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a" style="display:none">提示信息</div>
+		<div class="mb10 prompt_text" style="display:none">
+			<ol>
+				<li></li>
+				<li></li>
+			</ol>
+		</div>
+		<div class="mb10"><a class="btn J_dialog" href="{@url:app/4tschool/tag/add}" title="添加Tag" role="button"><span class="add"></span>添加Tag</a></div>
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="J_ajaxForm" action="{@url:app/4tschool/tag/test}" method="post">
+				<input type="hidden" name="page" value="{$page}">
+				<label>Tag名包含：</label><input name="username" type="text" class="input length_2 mr10" value="{$args['username']}">
+				<label>TID：</label><input name="uid" type="number" class="input length_1 mr10" value="{$args['uid']}">
+				<button type="submit" class="btn btn_submit J_ajax_submit_btn">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td width="30">TID</td>
+						<td>Tag名</td>
+						<td>创建时间</td>
+						<td>Tag类型</td>
+						<td>最后修改时间</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($tagList) { #-->
+				<!--#foreach ($tagList as $key => $item) {#-->
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{@Pw::time2str($item['createdate'],'Y-m-d H:i:s')}</td>
+					<td>{$item['issystem']==1?'系统':'非系统'}</td>
+					<td>{@Pw::time2str($item['lastupdatetime'], 'Y-m-d H:i:s')}</td>
+					<td><a href="{@url:app/4tschool/tag/edit?id=$item['id']&name=$item['name']&type=$item['issystem']}" class="mr10 J_dialog" title="编辑Tag">[编辑]</a>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="7" class="tac">啊哦，目前还没有Tag哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

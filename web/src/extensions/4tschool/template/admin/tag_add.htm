@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body style="width:450px;" class="body_none">
+<div class="pop_cont pop_table">
+<!--添加用户-->
+	<div class="h_a">提示信息</div>
+	<div class="mb10 prompt_text">
+		使用此功能可以由管理员添加Tag<br>
+		创始人可以使用此功能添加System Tag(普通管理员无此权限)
+	</div>
+	
+	<div class="h_a">添加Tag</div>
+	<form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/tag/add}" method="post" >
+	<input type='hidden' name='type' value="do">
+	<div class="">
+		<table width="100%">
+			<col class="th" />
+			<col />
+			<thead>
+			<tr>
+				<th>Tag名</th>
+				<td><input name="tagname" type="text" class="input input_long"></td>
+			</tr>
+			</thead>
+			<tr>
+				<th>类型</th>
+				<td><select name="tagtype" class="select_long">
+						<option value="0">普通</option>
+						<option value="1">系统</option>
+					<!--#foreach ($groups as $item) {#-->
+						
+					<!--#}#-->
+						</select></td>
+			</tr>
+		</table>
+	</div>
+	<div class="pop_bottom">
+		<button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+	</div>
+	
+</form>
+</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

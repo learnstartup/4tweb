@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+<form method="post">
+	<div class="h_a">设置您的腾讯开放平台 API key</div>
+	<div class="table_full">
+	<table width="100%">
+		<colgroup><col align="right" width="150">
+		<col>
+		</colgroup><tbody><tr>
+			<th>APP ID:</th>
+			<td><input type="text" name="appid" value="{$appid}" class="input length_4" /> 例如：100337231</td>
+		</tr>
+		<tr>
+			<th>KEY</th>
+			<td><input type="password" name="secret" class="input length_4" value="{$secret}" /> 例如：6ebc47bb38d638ca59995bc0c4d95a74
+		</td>
+		</tr>
+		
+
+		<tr>
+			<td colspan="2">
+			<!--# if ($msg) { #-->
+				{$msg}
+			<!--# } else { #-->
+			<h3>安装步骤</h3>
+			<ol>
+			<li>前往<a href="http://connect.qq.com/intro/login/" target="_blank">腾讯开放平台</a>申请API KEY</li>
+			<li>在上面正确填写</li>
+			<li>将下方HTML代码添加到模版。[可选]</li>
+			</ol>
+			 	<ol>
+			 	</ol>
+			<!--# } #-->
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+<div class="">
+			<button class="btn btn_submit" type="submit">提交</button>
+	</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2">
+			<h3>常见问题：</h3>
+			 	<ol>
+			 	<li>回调地址：必须是 {$_SERVER['HTTP_HOST']} 或它的根域名。</li>
+				<li>如何通过腾讯的站点验证：将类似“&lt;meta property="qc:admins" content="74556747752166375" /&gt;”的代码添加到模版template/bbs/index_run.htm顶部head标签内，并点击“验证”。</li>
+				<li>为什么有些时候不同步QQ头像：腾讯提供的是QQ空间头像</li>
+			 	<li>“禁止开发商强制用户重新注册或绑定其他帐号”：由于QQ不提供获取的邮箱API，而 phpwind 的邮箱是必填项，建议反馈给PW或腾讯官方。</li>
+				<li>如有其他问题请反馈到邮箱：daijie@php.net</li>
+			 	</ol>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><a href="{@G:url.base}/index.php?m=app&app=com_qq_login" target="_blank"><img src="{@G:url.extres}/com_qq_login/Connect_logo_3.png" valign="middle" /></a><br /><br />您可自行在模板上想要的位置添加以上QQ一键登录按钮。<br><textarea style="width:400px" onclick="this.select()"><a href="{@G:url.base}/index.php?m=app&app=com_qq_login" target="_blank"><img src="{@G:url.extres}/com_qq_login/Connect_logo_3.png" valign="middle" /></a></textarea>
+			</td>
+		</tr>
+	</tbody></table>
+
+</div>
+</form>
+</div>
+</body>
+</html>

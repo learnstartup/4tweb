@@ -1,0 +1,159 @@
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+        <style type="text/css">
+        .hightlight-blue{
+            color: blue;
+        }
+        .hightlight-red{
+            color: red;
+        }        
+        .icon{
+            font-size: 14px;
+            padding: 0 3px;               
+        }
+        .font-size-mid{
+            font-size: 0.9em;
+        }
+        .font-size-sml{
+            font-size: 0.7em;
+        }
+        </style>
+    </head>
+    <body>
+        <!--# if($is_weixin){ #-->
+        <div data-role="page" data-theme="b">
+            <div data-role="header" data-position="fixed">
+                <h1 style="display:none">我的订单</h1>
+                <template source='navbar' load="true" />
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#"><span>小提示：点币可到零钱包中查看，可以兑换话费、Q币、以及各种实物商品。</span></a></li>
+                    </ul>
+                </div>                                             
+            </div>
+            <div role="main" class="ui-content">
+                <input type="hidden" class="cancelOrderUrl" name="cancelOrderUrl" value="{@url:app/4tmobile/mobileorder/cancelOrder}">
+
+                <div data-role="collapsible" data-corners="false" data-collapsed="false" data-collapsed-icon="list" data-expanded-icon="list" data-theme="b" class="font-size-mid">
+                    <h3>订单信息汇总</h3>
+                    <span>最近30天订单数：<span class="hightlight-blue">{$orderCount}</span></span>
+                    <br/><span>待确认收货订单数：<span class="hightlight-blue">{$needConfrimOrders}</span></span>
+                    <br/><span>确认收货后可获点币：<span class="hightlight-blue">{$deservedTotalDmoney}</span></span>
+                </div>
+                <!--# if($myOrderList){ #-->
+                <!--# foreach($myOrderList as $key => $order) {#-->
+                <!--# if($order['status']==0||$order['status']==2||$order['status']==3||$order['status']==4){ #-->
+                <div data-role="collapsible" data-corners="false" data-collapsed="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-theme={$order['status']==5?"f":"b"} class="font-size-mid">
+                    <h4>订单[{$order['ordernumber']}]-[{$order['statustext']}]</h4>
+                        <a href="tel:{$order['shopnumber']}" data-mini="true" data-inline="true" data-role="button" data-ajax="false" data-theme={$order['status']==5?"f":"b"} data-icon="phone">{$order['shopname']}</a>
+                        <a href="{@url:app/4tmobile/mobilemerchandise/run?shopid=$order['shopid']}&openid={$openId}" data-mini="true" data-inline="true" data-role="button" data-ajax="false" data-theme={$order['status']==5?"f":"b"} data-icon="sign-in">店铺直达</a>
+                    <table data-role="table" data-mode="reflow" class="ui-responsive table-stroke font-size-mid">
+                        <thead>
+                            <tr>
+                                <th data-priority="1"></th>
+                                <th data-priority="2"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="4"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                               <tr>
+                                <td>商品</td>
+                                <td>单价</td>
+                                <td>数量</td>
+                                <td>总价</td>
+                               </tr>                            
+                            <!--# foreach($orderItemList as $item){ #-->
+                               <!--# if($item['orderid']==$order['id']){ #-->
+                               <tr>
+                                <td>{$item['mname']}</td>
+                                <td>{$item['price']}</td>
+                                <td>{$item['quatity']}</td>
+                                <td>{$item['totalMoney']}</td>
+                               </tr>
+                               <!--# } #-->
+                            <!--# } #-->
+                            <tr class="hightlight-red">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span>{$order['ordermoney']}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                
+                    <span>{$order['orderdate']}</span><br/>
+                    <span class="hightlight-blue">{$order['towho']},{$order['tomobile']}<br/>地址:{$order['to']}</span>
+                    <!--# if($order['status']==2||$order['status']==3||$order['status']==4){ #-->
+                    <a href="{@url:app/4tmobile/mobileconfirmorder/run?orderid=$order['id']&openid=$openId&shopname=$order['shopname']}" data-mini="true" data-role="button" data-theme="d">确认收货</a>
+                    <!--# } #-->
+
+                    <!--# if($order['status']==0){ #-->
+                    <a href="#" name="cancelOrder" data-mini="true" data-role="button" data-theme="d">
+                        取消订单
+                        <input type="hidden" class="orderid" name="orderid" value="{$order['id']}">
+                    </a>
+                    <!--# } #-->
+                </div>               
+                <!--# } #-->
+                <!--# } #-->
+                <!--# } #-->
+                <!--# else{ #-->
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="bullets" data-expanded-icon="bullets">
+                    <h3>今日订单</h3>
+                    <span>亲，今天您还没有点过餐哦~!</span><br/>
+                </div>                
+                <!--# } #-->
+           </div>
+           <template source='footer' load="true" />
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->
+
+    <div data-role="page" name="cancelOrderDialog" id="cancelOrderDialog" data-close-btn="right" data-theme="e">
+        <form method="post" name="cancelForm">
+            <input type="hidden" name="curOrderid" value="">
+            <input type="hidden" name="curOpenid" value="{$openId}">
+        </form>
+        <div data-role="header">
+            <h2>取消订单</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <p>您确定要取消订单吗？(取消后的订单将在“我的订单”列表中移除。)</p>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <a id="doCancelOrder" href="#" data-role="button" data-ajax="false" data-theme="e">确定取消</a>
+                </div>
+                <div class="ui-block-b">
+                    <a id="cancelCancelOrder" href="#" data-role="button" data-ajax="false" data-theme="d">我点错了</a>
+                </div>
+            </div>                                
+        </div>
+    </div>        
+    </body>
+    <script>
+    $("[name='cancelOrder']").click(function(e) {
+        $.mobile.changePage( "#cancelOrderDialog", { role: "dialog" } );
+        var orderid = $(this).find("[name='orderid']").val();
+        $("[name='curOrderid']").val(orderid);
+    });
+
+    $("#cancelCancelOrder").on('tap', function(e) {
+        $("#cancelOrderDialog").dialog( "close" );
+    });
+
+    $("#doCancelOrder").on('tap',function(e){
+        $(this).attr({"disabled":"disabled"});
+        $(this).css("background-color","#D6D6D6");
+        var pageUrl = $("[name='cancelOrderUrl']").val();
+
+        $.post(pageUrl, $("[name='cancelForm']").serialize(), function(returndata) {
+            alert(returndata);
+            location.reload();
+        });         
+    });
+    </script>
+</html>

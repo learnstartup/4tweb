@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<template source='EXT:4tshop.template.header' load="true" />
+<template source='EXT:4tshop.template.shopadvantageheader' load="true" />
+<div class="wrapper line new_box new_bg control_top">
+	<template source='left_bar' load="true" />
+	<div style="float:right;width:780px;" class="cc mb10">
+		<template source='orderlist' load="true" />
+		<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tshop/Shopadvantage/shopOrder' args='$args' />
+	<div class="spacer"></div>
+	</div>
+</div>
+<div class="clear"></div>
+<template source='EXT:4tschool.template.footer' />
+
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script>
+</body>

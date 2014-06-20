@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/securitycenter}" id="myAccountForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/securitycenter}">
+	<div class="clear"></div>
+		<div class="account_right">
+			<div class="spacer"></div>
+			<div class="security_content_index security_bar">
+                    <ul>
+                          <li class="level2"><span class="col1">安全级别: <span>中级</span></span>
+                            <span class="col2">
+                                <span class="inner">
+                                <span style="width: {$totalScore}%;"></span>
+                            </span></span>
+                            <span class="col3">建议您启动全部安全设置，以保证账户安全</span>
+                        </li>
+                    </ul>
+                </div>
+            <div class="security_content_index">
+                 <p><i class="success"></i><span class="title">登录密码</span>
+                    <span>建议您定期更改密码以保护账户安全</span>
+                    <a href="{@url:app/4tschool/myaccount/resetpwd}">更改&gt;&gt;</a>
+                </p>
+                <p><i class="{$emailVerified?'success':'failure'}"></i><span class="title">邮箱验证
+                </span>
+                    <span>邮箱{$email}{$emailVerified?"已通过验证":"未通过验证"}</span>
+                    <!--# if ($emailVerified == false) { #-->
+                    <a href="{@url:app/4tschool/myaccount/resetemail?email=$email}">设置</a>
+                    <!--# } #-->
+                </p>
+                                                
+                <p><i class="{$mobileVerified?'success':'failure'}"></i><span class="title">手机绑定
+                </span>
+                    <span>{$mobile}验证后，可接收短信提醒;{$mobileVerified?"已通过验证":"未通过验证"}
+                    </span>
+                    <!--# if ($mobileVerified == false) { #-->
+                        <a href="{@url:app/4tschool/myaccount/verifymobile}">设置</a>
+                    <!--# } #-->
+                </p>
+                    <div class="clear"></div>
+                </div>
+
+        </div>
+
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	
+
+});
+</script>

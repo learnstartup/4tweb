@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+    <template source='header' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+    <style>
+    	td{
+    		border-left: 1px solid #eadbc9;
+    		border-bottom: 1px solid #eadbc9;
+			border-right: 1px solid #eadbc9;
+			width: 200px;
+    	}
+    </style>
+</head>
+<body>
+<div class="clear"></div>
+<div class="wrap-sd">
+<div class="sdrow">
+<div id="wrapper" class="twelvecol">
+<!--# if($schoolInfo['openorder'] == 1) {#-->
+<div class="step-content" style="margin-left:150px;padding:10px;">
+    <h3>
+        每天开放订餐时间如下:	
+         <!--# if($opening == false) {#-->
+         	当前时间不允许订餐，请查看订餐时间如下
+         <!--# } else { #-->
+         	开放订餐中
+         <!--# } #-->
+    </h3>
+    <div class="clear"></div>
+    <div class="spacer"></div>
+    <div class="merch_bord">
+    <table class="tabl_merch merch_title">
+    	<tbody>
+	    	<tr>
+	    		<td>亲, 订餐时间以商家开放订餐时间为准。</td>
+	    	</tr>
+    	</tbody>
+    <table>
+    <table class="tabl_merch" style="display:none">
+    	<tbody>
+    	<tr>
+    		<td>星期一</td>
+    		<td>
+    			<!--# if($info['mon']['open'] == true) {#-->
+    				<!--# foreach($info['mon']['openTime'] as $key => $eachTime) { #-->
+    					<div>
+    						{$eachTime['start']} - {$eachTime['end']}
+    					</div>
+
+    				<!--# }#-->
+				<!--# } else { #-->
+					不开放订餐
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期二</td>
+    		<td>
+				<!--# if($info['tue']['open'] == true) {#-->
+				<!--# foreach($info['tue']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					不开放订餐
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期三</td>
+    		<td>
+				<!--# if($info['wed']['open'] == true) {#-->
+				<!--# foreach($info['wed']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					不开放订餐
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期四</td>
+    		<td>
+				<!--# if($info['thu']['open'] == true) {#-->
+				<!--# foreach($info['thu']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					不开放订餐
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期五</td>
+    		<td>
+				<!--# if($info['fri']['open'] == true) {#-->
+				<!--# foreach($info['fri']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					不开放订餐
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期六</td>
+    		<td>
+				<!--# if($info['sat']['open'] == true) {#-->
+				<!--# foreach($info['sat']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					<div>不开放订餐</div>
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>星期日</td>
+    		<td>
+				<!--# if($info['sun']['open'] == true) {#-->
+				<!--# foreach($info['sun']['openTime'] as $key => $eachTime) { #-->
+					<div>
+						{$eachTime['start']} - {$eachTime['end']}
+					</div>
+
+				<!--# }#-->
+				<!--# } else { #-->
+					<div>不开放订餐</div>
+    			<!--# }#-->
+
+    		</td>
+    	</tr>
+    	</tbody>
+    </table>
+</div>
+
+</div>
+</div>
+<!--# } else { #-->
+<div class="step-content" style="margin-left:130px;padding:10px;">
+    <h3>
+        亲,网站未开放在线下单功能噢, 还是<a style="color: #FF4400;" href="/index.php">去首页逛逛吧</a>
+    </h3>
+</div>
+<!--# } #-->
+
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer'/>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui-1.10.3.custom.js"></script>
+
+</body>
+</html>

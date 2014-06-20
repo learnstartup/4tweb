@@ -1,0 +1,39 @@
+/*
+jCart v1.3
+http://conceptlogic.com/jcart/
+*/
+
+#jcart * { margin:0; padding:0; font-family:arial, tahoma, verdana, sans-serif; }
+#jcart, #jcart input, #jcart-tooltip { font-size:12px; }
+
+#jcart fieldset { border:0; }
+
+#jcart-error { text-align:center; padding:5px; }
+
+#jcart table { width:100%; border:0; background:#fff; border-collapse:collapse; }
+#jcart thead {  }
+#jcart-title {  }
+#jcart tbody {  }
+#jcart tfoot {  }
+#jcart tr {  }
+#jcart th { background:#ccffcc }
+#jcart th, #jcart td { padding:5px; border:0; border:solid 1px #ccc; vertical-align:middle; text-align:left; font-weight:normal; }
+#jcart #jcart-empty { text-align:center; }
+
+.jcart-item-qty { width:25%; }
+#jcart .jcart-item-name { width:50%; font-weight:bold; }
+#jcart .jcart-item-price { width:25%; font-weight:bold; text-align:right; }
+.jcart-item-price span { display:block; }
+
+.jcart-remove { font-size:11px; font-weight:normal; }
+
+#jcart-subtotal { display:block; }
+#jcart-subtotal strong {  }
+
+#jcart-buttons input { padding:2px; margin:2px; }
+
+#jcart-checkout { float:right; padding:2px; }
+
+#jcart-paypal-checkout { display:block; width:14em; padding:10px; margin:20px auto; }
+
+#jcart-tooltip { display:none; position:absolute; padding:3px 7px 3px 25px; background:url(../images/checkmark.png) 3px center no-repeat #fdfdfd; border:1px solid #a6c9e2; z-index:9999; }

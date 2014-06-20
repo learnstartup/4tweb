@@ -1,0 +1,246 @@
+<!doctype html>
+<html dir="ltr" lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<template source='header1' load="true"/>
+        <style type="text/css">
+        .receiveInfo {
+            background-color: #FFF9DF;
+            border: 1px solid #E1E1E1;
+            line-height: 40px;
+            text-align: right;
+            font-size: 12px;
+            font-weight: bold;
+            z-index:999;
+            padding: 10px;
+            left:50%;
+            top:50%;
+            margin-left:-150px!important;/*FF IE7 该值为本身宽的一半 */
+            margin-top:-60px!important;/*FF IE7 该值为本身高的一半*/
+            margin-top:0px;
+            position:fixed!important;/* FF IE7*/
+            position:absolute;/*IE6*/
+            font-family: "microsoft yahei";
+        }
+
+        .receiveInfo h3{
+        	text-align: center;
+        }
+
+        .receiveInfo textarea{
+            color: #E1E1E1;
+            width: 195px;
+        }
+
+        .receiveInfo input[type="text"]{
+            width: 200px;
+        }
+
+        .bg,.popIframe {
+            background-color: #666; display:none;
+            width: 100%;
+            height: 100%;
+            left:0;
+            top:0;/*FF IE7*/
+            filter:alpha(opacity=50);/*IE*/
+            opacity:0.5;/*FF*/
+            z-index:1;
+            position:fixed!important;/*FF IE7*/
+            position:absolute;/*IE6*/
+        }
+
+        .popIframe {
+            filter:alpha(opacity=0);/*IE*/
+            opacity:0;/*FF*/
+        }
+
+        .returnMsg{
+            background-color:#FF6600;
+            color:#FFFFFF; 
+            text-align: center;
+            display: block;
+            font-size: 14px;
+            padding: 0 3px;                    
+        }
+
+        </style>
+</head>
+<body>
+	<div id="receiveInfo" class="receiveInfo" style="display:none;">
+        <!--# if($isLogin){ #-->
+        <form method="post" action="{@url:app/4tschool/dcymall/dosaveinformation}">
+        <input type="hidden" value="{$prize['id']}" name="pid">        
+        <h3>
+        	请填写兑换信息
+        </h3>
+        <HR style="FILTER: progid:DXImageTransform.Microsoft.Shadow(color:#987cb9,direction:145,strength:15)" width="100%" color=FF7214 SIZE=1>
+        <div>
+        	<label for="receiveContactor">收货人姓名</label>
+        	<input type="text" id="receiveContactor" name="receiveContactor">
+        </div>	
+        <div>
+        	<label for="receivePhone">手机号码</label>
+        	<input type="text" id="receivePhone" name="receivePhone">        	
+        </div>
+        <div>
+        	<label for="receiveQQ">QQ号码</label>
+        	<input type="text" id="receiveQQ" name="receiveQQ">
+        </div>
+        <div>
+        	<label for="receiveAddress">收货地址</label>
+        	<textarea id="receiveAddress" name="receiveAddress" class="defaultTextColor">虚拟物品无需填写</textarea>
+        </div>
+        <HR style="FILTER: progid:DXImageTransform.Microsoft.Shadow(color:#987cb9,direction:145,strength:15)" width="100%" color=FF7214 SIZE=1>
+        <div>
+        	<input type="button" name="cancel" value="取消" class="ui-btn-red" style="float:left">
+        	<input type="submit" name="confirm" value="确定" class="ui-btn-violet" style="float:right">
+        </div>
+        </form>
+        <!--# }else{ #-->
+        <input type="hidden" value="{$loginUrl}" name="loginUrl">
+        <h3>您还没有登录，无法兑换礼品哦！</h3>
+        <HR style="FILTER: progid:DXImageTransform.Microsoft.Shadow(color:#987cb9,direction:145,strength:15)" width="100%" color=FF7214 SIZE=1>            
+            <div style="width:200px">
+            <input type="button" name="continue" value="继续浏览" class="ui-btn-red" style="float:left;width:auto">
+            <input type="button" name="login" value="去登录" class="ui-btn-violet" style="float:right;width:auto">
+            </div>
+
+        <!--# } #-->
+
+	</div>
+	<div id="bg" class="bg" style="display:none;"></div>	
+	<iframe id='popIframe' class='popIframe' frameborder='0' ></iframe>
+    <!--# if($msg){ #-->
+    <div class="row" style="display:none">
+        <div class="twelvecol">
+            <div class="line new_box" style="font-family:microsoft yahei;text-align:center">
+                <span class="returnMsg">{$msg}</span>
+            </div>
+        </div>
+    </div>
+    <!--# } #-->                    
+    <!-- <div class="row">
+        <div class="twelvecol">
+            <div class="line new_box">
+                <div style="text-align:center;font-size:18px">
+                    <span>
+                        我的点币：{$userMoney['money']}
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        兑换记录：
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="clear"></div>
+	<div class="row">
+        <div class="line new_box">
+            <div class="bbox">
+                <h3 class="word-space">
+                    <div style="float:left">
+                    点币商城
+                    <span>
+                        话费、QB、各种实用物品随意换
+                    </span>
+                    </div>
+                    <div style="float:right">
+                        <!--# if($userMoney){ #-->
+                        我的点币：{$userMoney['money']}
+                        <!--# } #-->
+                    </div>                    
+                </h3>
+            </div>
+            <ul class="all-shops" id="ul1">
+                <!--# foreach($prizeList as $item){ #-->
+                    <li class="grid">
+                        <a name="exchange" title="{$item['name']}" href="#">
+                            <input type="hidden" value="{$item['id']}" name="selectedId">
+                            <div class="hot-shops">
+                                <div class="hot-shops-img">
+                                    <img alt="{$item['name']}" src="{$item['imgurl']}">
+                                </div>
+                                <div class="hot-shops-info">
+                                    {$item['name']}<br/>
+                                    <font class="" style="color:grey;font-size:11px">{$item['description']}</font>
+                                </div>
+                            </div>
+                        </a>
+                        <div style="margin-top:10px">
+                        <span class="ui-li-count">{$item['dmoney']}点币</span>
+                        </div>
+                        <div name="receiveInfo" style="display:none;width:170px;background-color:#f2dba1;border:1px solid #E1E1E1;position:absolute;z-index:9999">
+                        	<form>
+
+                        	</form>
+                        </div>
+                    </li>
+                
+                <!--#}#-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+</body>
+<script>
+$(function () {
+    if($(".returnMsg").length==1)
+    {
+        $(".returnMsg").closest('.row').toggle('normal');
+    }        
+});
+
+$("[name='exchange']").click(function(e) {
+    $("[name='pid']").val($(this).find("[name='selectedId']").val());
+	showDiv();
+	e.preventDefault();
+});
+
+$("[name='cancel']").click(function(e) {
+	closeDiv();
+	e.preventDefault();
+});
+
+$("[name='continue']").click(function(e) {
+    closeDiv();
+    e.preventDefault();
+});
+
+$("[name='login']").click(function(e) {
+    location.href=$("[name='loginUrl']").val();
+    e.preventDefault();
+});
+
+
+function showDiv(){
+	$('#receiveInfo').show();
+	$('#popIframe').show();
+	$('#bg').show();
+}
+function closeDiv(){
+	$('#receiveInfo').hide();
+	$('#popIframe').hide();
+	$('#bg').hide();
+}
+
+$("#receiveAddress").focus(function(){  
+	var address = $(this).val();  
+	if (address == this.defaultValue) {  
+		$(this).val("").css("color","black");  
+	}  
+})
+
+$("#receiveAddress").blur(function(){  
+	var address = $(this).val();
+	if (address == "") {  
+		$(this).val(this.defaultValue).css("color","#E1E1E1");  
+	}  
+})
+
+</script>
+</html>

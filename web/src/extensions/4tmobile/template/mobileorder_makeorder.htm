@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+    </head>
+    <body>
+        <div data-role="page" data-theme="f">
+            <div data-role="header" data-position="fixed" data-theme="a">
+                <h1 style="display:none">
+                    <!--# if($action=='GET'){ #-->
+                    点餐哟欢迎您！
+                    <!--# }else{ #-->
+                       <!--# if($msg){ #-->
+                       订单提交成功！
+                       <!--# } else{#-->
+                       订单提交失败！
+                       <!--# } #-->
+                    <!--# } #-->
+                </h1>
+                <template source='navbar' load="true" />
+            </div>
+        <!--# if($is_weixin){ #-->
+        <div role="main" class="ui-content">
+            <!--# if($action!='GET'){ #-->
+            <div data-role="collapsible" data-collapsed="false" data-collapsed-icon={$msg?"check":"delete"} data-expanded-icon={$msg?"check":"delete"} data-theme={$msg?"f":"d"}>
+                <h3>{$msg?"订单提交成功！":"订单提交失败！"}</h3>
+                <!--# if($msg){ #-->
+                    <span>您的订单已经成功推送到商家，等待商家确认中，商家确认后系统会发送通知消息到您的微信!</span>
+                <!--# } #-->
+                <!--# else{ #-->
+                    <label>灰常抱歉！您的订单由于未知原因提交失败，烦请您再次尝试！</label><br/>
+                <!--# } #-->                
+            </div>
+
+            <!--# } #-->
+            <!--# else{ #-->
+            <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="bullets" data-expanded-icon="bullets" data-theme="f">
+                <h3>点餐哟欢迎您！</h3>
+                您的订单已经成功推送到商家，等待商家确认中，商家确认后系统会发送通知消息到您的微信!
+            </div>
+            <!--# } #-->
+            <template source='footer' load="true" />
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->
+        </div>
+    </body>
+</html>

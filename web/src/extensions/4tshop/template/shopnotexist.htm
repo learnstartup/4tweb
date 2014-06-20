@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<template source='EXT:4tshop.template.header' load="true" />
+<template source='EXT:4tshop.template.shopadvantageheader' load="true" />
+<style type="text/css">
+#catab ul li{
+	width:auto;
+	float:left;
+}
+
+</style>
+<div class="clear"></div>
+
+<div class="wrap-sd">
+<div class="sdrow">
+<div id="wrapper" class="twelvecol">
+
+<div class="step-content" style="margin-left:100px;padding:40px;">
+    <div class="clear"></div>
+    <h3>
+        亲, 您没有权限访问, 请联系管理员, 还是<a style="color: #FF4400;" href="{@url:app/4tschool/index/run}">去首页逛逛吧</a>
+    </h3>
+    <div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<template source='EXT:4tschool.template.footer' />
+
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script>
+<script>
+    //菜品列表背景色设置
+    $(".step-shop-menu").hover(function()
+    {
+        $(this).attr("style","background-color:#FFE4D8");
+    },
+    function()
+    {
+        $(this).attr("style","background-color:''");
+    });
+
+    $(".ctgmenu").click(function () {
+        var tag = $(this);
+
+        $(".ctgmenu").each(function () {
+            $(this).attr('class', 'ctgmenu');
+        });
+
+
+        $(tag).attr('class', 'ctgmenu ctgactive');
+
+        $(".li-first").each(function () {
+            if ($(tag).attr('curindex') == $(this).attr('id').substring(4))
+                $(this).css('display', 'block');
+            else
+                $(this).css('display', 'none');
+        });
+    });
+
+    $(function(){
+        $(".step-shop-menu").live("click",function(event){
+            if(event.target.tagName.toLowerCase() != 'input' && event.target.tagName.toLowerCase() != 'a')
+            $(this).find("[name='my-add-button']").trigger("click");
+        });
+    });
+</script>
+</body>

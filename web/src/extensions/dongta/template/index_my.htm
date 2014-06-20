@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@G:url.extres}/dongta/css/css.css?v={@G:version}" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<div class="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em>
+			<a href="{@url:app/dongta/index/run}">动他一下</a>
+		</div>
+		<div class="main cc">
+			<div class="main_body">
+				<div class="main_content cc">
+					<div class="box_wrap dongta_page">			
+						<nav>
+						<div class="content_nav">
+							<ul>
+								<li><a href="{@url:app/dongta/index/run}">动他一下</a></li>
+								<li class="current"><a href="{@url:app/dongta/index/my}">谁动了我</a></li>
+							</ul>
+						</div>
+						</nav>
+						<div class="dongta_content">
+							<div class="dongta_list">
+								<!--# foreach ($result as $key => $value) { #-->
+								<dl class="cc J_friends_items">
+									<dt><a href="{@url:space/index/run?uid=$value['created_userid']}"><img class="J_avatar" src="{@Pw::getAvatar($value['created_userid'], 'small')}" data-type="small" width="50" height="50" alt="{$value['username']}" /></a></dt>
+									<dd>
+										<strong><a href="{@url:space/index/run?uid=$value['created_userid']}">{$users[$value['created_userid']]['username']}</a></strong>{$value['content']}<span class="time">{@Pw::time2str($value['created_time'])}</span>
+									</dd>
+								</dl>
+								<!--# } #-->
+							</div>
+							<div class="p10">
+								<page tpl="TPL:common.page" page="$page" per="$perpage" count="$count" url="app/dongta/index/my"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_1' load='true' />
+			</div>
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+	$('.dongta_rank_all li').live('click', function() {
+		var $this = $(this);
+		$this.toggleClass("selected");
+		$this.find('input').attr('checked', $this.hasClass('selected') ? true : false);
+	});
+
+	$('#J_send_sub').on('click', function() {
+		var tmp = $('input:radio:checked');
+		if (tmp.length == 0) {
+			Wind.Util.resultTip({
+				msg : '请选择动作',
+				follow : $(this)
+			});
+			return;
+		}
+		
+		var tmp1 = $('input:checkbox:checked');
+		if (tmp1.length == 0) {
+			Wind.Util.resultTip({
+				msg : '请选择好友',
+				follow : $(this)
+			});
+			return;
+		}
+		var btn = $(this);
+
+		$.post('{@url:app/dongta/index/send}', $('#dongtaForm').serialize(), function(data) {
+			if( data.state === 'success' ) {
+				$( '<span class="tips_success">' + data.message + '</span>' ).appendTo(btn.parent()).fadeIn('slow').delay( 1000 ).fadeOut(function() {
+					location.href = location.pathname + location.search;
+				});
+			}else if( data.state === 'fail' ) {
+				$( '<span class="tips_error">' + data.message + '</span>' ).appendTo(btn.parent()).fadeIn( 'fast' );
+				btn.removeProp('disabled').removeClass('disabled');
+			}
+		}, 'json');
+	});
+});
+</script>
+</body>
+</html>

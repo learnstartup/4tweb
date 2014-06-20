@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/updateMyInfo}">
+	<div class="clear"></div>
+		<div class="account_right" id="your_position">
+            <!--# if ($validated) { #-->
+            <div class="alert">
+              <strong>恭喜您！</strong> 您的邮箱验证成功
+            </div>
+            <!--# } else { #-->
+            <div class="alert">
+              <strong>oops！</strong> 邮箱验证失败，请返回安全中心重新尝试
+            </div>
+            <!--# } #-->
+			
+        </div>
+
+	</div>
+	<div class="spacer"></div>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".save_mess").click(function()
+	{
+		event.preventDefault();
+
+		//update data for each order's delivery
+		var postUrl = $(".pageurl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+});
+</script>

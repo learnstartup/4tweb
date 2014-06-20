@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+
+</head>
+<body>
+<template source='header' load="true"/>
+<div class="row">
+    <div id="wrapper" class="twelvecol">
+        <div class="my-step-left">
+            <div>
+                <!--# if(!empty($promotionalShopList)){ #-->
+                <div class="step-fenge">
+                    <div class="step-fenge dif-p shop-title" style="height:28px">热卖商家推荐</div>
+                    <div class="promotional-content">
+                    <ul class="all-shops"><!--class="all-shops"-->
+                        <!--#foreach ($promotionalShopList as $key => $item) {#-->
+                        <!--# if(!empty($promotionalShopList)){#-->
+                            <li class="grid" style="background-color:#FFF1ED">
+                                <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$item['schoolid']&shopid=$item['shopid']}">
+                                    <div class="hot-shops">
+                                        <div class="hot-shops-img">
+                                            <img 
+                                            alt="{$item['shopname']}" src="{$item['imageurl']}">
+                                        </div>
+                                        <div class="hot-shops-info">
+                                            {$item['name']}<br/>
+                                            <font class="" style="color:grey;font-size:11px">{$item['description']}</font>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="shop-status">
+                                    <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$item['schoolid']&shopid=$item['shopid']}">
+                                        <div style="float:left">
+                                            <span style="display:none" class={$item['isopen']==1?"":"status-closed"} title={$item['isopen']==1?"该商家正在营业中":"该商家已经打烊"}>{$item['isopen']==1?"":"烊"}</span>
+                                        <!--# if($schoolInfo['openorder'] == 1 && $schoolInfo['openorder'] == 1){ #-->
+                                            <span class="order-open" title="该商家支持送外卖">外</span>
+                                            <!--# } #-->
+
+                                            <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen'] == 1 && $item['openorder'] == 1){ #-->
+                                            <span>
+                                                <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                            </span>
+                                            <!--# } #-->
+
+                                            <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen']==0 && $item['openorder'] == 1){ #-->
+                                            <span class="no-online-service" title="该商家支持送外卖">仅电话下单</span>
+                                            <!--# } #--> 
+
+                                            <!--# if($item['isshopopen']==0 && $item['openorder'] == 0){ #-->
+                                            <br/>
+                                            <span class="icon stop-service" title="该商家暂不提供服务">该商家暂不提供服务</span>
+                                            <!--# } #-->
+                                        </div>
+                                    </a>
+                                    <div style="float:right">
+                                    <span>{$item['startingprice']}元起送</span>
+                                        <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$item['shopid']&schoolid=$item['schoolid']}" target="_blank">
+                                        <img alt="diancanyo.com - 点餐哟" width="14px" height="14px" title="商家电话" src="themes/extres/4tschool/images/Phone_page.png">
+                                        </a>
+                                     </div>   
+                                </div>
+                            </li>
+                        <!--#}else{#-->
+                            <h4 style="text-align:center;width:999px">暂无推荐</h4>
+                        <!--#}#-->
+                        <!--#}#-->
+                        <div class="clear"></div>
+                    </ul>
+                </div>
+                <!--#}#-->
+                <div class="clear"></div>
+            </div>
+            <template source='areafilterwidget' suffix='htm'/>
+            <div class="search-results">
+                <!--# if(($keyword)) { #-->
+                <span>搜索到{$count}条有关<span style="color: #ff0000">{$searchArgs['keyword']}</span>的结果:</span>
+                <!--# } #-->
+
+                <!--# if ($merchandiseList) { #-->
+                
+                <!--# } #-->
+                <!--# else { #-->
+                <span>抱歉！没有搜索到与<span style="color: #ff0000">{$searchArgs['keyword']}</span>相关的结果, 建议您更换关键字后再次尝试。</span>
+                <!--# } #-->
+            </div>
+            <div class="split-bar"></div>
+
+            <!--# if($merchandiseList) { #-->
+            <div class="step-shop-merchandises-container">
+            <!--# foreach($merchandiseList as $Item) { #-->
+            <div class="step-shop-merchandises">
+                <ul>
+                    <li>
+                        <span><a class="merchandises-shop-name-style" target="_blank" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$Item['shopid']&mid=$Item['id']&type=$searchArgs['type']&schoolid=$schoolInfo['schoolid']}">{$Item['name']}</a></span>
+                    </li>
+                    <li>
+                        <span class={$Item['hasdiscount']?"original-price price-style":"price-style"}>￥{$Item['price']}</span>
+                        <!--# if($Item['hasdiscount']) { #-->
+                        <span class="price-style">￥{$Item['currentprice']}</span>
+                        <!--# } #-->
+                    </li>
+                    <li>
+                        <a class="btn" target="_blank" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$Item['shopid']&mid=$Item['id']&type=$searchArgs['type']&schoolid=$schoolInfo['schoolid']}">商品详情</a>
+                    </li>
+                    <li style="width:300px">
+                        <span class="price-style">
+                            {$Item['ShopName']}
+                        </span>
+                            <!--# if($schoolInfo['openorder'] == 1 && $schoolInfo['openorder'] == 1){ #-->
+                                <span class="order-open" title="该商家支持送外卖">外</span>
+                                <!--# } #-->
+
+                                <!--# if($schoolInfo['openorder'] == 1 && $Item['isshopopen'] == 1 && $Item['openorder'] == 1){ #-->
+                                <span>
+                                    <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                </span>
+                                <!--# } #-->
+
+                                <!--# if($item['ifrebate']){ #-->
+                                    <span class="discount" title="该商家点餐返点币">返</span>
+                                <!--# } #-->
+
+                                <!--# if($schoolInfo['openorder'] == 1 && $Item['isshopopen']==0 && $Item['openorder'] == 1){ #-->
+                                <span class="no-online-service" title="该商家支持送外卖">仅电话下单</span>
+                                <!--# } #--> 
+
+                                <!--# if($Item['isshopopen']==0 && $Item['openorder'] == 0){ #-->
+                                <br/>
+                                <span class="icon stop-service" title="该商家暂不提供服务">该商家暂不提供服务</span>
+                                <!--# } #-->
+                            <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$Item['shopid']&schoolid=$schoolInfo['schoolid']}" target="_blank" alt="外卖电话">
+                            <img alt="diancanyo.com - 点餐哟" width="18px" height="18px" title='商家电话' src="themes/extres/4tschool/images/Phone_page.png">
+                            </a>
+                    </li>
+                    <li>
+                        <a  target="_blank" class="merchandises-shop-name-style" href="{@url:app/4tschool/shopdetails/run?shopid=$Item['shopid']&type=$searchArgs['type']&schoolid=$schoolInfo['schoolid']}">进入店铺 >></a>
+                    </li>
+                    <li>
+                        <!--# if($Item['hasdiscount']) { #-->
+                        <span class="discount">限时特惠</span>
+                        <!--# } #-->
+                    </li>
+                </ul>
+            </div>
+            <!--# } #-->
+            </div>
+            <!--# } #-->
+
+        </div>
+        <div class="spacer"></div>
+        <page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='app/4tschool/merchandiselist/run'
+              args='$searchArgs'/>
+    </div>
+</div>
+<div class="clear"></div>
+<template source='footer'/>
+</body>
+</html>

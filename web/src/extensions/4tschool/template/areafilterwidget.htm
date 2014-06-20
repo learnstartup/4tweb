@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+
+</head>
+<body>
+
+<div class="step-fenge" style="height:145px">
+    <div class="dif-p">
+        您的地址在：<span class="coordname">{$schoolName}&nbsp; </span>
+    </div>
+    <input type="hidden" name="systid" value="{$searchArgs['tagid']}">
+    <!--# if (!empty($tagInfo)) { #-->
+    <ul>
+        <li><span>菜品分类:</span></li>
+        <li class='act-list' style="color:white"><span>{$tagInfo['name']}</span></li>
+    </ul>
+    <!--#}#-->
+
+    <!--# if ($closebyaaron) { #-->
+    <ul>
+        <li><span>学校区域:</span></li>
+        <li class="{$searchArgs['aid']==''?'act-list':''}">
+            <span>
+                <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid=&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">不限</a>
+                
+            </span>
+        </li>
+        <!--# if ($areaList) { #-->
+        <!--#foreach ($areaList as $key => $item) {#-->
+        <li class="{$item['id']==$searchArgs['aid']?'act-list':''}"><span><a
+                href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$item['id']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">{$item['areaname']}</a></span>
+        </li>
+        <!--#}#-->
+        <!--# } else { #-->
+        <li class=""><span><a href="#">该校区目前还没哟划分区域哟</a></span></li>
+        <!--# } #-->
+    </ul>
+    <!--# } #-->
+
+    <ul>
+        <li><span>送外卖?:&nbsp;</span></li>
+
+        <li class="{$searchArgs['ifdeliver']==''?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">不限</a></span></li>
+
+        <li class="{$searchArgs['ifdeliver']=='y'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=y&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">是</a></span></li>
+
+        <li class="{$searchArgs['ifdeliver']=='n'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=n&baseprice=&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">否</a></span></li>
+
+       
+    </ul>
+    <ul>
+        <li><span>外卖费?:&nbsp;</span></li>
+        <li class="{$searchArgs['ifdeliverfee']==''?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee=&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">不限</a></span></li>
+
+        <li class="{$searchArgs['ifdeliverfee']=='y'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee=y&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">有</a></span></li>
+
+        <li class="{$searchArgs['ifdeliverfee']=='n'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee=n&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">无</a></span></li>
+    </ul>
+    <ul>
+        <li><span>起送价格: </span></li>
+        <li class="{$searchArgs['baseprice']==''?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice=&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">不限</a></span></li>
+        <!--    
+        <li class="{$searchArgs['baseprice']=='0-0'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice=0-0&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">0元</a></span></li>
+         -->   
+
+        <li class="{$searchArgs['baseprice']=='1-9'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=y&baseprice=1-9&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">10元以下</a></span></li>
+
+        <li class="{$searchArgs['baseprice']=='10-19'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=y&baseprice=10-19&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">10-20元</a></span></li>
+
+        <li class="{$searchArgs['baseprice']=='20-10000'?'act-list':''}"><span>
+            <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver=y&baseprice=20-10000&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']}&orderby={$searchArgs['orderby']}&sort={$searchArgs['sort']}">20元以上</a></span></li>
+    </ul>
+    
+</div>
+<div class="clear"></div>
+<!--# if($searchArgs['type']=='m') { #-->
+<div class="step-fenge" style="height:40px">
+    <div class="step-sort"><span class="step-sort-title">排序</span>
+        <ul class="step-sort-icon">
+            <li class="step-order">
+                <a onclick="javascript:return false;" href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']&orderby=ordercount&sort={$sort}">销量
+                    <span class="icon icon_t"></span></a>
+            </li>
+            <li class="step-order">
+                <a href="{$searchArgs['baseurl']}&type={$searchArgs['type']}&keyword={$searchArgs['keyword']}&aid={$searchArgs['aid']}&ifdeliver={$searchArgs['ifdeliver']}&baseprice={$searchArgs['baseprice']}&ifdeliverfee={$searchArgs['ifdeliverfee']}&systid={$searchArgs['tagid']&orderby=price&sort={$sort}">价格
+                    <span class="{$sortStyle}"></span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="clear"></div>
+<!--# } #-->
+</body>
+</html>

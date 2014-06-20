@@ -1,0 +1,29 @@
+.dongta_act{
+	position:absolute;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #C1C1C1;
+	width:516px;
+}
+
+.dongta_act ul{
+	padding:10px 0 10px 10px;
+	margin:0;
+	list-style:none;
+}
+.dongta_act li{
+	list-style:none;
+	float:left;
+	width:90px;
+	padding:5px 10px;
+	text-align:center;
+	line-height:24px;
+	height:24px;
+	overflow:hidden;
+	border:2px solid #e4e4e4;
+	margin:5px;
+	cursor:pointer;
+}
+.dongta_act li img{
+	vertical-align:middle;
+	margin-right:5px;
+}

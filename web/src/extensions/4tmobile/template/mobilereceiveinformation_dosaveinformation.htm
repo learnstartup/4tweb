@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+    </head>
+    <body>
+        <div data-role="page" data-theme="f">
+            <div data-role="header" data-position="fixed" data-theme="d">
+                <h1 style="display:none">礼品兑换</h1>
+                <template source='navbar' load="true" />
+                <!--# if($isDeduct){ #-->
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="#" data-theme="d"><span>我的点币：{$myMoney['money']}</span></a></li>
+                    </ul>
+                </div>
+                <!--# } #-->                 
+            </div>            
+            <div role="main" class="ui-content" >
+                <input type="hidden" value="{$openId}" name="openid">
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="picture-o" data-expanded-icon="info-circle" data-theme="f">
+                    <h3>消息</h3>
+                    <!--# if($isDeduct>0){ #-->
+                    <span>您已成功兑换
+                        <span class="hightlight">{$prize['name']}</span>，消耗点币<span class="hightlight"> {$prize['dmoney']} </span>个。
+                        <br/><span>我们将尽快处理，相关信息将以短信的方式通知您。</span>
+                    </span>
+                    <!--# }else{#-->
+                        <span>非常抱歉，兑换失败了，请稍候再试！</span>
+                    <!--# } #-->
+               </div>
+            </div>
+                <template source='footer' load="true" />
+        </div>      
+    </body>
+</html>

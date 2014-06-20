@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<style type="text/css">
+.hot-shops img {
+width: 200px;
+height: 200px;
+}
+
+</style>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="clear"></div>
+  <div class="spacer"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="line">
+        <div class="bbox">
+        <h3>积分商场<span>积分换取商品</span><span class="index-info">快来兑换合适自己的商品噢</span></h3>
+        <p><strong>请注意</strong>, 如果您要兑换积分, 请和工作站人员联系, 谢谢</p>
+        </div>
+        <div class="spacer"></div>
+        <ul class="all-shops">
+          <!--#foreach ($specialOffers as $key => $item) {#-->
+           <li style="width:210px;height:300px;">
+            <div class="hot-shops">
+            <a class="eachOffer" href="#">
+              <img alt="{$item['shopName']}" src="{@G:url.extres}/{$item['shopImage']}">
+            </a>
+            </div>
+            <div class="hot-name">{$item['merchandise']}</div>
+            <div class="hot-order">
+            <span class="hot-price">{$item['priceOffer']}</span>
+            </button>
+            </div>
+          </li>
+          <!--#}#-->
+          <div class="clear"></div>        
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script type="text/javascript">
+
+$(".eachOffer").click(function()
+{
+
+  return false;
+
+});
+</script>
+</body></html>

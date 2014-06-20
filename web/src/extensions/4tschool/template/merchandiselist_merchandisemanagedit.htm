@@ -1,0 +1,173 @@
+<!doctype html>
+<template source='TPL:admin.common.head'/>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style style="text/css">
+    .merchandiseproperty span {
+         background: none repeat scroll 0 0 #DDDDDD;
+         display: inline-block;
+         margin: 0 5px 5px 0;
+         padding: 0 5px;
+         cursor:pointer;
+     }
+    .selected{
+        color:red;
+     }
+
+     #merchandise-content{
+        margin-left:50px;
+     }
+     #merchandise-content tr{
+        line-height: 22px;
+     }
+     #merchandise-content tr td{
+        width:120px;
+     }
+
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+    <template source='left_bar' load="false" />
+    <div class="centersidebar" id="orderList">
+        <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/merchandiselist/merchandisemanagedit}">
+        <div class="nav">
+            <div class="return" style="margin-top:6px"><a href="{@url:app/4tschool/merchandiselist/merchandisemanage?id=$merchandise['shopid']&schoolid=$schoolId}">返回上一级</a></div>
+            <div class="mb10" style="float:right;margin-top:6px"><a class="btn J_dialog" href="{@url:app/4tschool/merchandiselist/merchandisemanageradd?schoolid=$schoolId}" title="添加菜品" role="button"><span class="add"></span>添加菜品</a></div>
+        </div>  
+        <div class="search_type cc mb10" id="search">
+        <form class="J_ajaxForm" id="J_merchandiselist_form" data-role="list" action="{@url:app/4tschool/merchandiselist/merchandisemanagedit?id=$merchandise['id']}" method="post" >
+            <input type='hidden' name='type' value="do">
+            <div id="merchandise-content">
+                <table width="100%">
+                    <col class="th" />
+                    <col />
+                    <thead>
+                        <tr>    
+                            <th>MID</th>
+                            <td>{$merchandise['id']}</td>
+                        </tr>   
+                    </thead>
+                    <tr>
+                        <th>商家标签</th>
+                        <td>
+                            <select class="choosenTagid" name="choosenTagid">
+                                <!--#foreach($tagList as $item) {#-->
+                                <option class="tag{$item['id']}" <?php if($item['id'] == $merchandise['tagid']) echo "selected"; ?> value="{$item['id']}" >{$item['name']}</option>
+                                <!--#}#-->
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>菜品名</th>
+                        <td><input name="foodname" type="text" class="input length_5" value="{$merchandise['name']}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>描述</th>
+                        <td>
+                            <textarea name="description" class="length_5">{$merchandise['description']}</textarea>
+                        </td>
+                    </tr>
+                    <tbody id="J_announce_content" class="J_radio_tbody">
+                    <tr>
+                        <th>评论</th>
+                        <td>
+                            <textarea id="J_textarea" name="merchandisedescription" style="width:360px;height:200px" class="length_5">{$merchandise['merchandisedescription']}</textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tr>
+                        <th>链接</th>
+                        <td>
+                            <input name="descriptionurl" class="input length_5" value="{$merchandise['descriptionurl']}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>需要打包费用?</th>
+                        <td><input name="needPackingPrice" type="checkbox" value="1" 
+                            {$merchandise['needPackingPrice'] == 1?"checked=checked":""}></td>
+                    </tr>
+                    <tr>
+                        <th>价格</th>
+                        <td><input name="price" type="text" class="input length_5" value="{$merchandise['price']}"></td>
+                    </tr>
+                    <tr>
+                        <th>当前价格</th>
+                        <td><input name="currentprice" type="text" class="input length_5" value="{$merchandise['currentprice']}"></td>
+                    </tr>                   
+                    <tr>
+                        <th>单位</th>
+                        <td><input name="unit" type="text" value="{$merchandise['unit']}" class="input length_5"></td>
+                    </tr>
+                    <tr>
+                        <th>剩余数量</th>
+                        <td><input name="remainder" type="number" value="{$merchandise['remainder']}" class="input length_5"></td>
+                    </tr>
+                    <tr>
+                        <td>推荐?<input name="willRecommend" type="checkbox" value="1" 
+                            {$merchandise['recommend'] == 1?"checked=checked":""}></td>
+                        <td>上架中?<input name="isActive" type="checkbox" value="1" 
+                            {$merchandise['active'] == 1?"checked=checked":""}>
+                            精品?<input name="isStar" type="checkbox" value="1" 
+                            {$merchandise['isstar'] == 1?"checked=checked":""}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>菜品属性</th>
+                        <td>
+                            <div class="merchandiseproperty">
+                                <input id="systags" name="systags" hidden="hidden" value="">
+                                <!--# foreach($sysTagList as $key=>$value) { #-->
+                                      <span value="{$value['id']}" class="{$value['selected']}">{$value['name']}</span>
+                                <!--# } #-->
+                            </div>
+                        </td>
+                    </tr>                   
+                </table>
+            </div>
+            <div class="pop_bottom" style="text-align:right">
+                <button type="submit" class="btn btn_submit" id="J_merchandiselist_sub">提交</button>
+                <a href="{@url:app/4tschool/merchandiselist/merchandisemanage?id=$merchandise['shopid']&schoolid=$schoolId}"><button type="button" class="btn btn_submit">返回列表</button></a>
+            </div>
+        </form>
+    </div>
+        </div>
+    </div>
+<template source='TPL:admin.common.footer' />
+
+<script>
+
+    Wind.js(GV.JS_ROOT + '/pages/merchandiselist/merchandiselistSub.js?v=' + GV.JS_VERSION);
+                    
+</script>
+<script type="text/javascript">
+
+$(".merchandiseproperty > span").each(function(){
+    $.systags=$("#systags");
+    if ($(this).hasClass("selected")) $.systags.val($.systags.val()+$(this).attr("value")+"||");
+});
+
+$(".merchandiseproperty > span").click(function(){
+    $.systags=$("#systags");
+
+    if (!$(this).hasClass("selected")) {
+        $(this).addClass("selected");
+
+        if ($.systags.val().indexOf($(this).attr("value")+"||")==-1)
+            $.systags.val($.systags.val()+$(this).attr("value")+"||");
+
+        return;
+    };
+
+    $(this).removeClass("selected");
+
+    var target=$(this).attr("value")+"||";
+    var targetIndex=$.systags.val().indexOf(target);    
+    var head=$.systags.val().substring(0,targetIndex);
+    var tail=$.systags.val().substring(targetIndex+target.length);
+    $.systags.val(head+tail);
+});
+</script>
+</body>
+<template source='footer' />
+</html>

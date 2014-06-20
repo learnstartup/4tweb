@@ -1,0 +1,166 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+<style>
+td.group {
+color: blue;
+}
+
+fieldset{
+	border: 3px;
+	padding: 5px;
+	font-size: 14px;
+	margin-top: 20px;
+	background-color: rgb(240, 255, 237);
+	border-top-width: 5px;
+	border-color: blue;
+}
+</style>
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+		<form action="{@url:app/4tschool/statistic/orderfor}" id="schoolordersForm" method="post">
+			<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/statistic/orderfor}">
+			<div class="myddorder_search clearfix">
+				<div class="time_box" style="width:100%;padding-bottom:5px;">
+					<strong>从</strong>
+					<input type="text" id="fromTime" value="{$fromTime}" name="fromTime"><strong>到</strong>
+					<input type="text" value="{$toTime}" id="toTime" name="toTime">
+					<span style="float:right">
+						<input type="submit" id="searchBtn" name="searchBtn" value="点击搜索"></input>
+					</span>
+				</div>
+				
+			</div>
+			<fieldset>
+				<legend><h2>下单人员对账统计</h2></legend>
+				
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmgrouping">
+					<thead>
+						<tr>
+							<th>配送人</th>
+							<th>下单总金额</th>
+							<th>总份数</th>
+							<th>提成份数</th>
+							<th>顺带份数</th>
+							<th>非提成份数</th>
+							<th>详情</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--#foreach ($userStatistic as $key => $eachDelivery) {#-->
+						<tr class="">
+							<td width="130px"><strong>
+								{$userInfos[$key]['username']}
+							</strong>
+							</td>
+							<td><strong>￥{$eachDelivery['totalMoney']}</strong></td>
+							<td>{$eachDelivery['totalQuantity']}</td>
+							<td>{$eachDelivery['totalBonusQuantity']}</td>
+							<td>{$eachDelivery['totalShunDaiQuantity']}</td>
+							<td>{$eachDelivery['totalNoBonusQuantity']}</td>
+							<td>
+								<!--# if($key != -1) {#-->
+								<a href="{$key}" class="checkDetail">查看</a>
+								<!--# } #-->
+							</td>
+						</tr>
+						<!--# } #-->
+						
+					</tbody>
+				</table>
+			</fieldset>
+			
+		</form>
+	</div>
+
+</div>
+
+<!--#foreach ($userStatistic as $key => $eachDelivery) {#-->
+<div id="dialog-createSchedule-form{$key}" class="dialog-form" style="display:none" title="详情">
+	<table>
+  	<thead>
+		<tr>
+			<th>商店</th>
+			<th width="130px">下单总金额</th>
+			<th width="60px">总份数</th>
+			<th width="60px">提成份数</th>
+			<th width="60px">顺带份数</th>
+			<th width="130px">非提成份数</th>
+		</tr>
+		<tbody>
+			<!--#foreach ($eachDelivery['shop'] as $shopid => $eachShopDetail) {#-->
+			<tr class="">
+				<td width="130px"><strong>
+					{$shopNames[$shopid]}
+				</strong>
+				</td>
+				<td width="60px"><strong>￥{$eachShopDetail['totalMoney']}</strong></td>
+				<td width="60px">{$eachShopDetail['totalQuantity']}</td>
+				<td width="60px">{$eachShopDetail['totalBonusQuantity']}</td>
+				<td width="60px">{$eachShopDetail['totalShunDaiQuantity']}</td>
+				<td width="130px">{$eachShopDetail['totalNoBonusQuantity']}</td>
+
+			</tr>
+			<!--# } #-->
+			
+		</tbody>
+	</table>
+</div>
+<!--# } #-->
+
+<div class="clear"></div>
+<template source='footer' />
+
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script> 
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+	$( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "0D" 
+    });
+
+
+     $( ".dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 650,
+      modal: true,
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        },
+      close: function() {
+        
+      }
+    });
+
+
+     $(".checkDetail").each(function(index,element)
+     	{
+     		$(element).click(function(event)
+		    {
+		    	event.preventDefault();
+		    	var uid  = $(this).attr("href");
+		    	var name = "#dialog-createSchedule-form" + uid;
+		    	$( name).dialog( "open" );
+		    });
+     	});
+
+
+});
+</script>
+
+

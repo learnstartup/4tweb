@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>截止日期必须大于开始日期.</li>
+				<li>推广状态为是时, 则表示该商店置顶.</li>
+			</ol>
+		</div>
+		<div class="mb10"><a class="btn J_dialog" href="{@url:app/4tschool/promotionalmanage/add}" title="添加推广" role="button"><span class="add"></span>添加推广</a></div>
+		<div class="h_a">搜索</div>
+		<form class="J_ajaxForm" action="{@url:app/4tschool/promotionalmanage/run}" method="post">
+		<div class="search_type cc mb10">
+				<input type="hidden" name="page" value="{$page}">
+				<input type='hidden' name='type' value="do">
+				<label>学校:</label>
+					<select class="choosenSchoolid length_5" name="choosenSchoolId">
+						<option value="-1">全部</option>
+                        <!--#foreach($allSchool as $item) {#-->
+                        <option class="school{$item['schoolid']}"
+                        <?php if($item['schoolid'] == $searchCondition['choosenSchoolId']) echo "selected"; ?>
+                        value="{$item['schoolid']}" >{$item['name']}
+                    	</option>
+                        <!--#}#-->
+                    </select>
+				<label>推广状态:</label>
+					<select name="promotionalstatus">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($searchCondition['promotionalstatus'] == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($searchCondition['promotionalstatus'] == '0') echo "selected"; ?>>否</option>
+					</select>
+				<button type="submit" class="">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>学校</td>
+						<td>商家名</td>
+						<td>推广状态</td>
+						<td>推广开始日期</td>
+						<td>推广截止日期</td>
+						<td>创建日期</td>
+						<td>更新日期</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($shopPromotionalList) { #-->
+				<!--#foreach ($shopPromotionalList as $key => $item) {#-->
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['schoolname']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['promotionalstatus'] == 1?'是':'否'}</td>
+					<td>{$item['promotionalstartime']}</td>
+                    <td>{$item['promotionalendtime']}</td>
+                    <td>{$item['promotionalcreatedate']}</td>
+                    <td>{$item['promotionalupdate']}</td>
+                    <td><a href="{@url:app/4tschool/promotionalmanage/edit?id=$item['id']}" class="mr10 J_dialog" title="编辑推广">[编辑]</a>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前还没有商家推广哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/promotionalmanage/run?type=submit' />
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

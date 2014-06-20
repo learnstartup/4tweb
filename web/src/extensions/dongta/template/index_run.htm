@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@G:url.extres}/dongta/css/css.css?v={@G:version}" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<div class="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em>
+			<a href="{@url:app/dongta/index/run}">动他一下</a>
+		</div>
+		<div class="main cc">
+			<div class="main_body">
+				<div class="main_content cc">
+					<div class="box_wrap dongta_page">			
+						<nav>
+						<div class="content_nav">
+							<ul>
+								<li class="current"><a href="{@url:app/dongta/index/run}">动他一下</a></li>
+								<li><a href="{@url:app/dongta/index/my}">谁动了我</a></li>
+							</ul>
+						</div>
+						</nav>
+						<div class="dongta_content">
+							<form id="dongtaForm">
+							<div class="dongta_rank cc">
+								<div class="dongta_rank_act">
+									<h2>选择动作</h2>
+									<ul class="cc">
+										<!--# foreach ($act as $key => $value) { #-->
+										<li data-id="{$key}">
+											<label><img src="{@G:url.extres}/dongta/images/act/{$key}.gif" />{$value[0]}</label>
+										</li>
+										<!--# } #-->
+										<input type="hidden" name="act" id="dongta_act" value="1" />
+									</ul>
+								</div>
+								<div class="dongta_rank_all">
+									<h2>选择好友</h2>
+									<ol class="cc">
+										<!--# foreach ($follows as $key => $value) { #-->
+										<li>
+											<em></em>
+											<img class="J_avatar" src="{@Pw::getAvatar($key, 'middle')}" data-type="middle" width="110" height="110" alt="{$userList[$key]['username']}" />
+											<span class="name">{@Pw::substrs($userList[$key]['username'],7)}</span>
+											<input type="checkbox" name="uid[]" value="{$key}" style="display:none">
+										</li>
+										<!--# } #-->
+									</ol>
+								</div>
+							</div>
+							<div class="p20">
+								<button id="J_send_sub" class="btn btn_submit btn_big mb10" name="Submit" type="button">发送动作</button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_1' load='true' />
+			</div>
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){																								
+	$('.dongta_rank_act li').live('click', function() {
+		var $this = $(this);
+		$('.dongta_rank_act li').removeClass('selected');
+		$this.addClass('selected');
+		$('#dongta_act').val($this.data('id'));
+	});
+	
+	$('.dongta_rank_all li').live('click', function() {
+		var $this = $(this);
+		$this.toggleClass("selected");
+		$this.find('input').attr('checked', $this.hasClass('selected') ? true : false);
+	});
+
+	$('#J_send_sub').on('click', function() {
+		if (!$('#dongta_act').val()) {
+			Wind.Util.resultTip({
+				msg : '请选择动作',
+				follow : $(this)
+			});
+			return;
+		}
+		
+		var tmp1 = $('input:checkbox:checked');
+		if (tmp1.length == 0) {
+			Wind.Util.resultTip({
+				msg : '请选择好友',
+				follow : $(this)
+			});
+			return;
+		}
+		var btn = $(this);
+
+		$.post('{@url:app/dongta/index/send}', $('#dongtaForm').serialize(), function(data) {
+			if( data.state === 'success' ) {
+				$( '<span class="tips_success">' + data.message + '</span>' ).appendTo(btn.parent()).fadeIn('slow').delay( 1000 ).fadeOut(function() {
+					location.href = location.pathname + location.search;
+				});
+			}else if( data.state === 'fail' ) {
+				$( '<span class="tips_error">' + data.message + '</span>' ).appendTo(btn.parent()).fadeIn( 'fast' );
+				btn.removeProp('disabled').removeClass('disabled');
+			}
+		}, 'json');
+	});
+});
+</script>
+</body>
+</html>

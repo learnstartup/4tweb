@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>类型:美食周报/美食文章</li>
+				<li>选取优秀美食作品/编辑</li>
+			</ol>
+		</div>
+		<div class="mb10"><a class="btn" id="J_cateweekreport_sub" href="{@url:app/4tschool/cateweekreport/add}" title="添加周报" role="button"><span class="add"></span>添加周报</a></div>
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="J_ajaxForm" action="{@url:app/4tschool/cateweekreport/run}" method="post">
+				<input type="hidden" name="page" value="{$page}">
+
+				<input type='hidden' name='type' value="do">
+				<label>学校:</label>
+					<select class="choosenSchoolid length_5" name="choosenSchoolId">
+						<option value="-1">全部</option>
+                        <!--#foreach($allSchool as $item) {#-->
+                        <option class="school{$item['schoolid']}"
+                        <?php if($item['schoolid'] == $searchCondition['choosenSchoolId']) echo "selected"; ?>
+                        value="{$item['schoolid']}" >{$item['name']}
+                    	</option>
+                        <!--#}#-->
+                    </select>
+				<label>类型:</label>
+					<select name="typename">
+						<option value="-1">全部</option>
+                            <!--#foreach($cateTypeClass as $key => $item) {#-->
+                            <option value="{$key+1}" <?php if($searchCondition['typename'] == ($key+1)) echo "selected"; ?>>{$item}</option>
+                        <!--#}#-->
+					</select>
+				<label>是否审核:</label>
+					<select name="audited">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($searchCondition['audited'] == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($searchCondition['audited'] == '0') echo "selected"; ?>>否</option>
+					</select>
+				<label>是否发布:</label>
+					<select name="released">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($searchCondition['released'] == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($searchCondition['released'] == '0') echo "selected"; ?>>否</option>
+					</select>
+				<button type="submit" class="">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td style="display:none">顺序</td>
+						<td>学校</td>
+						<td>类型</td>
+						<td>标题</td>
+						<td style="display:none">内容</td>
+						<td style="display:none">图片路径</td>
+						<!--<td>创建者</td>
+						<td>联系方式</td>-->
+						<td>链接</td>
+						<td>是否审核</td>
+						<!--<td>是否发布</td>-->
+						<td>发布时间</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($cateWeekReportList) { #-->
+				<!--#foreach ($cateWeekReportList as $key => $item) {#-->
+				<tr>
+					<td style="display:none">{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['type']==1?'美食文章':'美食周报'}</td>
+                    <td>{$item['title']}</td>
+                    <td style="display:none"><?php echo $item['content']; ?></td>
+					<td style="display:none">{$item['breviaryphoto']}</td>
+					<!--<td>{$item['creator']}</td>
+					<td>{$item['contactinfo']}</td>-->
+					<td>{$item['link']}</td>
+					<td>{$item['audited']==1?'是':'否'}</td>
+					<!--<td>{$item['released']==1?'是':'否'}</td>-->
+					<td>{$item['releasedate']}</td>
+					<td><a href="{@url:app/4tschool/cateweekreport/edit?id=$item['id']}" class="mr10" title="编辑周报">[编辑]</a>
+                        <a href="{@url:app/4tschool/cateweekreport/imgupload?cid=$item['id']&url=$item['imageurl']}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+                        <!--# if(@Pw::strlen($item['breviaryphoto'])==0){ #-->
+						<label>[无图]</label>
+						<!--# } #-->
+						<!--# else{ #-->
+						<a href="{@url:app/4tschool/cateweekreport/preview?id=$item['id']}"  target="_blank">[预览]</a>
+						<!--# } #-->
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前没有搜索到数据哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+			<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/cateweekreport/run' />
+			</div>
+		</div>
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

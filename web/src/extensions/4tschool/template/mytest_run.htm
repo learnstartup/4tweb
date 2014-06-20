@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<template source='header' load="false" />
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div id="banner" style="display:none">
+        <!--#foreach ($slides as $key => $item) {#-->
+        <img  src="{@G:url.extres}/{$item['imageUrl']}">
+        <!--#}#-->
+      </div>
+
+      <div class="my-tools">
+        <!--<div class="slideshow"><img style="height:115px" src="{@G:url.extres}/4tschool/images/free.png" width="270"></div>-->
+        <div class="news">热门搜索</div>
+        <ul>
+          <!--#foreach ($notices as $key => $item) {#-->
+                      <li><a href="{$item['link']}">{$item['subject']}</a></li>
+          <!--#}#-->
+          </ul>
+          <div class="news">最新订单</div>
+          <p class="new-order">最新订单</p>
+            <div class="scroll">
+              <ul class="list" style="margin-top: -8.516399999999997px;">
+                <!--#foreach ($newOrders as $key => $item) {#-->
+                            <li>{$item['who']}在 <a href="{$item['link']}">{$item['where']}</a> 点了 <span class="oa_item">{$item['what']}</span> 等美味&nbsp;&nbsp;
+                            </li>
+                <!--#}#-->
+              </ul>
+          </div>
+      </div>
+      <div class="clear"></div>
+  </div>
+</div>
+  <div class="clear"></div>
+  <div class="spacer"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="line">
+        <div class="bbox">
+        <h3>今日闪价<span>每日更新</span><span class="index-info">分享哟，订餐！300000大学生的选择，饭点到了！</span></h3>
+
+        </div>
+        <div class="spacer"></div>
+        <ul class="all-shops">
+          <!--#foreach ($specialOffers as $key => $item) {#-->
+           <li>
+            <div class="hot-shops">
+            <a href="{$item['shopLink']}">
+            <img height="90px" width="165px" alt="{$item['shopName']}" src="{@G:url.extres}/{$item['shopImage']}">
+            </a>
+            </div>
+            <div class="hot-name">{$item['merchandise']}</div>
+            <div class="hot-order">
+            <span class="hot-price">￥{$item['priceOffer']}</span>
+            <button type="button" title="立即订餐" class="button btn-cart" onclick=""><span>立即订餐</span></button>
+            </div>
+          </li>
+          <!--#}#-->
+          <div class="clear"></div>        
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="line">
+        <div class="bbox">
+        <h3>推荐餐厅<span>每日更新</span><span class="index-info">分享哟，订餐！300000大学生的选择，饭点到了！</span></h3>
+        
+        </div>
+        <div class="spacer"></div>
+        <div class="recommend-shops">
+          <div class="recommend-pic">
+            <ul>
+              <!--#foreach ($specialOffers as $key => $item) {#-->
+              <li>
+                <div class="recommend-shop" style="text-align:center"> 
+                <a href="{$item['shopLink']}">
+                <img alt="{$item['shopName']}" src="{@G:url.extres}/{$item['shopImage']}">
+                </a>
+                </div>
+                <div class="recommend-name" style="height:60px">
+                <a href="{$item['shopLink']}">
+                {$item['shopName']}                </a>
+                <p>{$item['merchandise']}</p>
+                <p>{$item['shopAddress']}</p>
+                </div>
+              </li>
+              <!--#}#-->
+                          
+              </ul>
+          </div>
+          <div class="recommend-text last">
+            <div class="ranking-tab">
+              <p class="ranking">人气排行</p>
+              <ul>
+                <!--#foreach ($favoriteList as $key => $item) {#-->
+                            <li><a href="{$item['shopLink']}">{$item['merchandise']}</a><span>{$item['sells']}</span></li>
+                <!--#}#-->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+
+<div style="display:none">
+<div id="modal_address_map">
+    <table>
+    <tbody><tr>
+    <td>
+    <div class="tab_content" id="tab1">
+		<input type="text" value="如：街道，交叉路口，明显建筑物等" class="my-input" name="maddress" id="mkey">
+		<input type="image" id="msearch" class="my-submit inline" value="搜索" src="{@G:url.extres}/4tschool/images/search_submit.png">
+	   	</div>
+    </td>
+    <td>
+                <input style="margin-left:20px;" type="button" id="address_guess" class="fancybox" name="address_guess" value="试试自动定位您的位置" onclick="Fandian_Geolocation();">
+            </td></tr>
+    </tbody></table>
+    
+	<div class="map_container">
+		<div id="modal_address_map_canvas"></div>
+		<div class="modal_map_rightbar">
+			<div class="modal_map_rightbar_title">附近地标</div>
+			<ul id="coords"></ul>
+		</div>
+	</div>
+</div>
+</div>
+  
+
+<a href="http://wx.fandian.com/#" id="toTop" style="display: none;"><span id="toTopHover"></span>To Top</a>
+<div id="cboxOverlay" style="display: none;"></div>
+<div id="colorbox" class="" style="display: none;">
+  <div id="cboxWrapper"><div>
+  <div id="cboxTopLeft" style="float: left;"></div>
+  <div id="cboxTopCenter" style="float: left;"></div>
+  <div id="cboxTopRight" style="float: left;"></div>
+</div>
+<div style="clear: left;">
+  <div id="cboxMiddleLeft" style="float: left;"></div>
+  <div id="cboxContent" style="float: left;">
+  <div id="cboxLoadedContent" style="width: 0px; height: 0px; overflow: hidden; float: left;"></div>
+  <div id="cboxTitle" style="float: left;"></div>
+  <div id="cboxCurrent" style="float: left;"></div>
+  <div id="cboxNext" style="float: left;"></div>
+  <div id="cboxPrevious" style="float: left;"></div>
+  <div id="cboxSlideshow" style="float: left;"></div>
+  <div id="cboxClose" style="float: left;"></div>
+</div>
+  <div id="cboxMiddleRight" style="float: left;"></div>
+</div>
+<div style="clear: left;">
+  <div id="cboxBottomLeft" style="float: left;"></div>
+  <div id="cboxBottomCenter" style="float: left;"></div>
+  <div id="cboxBottomRight" style="float: left;"></div>
+</div>
+</div>
+<div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div>
+
+</div></body></html>

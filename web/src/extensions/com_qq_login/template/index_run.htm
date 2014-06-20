@@ -1,0 +1,333 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' suffix='htm' />
+<link href="{@theme:css}/register.css?v={@G:version}" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+<template source='TPL:common.header' suffix='htm'/>
+	<div class="main_wrap">
+		<div class="main">
+			<div class="box_wrap register cc">
+				<h2 class="reg_head">创建新帐号</h2>
+				<div class="reg_cont_wrap">
+					<div class="reg_cont">
+						<form id="J_register_form" action="{@G:url.base}/index.php?m=app&app=com_qq_login&action=register" method="post" >
+						<div class="reg_form" style="padding-top:0">
+							<dl class="cc">
+							<dt>
+							&nbsp;
+							</dt>
+							<dd>
+							<img src="{$figureurl_1}" style="float:left; margin-right:10px;" /> {$nickname}：<br />创建帐号并绑定QQ
+							</dd>
+							<dd class="dd_r">
+							</dd>
+							</dl>
+							
+							<dl class="cc">
+								<dt>&nbsp;</dt>
+								<dd style="margin-top:6px;">
+									<a href="{@G:url.base}/index.php?m=app&app=com_qq_login&c=index&a=later"><span style="color:red">用QQ帐号访问网站</span></a>
+								</dd>
+							</dl>
+
+						</div>
+						</form>
+					</div>
+				</div>
+				<div class="reg_side">
+					<div class="reg_side_cont">
+						<p class="mb10">已经注册？</p>
+						<p><a rel="nofollow" href="/index.php?m=u&c=login&backurl=%2Findex.php%3Fm%3Dapp%26app%3Dcom_qq_login" class="btn btn_big">绑定现有帐号</a></p> <!-- 修改插件名称后需要修改这里的backurl -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<template source='TPL:common.footer' suffix='htm'/>
+</div>
+<script>
+Wind.use('jquery', 'global', 'validate', 'emailAutoMatch', function(){
+	
+	//聚焦时默认提示
+	var focus_tips = {
+		invitecode : '本站开启邀请注册，请填写邀请码',
+		username : '{$nameReg}',
+		password : '{$pwdReg}',
+		repassword : '请再输入一遍您上面填写的密码',
+		email : '请填写真实的电子邮箱',
+		regreason : '注册原因是管理员判断是否审核通过的主要参考依据',
+		mobile : '',
+		qq : '',
+		msn : '',
+		aliww : '',
+		code : '',
+		mobileCode : '请填写收到的手机验证码'
+	};
+	
+	//密码强度
+	var passwordRank = {
+		1 : '<span class="pwd_strength_1"></span>弱',
+		2 : '<span class="pwd_strength_2"></span>弱',
+		3 : '<span class="pwd_strength_3"></span>中',
+		4 : '<span class="pwd_strength_4"></span>强'
+	};
+	
+	var register_form = $("#J_register_form"),
+			reg_username = $('#J_reg_username'),						//用户名表单
+			reg_password = $('#J_reg_password'),						//密码表单
+			reg_tip_password = $('#J_reg_tip_password');		//密码提示区
+
+	register_form.find('dl:first input:text:visible').focus().parents('dl').addClass('current');
+
+	//validate插件修改了remote ajax验证返回的response处理方式；增加密码强度提示 passwordRank
+	register_form.validate({
+		//debug : true,
+		//onsubmit : false,
+		errorPlacement: function(error, element) {
+			//错误提示容器
+			$('#J_reg_tip_'+ element[0].name).html(error);
+		},
+		errorElement: 'span',
+		//invalidHandler : , 未验证通过 回调
+		//ignore : '.ignore' 忽略验证
+		//onkeyup : true,
+		errorClass : 'tips_icon_error',
+		validClass		: 'tips_icon_success',
+		onkeyup : false,
+		focusInvalid : false,
+		rules: {
+			invitecode : {
+				required	: true,
+				remote		: {
+					url : "{@WindUrlHelper::createUrl('u/register/checkInvitecode')|url}",
+					type : 'post',
+					dataType: "json",
+					data : {
+						invitecode : function(){
+							return $("#J_reg_invitecode").val();
+						}
+					}
+				}
+			},
+			username: {
+				required	: true,
+				remote		: {
+					url : "{@WindUrlHelper::createUrl('u/register/checkusername')|url}",
+					type : 'post',
+					dataType: "json",
+					data : {username : function(){
+							return $("#J_reg_username").val();
+						}
+					}
+						   //返回的信息就是messagesss
+				}
+			},
+			password : {
+				required: true,
+				remote : {
+					url : '{@WindUrlHelper::createUrl('u/register/checkpwd')|url}',		//验证密码
+					dataType: "json",
+					type : 'post',
+					data : {
+						username : function(){
+							return reg_username.val();
+						},
+						pwd : function(){
+							return reg_password.val();
+						}
+					}
+				}
+			},
+			repassword : {
+				required : true,
+				equalTo : '#J_reg_password'
+			},
+			email : {
+				required : true,
+				email : true,
+				remote : {
+					url : "{@WindUrlHelper::createUrl('u/register/checkemail')|url}",
+					dataType: "json",
+					type : 'post',
+					data : {
+						email :  function(){
+							return $("#J_reg_email").val();
+						}
+					}
+				}
+			},
+			regreason : {
+				required : true,
+				maxlength : 500
+			},
+			mobile : {
+				required : true,
+				number: true
+			},
+			mobileCode : {
+				required : true,
+				remote : {
+					url : '{@url:u/mobile/checkmobilecode}',		//验证手机验证码
+					dataType: "json",
+					type : 'post',
+					data : {
+						mobileCode : function(){
+							return $('#J_reg_mobileCode').val();
+						},
+						mobile : function(){
+							return $('#J_reg_mobile').val();
+						}
+					}
+				}
+			},
+			qq : {
+				required : true
+			},
+			msn : {
+				required : true
+			},
+			aliww : {
+				required : true
+			},
+			code : {
+				required : true,
+				remote : {
+					url : "{@WindUrlHelper::createUrl('verify/index/check')|url}",
+					dataType: "json",
+					type : 'post',
+					data : {
+						code :  function(){
+							return reg_code.val();
+						}
+					}
+				}
+			}
+		},
+		highlight	: false,
+		unhighlight	: function(element, errorClass, validClass) {
+			var tip_elem = $('#J_reg_tip_'+ element.name);
+			//if(element.name === 'password') {
+				//if(reg_tip_password.data('rankcheck')){
+					//密码表单且强度已验证
+					//tip_elem.html('<span class="'+ validClass +'" data-text="text"><span>');
+			//	}
+			//}else{
+			if(element.value){
+				tip_elem.html('<span class="'+ validClass +'" data-text="text"><span>');
+			}
+		},
+		onfocusin	: function(element){
+			var id = element.name;
+			$('#J_reg_tip_'+ id).html('<span class="reg_tips" data-text="text">'+ focus_tips[id] +'</span>');
+			$(element).parents('dl').addClass('current');
+			
+			if(id == 'password') {
+				//密码则添加强度验证
+				
+				$(element).on('keyup', function(e){
+					
+					//过滤tab键
+					if(e.keyCode !== 9) {
+
+						$.post('{@WindUrlHelper::createUrl('u/register/checkpwdStrong')|url}', {
+							pwd : reg_password.val()
+						}, function(data){
+							//已失焦，则显示强度
+							if(reg_tip_password.data('blur')) {
+								return false;
+							}
+							if(data.state === 'success') {
+								reg_tip_password.html(passwordRank[data.message['rank']]);
+							}else if(data.state === 'fail'){
+								reg_tip_password.html('');
+							}
+						}, 'json');
+
+						//移除失焦标识
+						reg_tip_password.removeData('blur');
+					}
+					
+				});
+			}
+		},
+		onfocusout	:  function(element){
+			var _this = this;
+			$(element).parents('dl').removeClass('current');
+			
+			if(element.name === 'email') {
+				//邮箱匹配点击后，延时处理
+				setTimeout(function(){
+					element.value = $.trim(element.value);
+					_this.element(element);
+				}, 150);
+			}else{
+			
+				if(element.name === 'password'){
+					//防止重复绑定
+					$(element).off('keyup');
+					
+					//失焦标识
+					reg_tip_password.data('blur', 'blur');
+				}
+				_this.element(element);
+				
+			}
+			
+		},
+		messages: {
+			invitecode : {
+				required : '邀请码不能为空'
+			},
+			username : {
+				required	: '用户名不能为空',
+				remote : '用户名已存在' //ajax验证默认提示
+			},
+			password : {
+				required : '密码不能为空',
+				remote : '密码不合要求' //ajax验证默认提示
+			},
+			repassword : {
+				required : '确认密码不能为空',
+				equalTo : '两次输入的密码不一致。请重新输入'
+			},
+			email : {
+				required : '邮箱不能为空',
+				email : '请输入正确的电子邮箱地址',
+				remote : '该电子邮箱已被注册，请更换别邮箱' //ajax验证默认提示
+			},
+			regreason : {
+				required	: '注册原因不能为空',
+				maxlength	: '注册原因描述内容过长，不能超过500字'
+			},
+			mobile : {
+				required	: '手机不能为空',
+				number : '格式错误，仅支持数字'
+			},
+			qq : {
+				required	: 'QQ不能为空'
+			},
+			msn : {
+				required	: 'MSN不能为空'
+			},
+			aliww : {
+				required	: '阿里旺旺不能为空'
+			},
+			code : {
+				required	: '验证码不能为空',
+				remote : '验证码不正确或已过期' //ajax验证默认提示
+			}
+		}
+	});
+	
+
+	window.M_CHECK = '{@url:u/register/sendmobile}';
+	window.M_CHECK_MOBILE = '{@url:u/register/checkmobile}';
+	Wind.js(GV.JS_ROOT +'pages/u/regMobileCheck.js?v='+ GV.JS_VERSION);
+	
+});
+</script>
+</body>
+</html>

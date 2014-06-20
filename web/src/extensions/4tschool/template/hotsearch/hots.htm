@@ -1,0 +1,41 @@
+<span>热门搜索: </span>
+<!--#foreach ($hotsearches as $key => $item) {#-->
+<a class="hotSearch" href="{$item['link']}&type={$item['type']}&schoolid={$schoolInfo['schoolid']}&keyword={$item['keyword']}&hotkey=h&ifdeliver=y">{$item['keyword']}</a>
+ <!--#}#-->
+
+ <script type="text/javascript">
+    $(".hotSearch").click(function(event)
+    {
+        //event.preventDefault();
+        var keyword = $(this).html();
+        var type = $(this).attr('href');
+        $("#keyword").val(keyword);
+        $("#searchType").val(type);
+
+        if(type == 'm')
+        {
+            var item1 = $('.tabs').find("li")[1];
+            $(item1).click();
+            //set keyword and submit
+            $("#m_keyword").val(keyword);
+            $("#s_keyword").val('');
+            $("#tab2").show();
+            $("#tab1").hide();
+            //$("#tab2").children(".btn_submit").click();
+        }
+        else
+        {
+            var item0 = $('.tabs').find("li")[0];
+            $(item0).click();
+
+            //set keyword and submit
+            $("#s_keyword").val(keyword);
+             $("#m_keyword").val('');
+            $("#tab1").show();
+            $("#tab2").hide();
+            //$("#tab1").children(".btn_submit").click();
+        }
+
+    });
+
+ </script>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<template source='header' load="true"/>
+
+<!-- {{ for the recommend products in the index-->
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/raphael-min.js"></script>
+<script src="{@G:url.extres}/4tschool/js/jquery.easing.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/iview.pack.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/jquery.easytabs.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/jquery.carouFredSel-6.2.1-packed.js" type="text/javascript"></script>
+<!-- }} -->
+
+<script src="{@G:url.extres}/4tschool/js/4tindex.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var _FlowCount = 0;
+    function flowaction() {
+        var strhtml;
+        strhtml = $('#OrderFlow .FlowItem').eq(_FlowCount - 1).html();
+        if (strhtml == null) {
+            return false;
+        }
+        $('#OrderFlow .FlowItem').eq(_FlowCount - 1).remove();
+        $('#OrderFlow').prepend('<div class="FlowItem first">' + strhtml + '</div>');
+        $('#OrderFlow .FlowItem').slideDown(500);
+    }
+
+    $(document).ready(function () {
+        _FlowCount = $('#OrderFlow .FlowItem').length;
+        if (_FlowCount == 0) {
+            $('#OrderFlow').hide();
+        }
+        else if (_FlowCount == 1) {
+            $('#OrderFlow').css("height", "50px")
+        }
+        else if (_FlowCount == 2) {
+            $('#OrderFlow').css("height", "100px")
+        }
+        else if (_FlowCount == 3) {
+            $('#OrderFlow').css("height", "150px")
+        }
+        else if (_FlowCount == 4) {
+            $('#OrderFlow').css("height", "200px")
+        }
+        var Interval;
+        Interval = setInterval('flowaction()', 3000);
+        $("#OrderFlow").hover(
+                function () {
+                    clearInterval(Interval);
+                },
+                function () {
+                    Interval = setInterval('flowaction()', 3000);
+                }
+        );
+        $(".FlowItem").each(function (i) {
+            var flow_json = JSON.parse($(this).children(".flow_json").eq(0).text());
+            order_item = flow_json[$(this).attr("data-merchant")];
+            var item_text = '';
+            for (var j = 0; j < order_item.length; j++) {
+                item_text += order_item[j].FoodName + order_item[j].FoodCount + " 份,";
+            }
+            if (getLen(item_text) > 20) {
+                item_text = item_text.substr(0, 20) + '...';
+            }
+            item_text = item_text.substring(0, item_text.length - 1);
+            $(this).children(".flow_text:eq(0)").text(item_text);
+        })
+    })
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#orderonline").change(function() {
+
+            if($("#orderonline").attr("checked") == 'checked')
+            {
+                $("#allshop").removeAttr('checked');
+                $('#ul1').css({'display':'none'});
+                $('#ul2').css({'display':''});
+            }
+            else
+            {
+                $("#allshop").attr({'checked':'checked'});
+                $('#ul1').css({'display':''});
+                $('#ul2').css({'display':'none'});
+            }
+        });
+    }); 
+    $(function(){
+        $("#allshop").change(function() {
+
+            if($("#allshop").attr("checked") == 'checked')
+            {
+                $("#orderonline").removeAttr('checked');
+                $('#ul1').css({'display':''});
+                $('#ul2').css({'display':'none'});
+            }
+            else
+            {
+                $("#orderonline").attr({'checked':'checked'});
+                $('#ul1').css({'display':'none'});
+                $('#ul2').css({'display':''});
+            }
+        });
+    }); 
+</script>
+
+<div class="clear"></div>
+<div class="spacer"></div>
+<div class="row">
+    <div class="twelvecol">
+        <div class="category_navigation new_box">
+            <ul class="category_list">
+                <!--#foreach ($nav as $key => $navItem) {#-->
+                <li>
+                    <span class="category_name">{$navItem->title}<span class="patch"></span></span>
+                    <!--# if($navItem->children !== 'false' && $navItem->children[0]->children !== 'false'){ #-->
+                    <ul class="sub_category_list">
+                    <!--# }else{ #-->
+                    <ul class="sub_category_list twolevel">
+                    <!--# } #-->
+                        <!--# foreach($navItem->children as $key=>$subCategory){ #-->
+                        <li>
+                            <span class="sub_category_name">
+                                <a target="_blank" href="{@url:app/4tschool/merchandiselist/run?schoolid=$schoolInfo['schoolid']}&systid={$subCategory->a_attr->id}">{$subCategory->title}</a>
+                            </span>
+                            <ul class="product_list">
+                                <!--# if(!empty($subCategory) && isset($subCategory->children) && is_array($subCategory->children)){ #-->
+                                    <!--# foreach($subCategory->children as $key=>$item){ #-->
+                                        <li><span class="product_name">
+                                                <a target="_blank" href="{@url:app/4tschool/merchandiselist/run?schoolid=$schoolInfo['schoolid']}&systid={$item->a_attr->id}&ifdeliver=y">{$item->title}</a>
+                                            </span>
+                                        </li>
+                                    <!--# } #-->
+                                <!--# } #-->
+                            </ul>
+                        </li>
+                        <!--# } #-->
+                        <li class="bottom"></li>
+                    </ul>
+                </li>
+                <!--# } #-->
+            </ul>
+        </div>
+        <div class="iview_container new_box">
+            
+            <div class="recommend iview">
+                <!--# foreach($boutiqueList as $key=>$boutique){ #-->
+                <div data-iview:thumbnail="{$boutique['imgurl']}"
+                     data-iview:image="{$boutique['imgurl']}" style="z-index:-1;">
+                    <a target="_blank" href="{$boutique['link']}">&nbsp;</a>
+                    <div class="iview-caption hidden" data-x="0" data-y="0"  data-transition="fade">
+                        <span class="boutique_name">{$boutique['description']}</span>
+                    </div>
+                </div>
+                <!--# } #-->
+                <div style="position:absolute;left:425px;top:180px;z-index:-2;">
+                    <img src="themes/extres/4tschool/images/two_dimension_code.png" alt="点餐哟二维码" style="width:150px;height:150px"/>
+                </div>
+            </div>
+            <div class="iview_mask"></div>
+        </div>
+        <div class="info_panel new_box floatLeft">
+             <h3 class="announce_title">公告</h3>
+             <div class="tabs" style="height:118px; margin:6px">
+                 <ul>
+                     <!--# foreach($eachContentInfo as $key=>$item){ #-->
+                     <li class="announce-list">
+                         <a target="_blank" class="announce_overflow" title="{$item['subject']}" href="{@url:app/4tschool/announcedetails/run?id=$item['aid']&schoolid=$schoolInfo['schoolid']}">{$item['title']}</a>
+                     </li>
+                     <!--# } #-->
+                 </ul>
+             </div>
+             <div id="announce_space"></div>
+             <div id="announce_bg">
+                <div id="annonce_photo">
+                    <img src="themes/extres/4tschool/images/person_small_photo.png" alt="头像"/>
+                </div>
+                <div id="annouce_photo_title">
+                    Hi! 
+                    <!--# if($username != '游客'){ #-->
+                    <a target="_blank" href="{@url:app/4tschool/myaccount/run?page=1&schoolid=$schoolInfo['schoolid']}">
+                       <strong>
+                            <?php  if(empty($username)){echo '你好';}else{echo $username;}?>
+                       </strong>
+                    </a>
+                    <!--# }else{ #-->
+                        <strong>
+                            <?php  if(empty($username)){echo '你好';}else{echo $username;}?>
+                        </strong>
+                    <!--# } #-->
+                </div>
+                <!--# if(empty($userid)){ #-->
+                <div class="register">
+                    <a target="_blank" href="{@url:u/register/run?schoolid=$schoolInfo['schoolid']}">免费注册</a>
+                    <div style="float:left">&nbsp;</div>
+                    <a target="_blank" href="{@url:u/login/run?schoolid=$schoolInfo['schoolid']}">登陆</a>
+                </div>
+                <!-- <div class="register">
+                    <a target="_blank" href="{@url:u/register/run?schoolid=$schoolInfo['schoolid']}">登陆</a>
+                </div> -->
+                <!--# } #-->
+                <!--# if(!empty($userid)){ #-->
+                <div id="person_title">
+                    <div class="msg_title">积分</div>
+                    <div class="msg_title">已评价</div>
+                    <div class="msg_title">待评价</div>
+                    <div class="msg_title">已消费</div>
+                </div>
+                <div id="person_button">
+                    <div class="msg_num_right"> 
+                        <a href="{@url:app/4tschool/myaccount/mycredit?page=1&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            {$myCredit[0]['credit']==''?'0.00':$myCredit[0]['credit']}
+                        </a>
+                    </div>
+                    <div class="msg_num_left">
+                        <a href="{@url:app/4tschool/shopcomment/mycomment?page=1&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            {$countComment ==''?'0':$countComment}
+                        </a>
+                    </div>
+                    <div class="msg_num_left">
+                        <a href="{@url:app/4tschool/shopcomment/mynocomment?page=1&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            {$countNoComment ==''?'0':$countNoComment}
+                        </a>
+                    </div>
+                    <div class="msg_num_left">
+                        <a href="{@url:app/4tschool/myaccount/mycredit?page=1&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            {$countMoney==''?'0':$countMoney}
+                        </a>
+                    </div>
+                </div>
+                <!--# } #-->
+             </div>
+             <div id="announce_panel">
+                    <a target="_blank" href="{@url:app/4tschool/contribute/run}&schoolid={$schoolId}" class="more-shop-button">美食达人</a>&nbsp;&nbsp;&nbsp;
+                    <a target="_blank" href="{@url:app/4tschool/partimejob/run}&schoolid={$schoolId}" class="more-shop-button">合作伙伴</a>
+             </div>
+        </div>
+
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="spacer"></div>
+<div class="clear"></div>
+<!--# if(file_exists("themes/extres/4tschool/images/banner_".$schoolInfo['schoolid'].".jpg")){ #-->
+<div class="row">
+    <div class="index_banner new_box">
+        <img src="themes/extres/4tschool/images/banner_{$schoolInfo['schoolid']}.jpg" alt="点餐哟，叫外卖"/>
+    </div>
+</div>
+<!--# } #-->
+<div class="row">
+
+    <div class="twelvecol">
+            <div class="set_meal no_border no_background">
+                <div class="tabs">
+                    <div class="labels h3">
+                        <span class="floatLeft">套餐推荐</span>
+                        <ul>
+                            <!--# foreach($combo as $key=>$item){ #-->
+                                <li>{$item->title}</li>
+                            <!--# } #-->
+                            <li class="clear"></li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="contents">
+                        <ul class="set_meal_list">
+                            <!--# foreach($combo as $idx => $item){ #-->
+                            <li>
+                                <ul>
+                                    <!--# foreach($item->children as $key => $comboItem){ #-->
+                                    <li>
+                                        <a target="_blank" href="{@url:app/4tschool/shopdetails/run?shopid=$comboItem['shopid']&mid=$comboItem['id']&type=m&schoolid=$schoolInfo['schoolid']}">
+                                        <img class="floatLeft" src="{$comboItem['imageurl']}" width="196" height="120"/><span class="comboTitle">{$comboItem['name']}</span>
+                                        </a>
+                                    </li>
+                                    <!--# } #-->
+                                </ul>
+                            </li>
+                            <!--# } #-->
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+    </div>
+</div>
+
+<!-- 推荐餐厅 -->
+<div class="row">
+    <div class="twelvecol delivery_shop">
+        <div class="line new_box">
+            <div class="bbox">
+                <h3 class="word-space">
+                    <div style="float:left">
+                    送外卖的商家
+                    <span>
+                        部分商家在繁忙阶段将不送外卖，请尽量在<font style="color:red;font-size:20px;font-weight:bolder">11：30</font>之前联系商家
+                    </span>
+                    </div>
+                    <div style="float:right;float-right:40px">
+                        <a target="_blank" href="{@url:app/4tschool/allshop/run}&schoolid={$schoolId}&ifdeliver=y" class="more-shop-button">查看全部商家</a>&nbsp;
+                    </div>
+                </h3>
+            </div>
+            <div class="spacer" id="conditionshop">
+                <span>
+                    &nbsp;<input type="checkbox" disabled="disbaled" checked="checked" value="open" name="push" id="push">置顶
+                </span>
+                <span>
+                    &nbsp;<input type="checkbox" value="open" name="filter" id="orderonline">在线下单
+                </span>
+                <span>
+                    &nbsp;<input type="checkbox" value="open" checked="checked" name="allshop" id="allshop">全部商家
+                </span>
+            </div>
+            <ul class="all-shops" id="ul1" style="display:">
+                <!--#foreach ($shopList as $key => $item) {#-->
+                    <li class={$item['isopen']==1?"":"shop-closed"}>
+                        <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$schoolId&shopid=$item['id']}">
+                            <div class="hot-shops">
+                                <div class="hot-shops-img">
+                                    <img class="{$item['isopen']==1?"":"shop-logo"}"
+                                    alt="{$item['name']}" src="{$item['imageurl']}">
+                                </div>
+                                <div class="hot-shops-info">
+                                    {$item['name']}<br/>
+                                    <font class="" style="color:grey;font-size:11px">{$item['description']}</font>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="shop-status"><br/>
+                            <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$schoolId&shopid=$item['id']}">
+                            <div style="float:left">
+                                <span class={$item['isopen']==1?"status-open":"status-closed"} title={$item['isopen']==1?"该商家正在营业中":"该商家已经打烊"}>{$item['isopen']==1?"营":"烊"}</span>
+                                <!--# if($item['isopen']==1){ #-->
+                                <!--# if($item['openorder']==1){ #-->
+                                <span class="order-open" title="该商家支持送外卖">外</span>
+                                <!--# } #-->
+                                <!--# if($item['hasterminal']==1 && $schoolInfo['openorder'] == 1){ #-->
+                                <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                <!--# } #-->
+                                </div>
+                            </a>
+                            <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$item['id']&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                                <div class="start-price" style="float:right">
+                                    {$item['startingprice']}元起送
+                                        <img alt="diancanyo.com - 点餐哟" width="14px" height="14px" title="商家电话" src="themes/extres/4tschool/images/Phone_page.png">
+                                </div>
+                            </a>
+                            <!--# } #-->
+                        </div>
+                    </li>
+                </a>
+                <!--#}#-->
+                <div class="clear"></div>
+            </ul>
+
+            <ul class="all-shops" id="ul2" style="display:none">
+                <!--#foreach ($shopList as $key => $item) {#-->
+                <!--# if($item['hasterminal']==1 && $schoolInfo['openorder'] == 1 && $item['isopen'] == 1){ #-->
+                    <li class={$item['isopen']==1?"":"shop-closed"}>
+                        <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$schoolId&shopid=$item['id']}">
+                            <div class="hot-shops">
+                                <div class="hot-shops-img">
+                                    <img class="{$item['isopen']==1?"":"shop-logo"}"
+                                    alt="{$item['name']}" src="{$item['imageurl']}">
+                                </div>
+                                <div class="hot-shops-info">
+                                    {$item['name']}<br/>
+                                    <font class="" style="color:grey;font-size:11px">{$item['description']}</font>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="shop-status"><br/>
+                            <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$schoolId&shopid=$item['id']}">
+                            <div style="float:left">
+                                <span class={$item['isopen']==1?"status-open":"status-closed"} title={$item['isopen']==1?"该商家正在营业中":"该商家已经打烊"}>{$item['isopen']==1?"营":"烊"}</span> 
+                                <!--# if($item['isopen']==1){ #-->
+                                <!--# if($item['openorder']==1){ #-->
+                                <span class="order-open" title="该商家支持送外卖">外</span>
+                                <!--# } #-->
+                                <!--# if($item['hasterminal']==1 && $schoolInfo['openorder'] == 1){ #-->
+                                <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                <!--# } #-->
+                                </div>
+                            </a>
+                            <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$item['id']&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                                <div class="start-price" style="float:right">
+                                    {$item['startingprice']}元起送
+                                        <img alt="diancanyo.com - 点餐哟" width="14px" height="14px" title="商家电话" src="themes/extres/4tschool/images/Phone_page.png">
+                                </div>
+                            </a>
+                            <!--# } #-->
+                        </div>
+                    </li>
+                </a>
+                <!--# } #-->
+                <!--#}#-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+<div class="row" style="display:<?php if(!$schoolextra['openmap']){echo 'none';} ?>">
+    <div class="twelvecol">
+        <div class="shops new_box">
+            <div class="title">
+                <h3>附近外卖商家</h3>
+                <ul>
+                    <li>
+                        <label>
+                            <input class="floatLeft shop_filter" checked="checked" type="checkbox" name="filter_for_shop" value="function(shop){return shop.openorder == '1';}" />
+                            <img class="floatLeft" src="{@G:url.extres}/4tschool/images/green_marker.png" width="15" height="20" />
+                            <span class="floatLeft">送外卖商家</span>
+                            <span class="floatLeft" id="provideDeliveryNumber"></span>
+                            <div class="clear"></div>
+                        </label>
+                    </li>
+                    <li><label>
+                        <input class="floatLeft shop_filter" type="checkbox" checked="checked" name="filter_for_shop" value="function(shop){return shop.openorder != '1';}"/>
+                        <img class="floatLeft" src="{@G:url.extres}/4tschool/images/blue_marker.png" width="15" height="20" />
+                        <span class="floatLeft">不送外卖商家</span>
+                        <span class="floatLeft" id="nonprovideDeliveryNumber"></span>
+                        <div class="clear"></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <img class="floatLeft" src="http://api0.map.bdimg.com/images/marker_red_sprite.png" width="39" height="35" />
+                            <input type="button" onclick="ShopMap.resetCenter();void 0;" value="地图返回学校中心点" />
+                        </label>
+                    </li>
+                    <li class="clear"></li>
+                </ul>
+                <span class="clear"></span>
+            </div>
+            <div class="clear"></div>
+            <div class="new_box">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--# if(false){ #-->
+<!-- 热卖推荐 -->
+<div class="row">
+    <div class="twelvecol">
+        <div class="line">
+            <div class="bbox" id="bbox">
+                <h3 id="HotMerchandises">热卖推荐<span>大家都在吃！</span><span class="index-info">点餐哟，订餐！看看别人吃什么,我当订餐冠军！</span></h3>
+
+            </div>
+            <div class="recommend-shops">
+                <div class="recommend-pic">
+                    <ul class="new_box">
+                        <!--#foreach ($merchandiseList as $key => $item) {#-->
+                        <li>
+                            <div class="recommend-merchandise">
+                                <a target="_blank" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}">
+                                    <img height="90px" width="165px" alt="{$item['name']}"
+                                         src="{$item['imageurl']}">
+                                </a>
+                            </div>
+                            <div class="recommend-name">
+                                <a target="_blank" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}">{$item['name']}</a>
+                            </div>
+                            <div class="hot-order">
+                                <span class="hot-price">￥{$item['currentprice']}/{$item['unit']}</span>
+                            </div>
+                        </li>
+                        <!--#}#-->
+
+                    </ul>
+                    <div class="spacer"></div>
+                </div>
+
+                <div class="recommend-text last">
+                    <div class="ranking-tab new_box">
+                        <p class="ranking">点餐冠军</p>
+                        <ul>
+                            <!--#foreach ($mostOrderedPPl as $key => $item) {#-->
+                            <li>
+                                {$item['username']}
+                                <span>累计消费{$item['counttotal']}元</span>
+                            </li>
+                            <!--#}#-->
+                        </ul>
+                    </div>
+                </div>
+                 <div class="spacer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--# if($promoMerchandiseList) { #-->
+<div class="row">
+    <div class="twelvecol">
+        <div class="bbox">
+            <h3>限时特惠<span>看的见的实惠！</span><span class="index-info">点餐哟，订餐！商家大让利,您的实惠是实实在在的实惠</span></h3>
+        </div>
+        <!--# foreach($promoMerchandiseList as $Item) { #-->
+        <div class="step-shop-merchandises">
+            <ul>
+                <li>
+                    <span>{$Item['name']}</span>
+                </li>
+                <li>
+                    <span class="original-price"}>￥{$Item['price']}</span>
+
+                    <span>￥{$Item['currentprice']}</span>
+
+                </li>
+                <li>
+                    <a class="btn" target="_blank" href="{@url:app/4tschool/shopdetails/run?shopid=$Item['shopid']&mid=$Item['id']&type=m&schoolid=$schoolInfo['schoolid']}">来一份</a>
+                </li>
+                <li>
+                    <span>已售{$Item['ordercount']}份</span>
+                </li>
+                <li>
+                    <a target="_blank" href="{@url:app/4tschool/shopdetails/run?shopid=$Item['shopid']&type=m&schoolid=$schoolInfo['schoolid']}">{$Item['ShopName']}</a>
+                </li>
+                <li>
+                    <span class="discount">限时特惠</span>
+                </li>
+            </ul>
+        </div>
+        <!--# } #-->
+    </div>
+</div>
+<!--# } #-->
+<!--# } #-->
+</div>
+<input type="hidden" id="ajaxUrl" value="{@url:app/4tschool/index/getCurrentSchoolShops}">
+
+<template source='footer'/>
+<!--# if($schoolextra['openmap']) { #-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9382be6fe79b10703bff94b0fb28051a">
+var ShopMap = {};
+(function(){
+    var map = null;
+    var center = null;
+    var schoolPosition = {
+        lat : 115.930186, lng :28.680594
+    };
+    var defaultCenterByArray = [ 115.930293,28.679136 ];
+    var defaultCenter = {
+       lat : defaultCenterByArray[0]
+       ,lng: defaultCenterByArray[1]
+    };
+    var defaultZoom = 17;
+    this.resetCenter = function(){
+        map.setCenter(center);
+    };
+    var filters = [];
+    var provideNumbder = 0;
+    var nonprovideNumber = 0;
+
+    var updaterNumber = function(){
+        $('#provideDeliveryNumber').html("("+provideNumbder+")");
+        $('#nonprovideDeliveryNumber').html("("+nonprovideNumber+")");
+    };
+    var Shops = {};
+    var isValidLatLng = function(lat,lng){
+       return lat && lng && parseFloat(lat) != 0 && parseFloat(lng) != 0;
+    };
+
+    this.addShops = function(shops){
+        $(shops).each(function(){
+            if(Shops[this.id]) return;
+            Shops[this.id] = this;
+            var pos = isValidLatLng(this.latitude,this.longitude)
+                        ?  {lat : this.latitude,lng:this.longitude}
+                        : testShops[this.name];
+            var deliveryRanges = [];
+
+            for(var i = 0; i < this.deliverytime.length; ++i){
+               deliveryRanges[i] = {
+                   start : this.deliverytime[i].begintime
+                   , end: this.deliverytime[i].endtime
+               };
+            }
+            var conf = {
+                title: this.name
+                ,id : this.id
+                ,info : {
+                    phoneNumber : this.phonenumber
+                    ,deliveryRanges :deliveryRanges
+                    ,startingprice : this.startingprice || null
+                }
+            };
+            if(pos){
+                var marker = null;
+                if(this.openorder==1){
+                    marker = ShopMap.addGreenMarker(pos.lat,pos.lng,conf);
+                    ++provideNumbder;
+                }else{
+                    marker = ShopMap.addBlueMarker(pos.lat,pos.lng,conf);
+                    ++nonprovideNumber;
+                }
+                this.marker = marker;
+            }else{
+                console.log(this.name + "缺少经纬度");
+            }
+        });
+        updaterNumber();
+        onFilterChange();
+    };
+
+    function isPassFilter(shop){
+       var isPass = false;
+       $(filters).each(function(){
+            if(this != null && $.isFunction(this)){
+               if(this(shop)){
+                 isPass = true;
+                 return false;
+               }
+            }
+            return true;
+       });
+       return isPass;
+    }
+    var onFilterChange= function(){
+        $.each(Shops,function(key,shop){
+            if(!shop.marker)return;
+            var marker = shop.marker;
+            if(!isPassFilter(shop)){
+                marker.getMap() &&  map.removeOverlay(marker);
+            }else{
+                marker.getMap() || map.addOverlay(marker);
+            }
+        });
+    };
+    function execBy(str){
+       return eval('(' + str + ')');
+    }
+    this.InitShopsMap = function(element,callback){
+        if(map!=null)return;
+        $(".shop_filter").each(function(){
+            this.filterId = filters.length;
+            filters.push($(this).is(':checked') ? execBy(this.value) : null);
+            $(this).click(function(){
+                filters[this.filterId] = $(this).is(':checked') ? execBy(this.value) : null;
+                onFilterChange();
+            });
+        });
+
+        //region
+        center = new BMap.Point(defaultCenter.lat,defaultCenter.lng);
+        var mapOption = {
+            mapType:BMAP_NORMAL_MAP,
+            maxZoom:19,
+            drawMargin:0,
+            enableFulltimeSpotClick: true,
+            enableHighResolution:true,
+            enableMapClick : false
+        };
+        map = new BMap.Map(element,mapOption);
+        map.addControl(new BMap.NavigationControl());
+        map.centerAndZoom(center,defaultZoom);
+        this.addMarker(schoolPosition.lat,schoolPosition.lng);
+        callback();
+        //endregion
+    };
+
+    function makeInfoHtml(info){
+        var content = "";
+        if(info.startingprice > 0){
+            content += "<p>起送价格:"+info.startingprice+"(元)</p>";
+        }else{
+            content += "<p>不送外卖</p>";
+        }
+        if(info.deliveryRanges && info.deliveryRanges.length && info.deliveryRanges.length > 0){
+            content += "<p>外卖时段:<br/>";
+            var glue = "";
+            for(var i = 0; i < info.deliveryRanges.length; ++i){
+                var r = info.deliveryRanges[i];
+                content += glue + "<span>"+ r.start + "-" + r.end+"</span>";
+                glue = "<br/>";
+            }
+            content += "</p>";
+        }
+        return content;
+    }
+
+    /**
+     * 添加marker
+     * @param lat
+     * @param lng
+     * @param opt
+     */
+    this.addMarker = function(lat,lng,opt){
+        var point = new BMap.Point(lat,lng);
+        var marker =  new BMap.Marker(point,opt);
+        if(opt && opt.info){
+            marker.info = "<strong><a target='_blank' href='"+GV.URL.SHOP_DETAIL + opt.id+"'>"+opt.title+"</a></strong><a style='font-size:smaller;margin-left:5px;text-decoration:underline;'  target='_blank' href='"+GV.URL.SHOP_DETAIL+opt.id+"'>(菜单和电话)</a>";
+            marker.info += makeInfoHtml(opt.info);
+            marker.addEventListener("click",function(){
+                this.openInfoWindow(new BMap.InfoWindow(
+                    this.info
+                    ,{enableMessage : false}
+                ));
+            });
+        }
+        marker.addEventListener("mouseover",function(){
+            this.setTop(true);
+        });
+        marker.addEventListener("mouseout",function(){
+            this.setTop(false);
+        });
+        map.addOverlay(marker);
+        return marker;
+    };
+
+    this.addGreenMarker = function(lat,lng,conf){
+        var info  = conf || {};
+        info.icon = this.getGreenMarkerIcon();
+        return this.addMarker(lat,lng,info);
+    };
+    this.addBlueMarker = function(lat,lng,conf){
+        var info  = conf || {};
+        info.icon = this.getBlueMarkerIcon();
+        return this.addMarker(lat,lng,info);
+    };
+    this.getGreenMarkerIcon = function(){
+        return this.getMarkerIcon("green_marker.png",15,20);
+    };
+    this.getBlueMarkerIcon = function(){
+        return this.getMarkerIcon("blue_marker.png",15,20);
+    };
+    this.getMarkerIcon = function(image,width,height){
+      return new BMap.Icon(GV.theme.getImageUrl(image),new BMap.Size(width,arguments[2]||width),{
+          imageSize : new BMap.Size(width,arguments[2]||width)
+      });
+    };
+}).call(ShopMap);
+
+$(function(){
+    ShopMap.InitShopsMap('map',fetchShopList);
+});
+
+var testShops = {
+    //  '大食头' :{ lat: 115.930383,lng: 28.677996},
+    //  '清清餐厅' : { lat: 115.930423,lng: 28.678031},
+    //  '济之岛':{ lat:115.93041,lng:28.678079},
+    //'一品轩':{ lat:115.930405,lng:28.678182},
+    //'港饮派对':{ lat:115.930145,lng:28.679873},
+    //'浏阳蒸菜':{lat:115.930967,lng:28.685704}
+};
+
+function fetchShopList(){
+    var postUrl = $("#ajaxUrl").val();
+    $.post(postUrl,{"ispartner":1,csrf_token: GV['TOKEN']},function(r) {
+        var shops = $.parseJSON(r);
+        ShopMap.addShops(shops);
+        // [{"id":"28","userid":"0"
+        // ,"name":"\u8001\u5e08\u5927\u987a\u5e26"
+        // ,"address":"\u5206\u4eab\u54df\u8ba2\u9910"
+        // ,"areaid":"25","phonenumber":"18679187590"
+        // ,"contactnumber":"","openorder":"1","packingprice":"0.0"
+        // ,"deliveryprice":"0.0","orderbegin":"09:30:00","orderend":"18:30:00"
+        // ,"createdate":"1370337343","lastupdatetime":"1379835121"
+        // ,"description":"\u4e0d\u52a0\u4ef7\u987a\u5e26\uff1a\u996e\u6599\uff0c\u96f6\u98df\uff0c\u9999\u70df\uff0c\u6c34\u679c...."
+        // ,"ordercount":"165","imageurl":"http:\/\/localhost\/src\/extensions\/4tschool\/uploaded_images\/28\/shop_28.png"
+        // ,"isactive":"1","ispartner":"1"
+        // ,"hasterminal":"0","averagemakeorder":"0.0"
+        // ,"averagebakeout":"0.0","averagetocenter":"0.0"
+        // ,"averagedelivery":"0.0","actualmakeorder":"0.0","actualbakeout":"0.0"
+        // ,"actualtocenter":"0.0","actualdelivery":"0.0","commentcount":"0","isopen":true}]
+    });
+}    
+</script>
+<!--# } #-->
+</body>
+</html>

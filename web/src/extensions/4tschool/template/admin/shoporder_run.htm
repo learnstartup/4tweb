@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+	<style>
+	td{
+		text-align: right;
+	}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="search_type cc mb10">
+			<form class="" action="{@url:app/4tschool/shoporder/run?id=$choosenShopid}" method="post">
+				<input type="hidden" name="type" value="search">
+				<label>商家ID:</label>
+				<input name="shopid" type="text" class="input length_1 mr10" value={$shopid}>
+				<button type="submit" class="btn btn_submit J_ajax_submit_btn">搜索</button>
+				<span>* 有效订单是指商家确认或用户已经确认的订单</span>
+				<br/><br/>
+				<label>时间段: </label>
+				<input name="startDate" type="text" class="input length_2 J_date mr20" value="{$startDate}">
+				<span class="mr20">至</span>
+				<input name="endDate" type="text" value="{$endDate}" class="input length_2 J_date">
+				
+			</form>			
+		</div>
+		<ul style="font-size: 16px;">
+			<li><strong>总订单数: {$OverallSales['totalorders']}</strong></li>
+			<li><strong>总金额 : {$OverallSales['totalmoney']} 元</strong></li>
+			<li><strong>有效订单数: {$OverallSales['validorders']}</strong></li>
+			<li><strong>有效金额: {$OverallSales['validmoney']}元</strong></li>
+			<li><strong>总返利: {$OverallSales['validshopreturn']}元</strong></li>
+		</ul>
+		
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>商家名</td>
+						<td>总单数</td>
+						<td>总金额(元)</td>
+						<td>有效单数</td>
+						<td>有效金额(元)</td>
+						<td>返利比例(商家,当前比例)</td>
+						<td>返利额(元)</td>
+						<td>查看详情</td>
+					</tr>
+				</thead>
+				<!--# if ($ShopSales) { #-->
+				<!--#foreach ($ShopSales as $key => $item) {#-->
+				<tr>
+					<td>{$item['name']}</td>
+					<td>{$item['totalorders']}</td>
+					<td>{$item['totalmoney']}</td>
+					<td>{$item['validorders']}</td>
+					<td>{$item['validmoney']}</td>
+					<td>{$item['rebatefromshop'] * 100}%</td>
+					<td>{$item['validshopreturn']}</td>
+					<td>详情</td>
+					
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">在指定的时间段内无数据</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/merchandise/run' args='$args'/>
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+
+</body>
+</html>

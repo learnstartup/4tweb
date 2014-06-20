@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/orderaddress}" id="myAddressForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/orderaddress}">
+	<input type="hidden" class="deleteAddressUrl" name="deleteAddressUrl" value="{@url:app/4tschool/myaccount/deleteOrderAddress}">
+	<input type="hidden" class="updateAddressUrl" name="updateAddressUrl" value="{@url:app/4tschool/myaccount/updateOrderAddress}">
+	<input type="hidden" class="addressToDelete" name="addressToDelete" value=""></input>
+	<input type="hidden" class="setasDefaultUrl" name="setasDefaultUrl" value="{@url:app/4tschool/myaccount/setasDefaultAddress}">
+	<input type="hidden" class="editid" name="editid" value="{$editId}">
+	<div class="clear"></div>
+	<div class="spacer"></div>
+	<div id="orderList" class="">
+		<div class="my_address_info">
+			<!--# if ($orderAddressList) { #-->
+			<!--#foreach ($orderAddressList as $key => $item) {#-->
+			<div class="my_address">
+		
+				<ul>
+					<li>
+					<span>地址{$key+1}:</span>
+
+					<!--# if ($item['isdefault'] == 1) { #-->
+					<span style="color:blue">默认地址 </span>
+					<!--# } #-->
+					<span class="address_text">{$item['rname']}, {$item['raddress']},  {$item['rphone']}</span>
+					</li>
+					<li class="my_address_btn">
+					<!--# if ($item['isdefault'] == 0) { #-->
+					<input type="button" class="setasDefault" value="设置为默认">
+					<!--# } #-->
+					<input id="btn_alter" class="editAddress button_delete" type="button" value="修 改">
+					<input id="btn_delete" class="deleteAddress button_delete" type="button" value="删 除">
+					<input id="btn_id" class="deleteAddress button_delete" type="hidden" value="{$item['id']}">
+					</li>
+				</ul>
+				<div class="clear"></div>
+				
+			</div>
+			<!--#}#-->
+		    <!--# } else { #-->
+					<span>没有符合条件的结果！</span>
+			<!--# } #-->
+			<div class="my_address_dashed"></div>
+		</div>
+
+		<div class="fanye"><div class="fanye"><div>（共{$totalCount}条）</div></div></div>
+	</div>
+		 <form action="">
+		 	<div class="my_address_info my_address_add" id="EditorPosition">
+		 		
+                    <h5>
+                        新增/修改收货地址<span>手机、固定电话选填一项，其余均为必填</span></h5>
+                    <div class="my_address_add_info">
+                        <p>
+                            <label>
+                                收货人：</label><input name="txt_ship_man" value="{$addressDetail[0]['rname']}" type="text" id="txt_ship_man"><span class="hint" id="vaild_ship_man">请填写收货人姓名</span></p>
+                        
+                        <p>
+                            <label>
+                                地址：</label><input name="txt_addr_detail"  value="{$addressDetail[0]['raddress']}"  type="text" id="txt_addr_detail" size="50"><span class="hint" id="valid_addressdetail">请填写街道地址</span></p>
+                       
+                        <p>
+                           <label>电话：</label><input name="txt_ship_tel"  value="{$addressDetail[0]['rphone']}" type="text" id="txt_ship_tel"><span class="hint" id="vaild_tel">请填写电话</span></p>
+                        
+                        <p class="address_add_btn">
+                            <button class="saveAddress">
+                                保存</button><span class="nohint" id="span_savemsg"></span></p>
+                        <p class="address_add_btn">
+                            </p>
+                    </div>
+                </div>
+		 </form>
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".deleteAddress").click(function(event)
+	{
+		event.preventDefault();
+		var id = $($(this).parent().find("input#btn_id")[0]).val();
+
+		$(".addressToDelete").val(id);
+
+		if(confirm("确定删除选中的地址吗?") == false)
+		{
+			return;
+		}	
+
+		//update data for each order's delivery
+		var postUrl = $(".deleteAddressUrl").val();
+		$.post(postUrl, 
+			$('#myAddressForm').serialize(), 
+			function(returndata) {
+
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	$(".setasDefault").click(function(event)
+	{
+
+		var id = $($(this).parent().find("input#btn_id")[0]).val();
+		$(".addressToDelete").val(id);
+
+		var postUrl = $(".setasDefaultUrl").val();
+		$.post(postUrl, 
+			$('#myAddressForm').serialize(), 
+			function(returndata) {
+
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	$(".editAddress").click(function(event)
+	{
+
+		var id = $($(this).parent().find("input#btn_id")[0]).val();
+		$(".addressToDelete").val(id);
+
+		var pageurl = $(".pageurl").val();
+		var redirectionUrl = pageurl + "&editid=" +id;
+		window.location.href = redirectionUrl;
+
+	});
+
+	$(".saveAddress").click(function(event)
+	{
+		event.preventDefault();
+		//do validation
+		var dataNotValid = validateData();
+		if(dataNotValid)
+			alert("请输入完整的信息");
+		else
+		{
+
+			//submit data
+			//update data for each order's delivery
+			var postUrl = $(".updateAddressUrl").val();
+			
+			$.post(postUrl, 
+				$('#myAddressForm').serialize(), 
+				function(returndata) {
+
+					returndata = eval("("+returndata+")");
+
+					if(returndata.success)
+					{
+						alert(returndata.data);
+						//refresh the page
+						searchPage();
+					}else
+					{
+						alert(returndata.data);
+					}
+
+			});
+		}
+
+	});
+
+	$(".hint").each(function(event)
+	{
+		$(this).hide();
+	});
+
+	function validateData()
+	{
+		var rnameNotValid = ($.trim($("#txt_ship_man").val()) == '');
+		var raddressNotValid = ($.trim($("#txt_addr_detail").val()) == '');
+		var rphoneNotValid = ($.trim($("#txt_ship_tel").val()) == '');
+
+		if(rnameNotValid)
+			$("#vaild_ship_man").show();
+
+		if(raddressNotValid)
+			$("#valid_addressdetail").show();
+
+		if(rphoneNotValid)
+			$("#vaild_tel").show();
+
+		return rnameNotValid ||  raddressNotValid || rphoneNotValid;
+	}
+
+	function searchPage()
+	{
+		window.location.href = $(".pageurl").val();
+	}
+
+});
+</script>

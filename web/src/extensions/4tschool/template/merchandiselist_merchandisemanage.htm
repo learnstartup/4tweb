@@ -1,0 +1,122 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style style="text/css">
+	#search{
+		padding-top:0px;
+	}
+
+	#content-title {
+		background-color: #F2F5F5;
+		font-weight: bolder;
+	} 
+
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+		<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/merchandiselist/merchandisemanage?schoolid=$schoolId}">
+		<div class="nav">
+            <div class="return"><a href="{@url:app/4tschool/shoplist/shopmanage?schoolid=$schoolId}">返回上一级</a></div>
+            <div class="mb10" style="float:right"><a class="btn J_dialog" href="{@url:app/4tschool/merchandiselist/merchandisemanageradd?schoolid=$schoolId&choosenShopid=$choosenShopid}" title="添加菜品" role="button"><span class="add"></span>添加菜品</a></div>
+        </div>
+		<div class="search_type cc mb10" id="search">
+			<form class="" action="" method="post">
+				<input type="hidden" name="type" value="search">
+				<input type="hidden" name="page" value="{$page}">
+				<label>商家:</label>
+				<select class="choosenShopid" name="choosenShopid">
+					<!--#foreach($shopList as $item) {#-->
+					<option <?php if($item['id'] == $choosenShopid) echo "selected"; ?> value="{$item['id']}" >{$item['name']}</option>
+					<!--#}#-->
+				</select>
+				<select class="selectedFilter" name="selectedFilter">
+					<!--#foreach($specialList as $key => $item) {#-->
+					<option <?php if ($key.'_'.$item['value']==$args['selectedFilter']) echo "selected"?> value="{$key}_{$item['value']}" >{$item['name']}</option>
+					<!--#}#-->
+				</select>				
+			</form>			
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr class="content-title">
+						<td style="display:none">ID</td>
+						<td>菜名</td>
+						<td>打包费?</td>
+						<td>价格</td>
+						<td>单位</td>
+						<td>剩余数量</td>
+						<td>已卖出数量</td>
+						<td style="display:none">推荐?</td>
+						<td>上架?</td>
+						<td style="display:none">精品?</td>
+						<td style="display:none">标签</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($merchandiseList) { #-->
+				<!--#foreach ($merchandiseList as $key => $item) {#-->
+				<tr>
+					<td style="display:none">{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['needPackingPrice']==1?"是":"否"}</td>
+					<td>{$item['price']}</td>
+					<td>{$item['unit']}</td>
+					<td>{$item['remainder']}</td>
+					<td>{$item['ordercount']}</td>
+					<td style="display:none">{$item['recommend']==1?"是":"否"}</td>
+					<td>{$item['active']==1?"是":"否"}</td>
+					<td style="display:none">{$item['isstar']==1?"是":"否"}</td>
+					<td style="display:none">{$item['tagid']}</td>
+					<td><a href="{@url:app/4tschool/merchandiselist/merchandisemanagedit?id=$item['id']&schoolid=$schoolId&shopid=$choosenShopid}" class="mr10" title="编辑菜品">[编辑]</a>
+						<a href="{@url:app/4tschool/merchandiselist/merchandisemanagerimgupload?sid=$choosenShopid&mid=$item['id']&url=$item['imageurl']&schoolid=$schoolId}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+
+						<!--# if($item['newimage'] == 'no'){ #-->
+						<label>[无图]</label>
+						<!--# }else{ #-->
+						<a href="{@url:app/4tschool/merchandiselist/merchandisepreview?id=$item['id']&schoolid=$schoolId}"  target="_blank">[预览]</a>
+						<!--# } #-->
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前该商家还没有菜单哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/merchandiselist/merchandisemanage?schoolid=$schoolId' args='$args'/>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<template source='TPL:admin.common.footer' />
+<script>
+	$(".choosenShopid").change(function()
+	{
+		searchchange(true,false);
+	
+	});
+	$(".search").click(function(){
+		searchchange(true);	
+	});
+	function searchchange(showP)
+	{
+		var shoppara = '&id='+$(".choosenShopid").val();
+		if(!showP)
+		{
+			provincepara = "";	
+		}
+		window.location.href= $(".pageurl").val()+shoppara+'&isall=all'; 
+	}
+	$(".selectedFilter").change(function(){
+	    window.location.href= $(".pageurl").val()+'&selectedFilter='+$(".selectedFilter").val()+'&choosenShopid='+$(".choosenShopid").val();	
+	});
+</script>
+
+

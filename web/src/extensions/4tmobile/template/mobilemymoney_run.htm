@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+        <style type="text/css">
+        .append-border
+        {
+            border:1px solid #d6d6d6;
+        }         
+        
+        .hightlight
+        {
+            color: red;
+        }
+        </style>
+    </head>
+    <body>
+        <!--# if($is_weixin){ #-->
+        <div data-role="page" data-theme="f">
+            <div data-role="header" data-position="fixed" data-theme="d">
+                <h1 style="display:none">零钱包</h1>
+                <template source='navbar' load="true" />
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="#" data-theme="d"><span>我的点币：{$myMoney['money']}({$myMoney['money']/10}元RMB)</span></a></li>
+                    </ul>
+                </div>                 
+            </div>            
+            <div role="main" class="ui-content" >
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="money" data-expanded-icon="money" data-theme="f">
+                    <h3>点币信息</h3>
+                    <span>
+                        点币与RMB的换算率为10：1，即：
+                        <br/><a href="#" data-mini="true" data-role="button" data-theme="f">10 点币 = 1元 RMB</a>
+                    </span>
+                </div>
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="picture-o" data-expanded-icon="picture-o" data-theme="f">
+                    <h3>点币兑换</h3>
+                    <ul data-role="listview" data-theme="c" data-icon="">
+                        <li data-role="list-divider" role="heading" class="append-border">手机话费</li>
+                        <!--# foreach($prizeList as $item){ #-->
+                        <li class="append-border">
+                            <a name="change_$key" href="{@url:app/4tmobile/mobilereceiveinformation/run?openid=$openId&id=$item['id']&key=$item['key']}" data-rel="dialog">
+                                <img src={$item['imgurl']} style="top:0.7em">
+                                <span class="ui-li-count">{$item['name']} | {$item['dmoney']}点币</span>
+                            </a>
+                        </li>
+                        <!--# } #-->
+                    </ul>                                                          
+                </div>
+            </div>
+                <template source='footer' load="true" />
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->      
+    </body>
+    <script>
+    $(document).bind('pageinit', function() {
+        $("[data-role=dialog]").on('pagebeforeshow', function() {
+            $("#closeDialog").bind('tap', function() {
+                $("[data-role=dialog]").dialog('close');
+            });
+
+            $("#confirmChange").bind('tap', function() {
+                var targetForm=$(this).parent();
+                if ($(targetForm).is('form')) {
+                    $(targetForm).submit();
+                };
+            });
+        });
+    });
+    </script>
+</html>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3bf15cf5566f3927e165b2d12ea5534e' type='text/javascript'%3E%3C/script%3E"));
+</script>

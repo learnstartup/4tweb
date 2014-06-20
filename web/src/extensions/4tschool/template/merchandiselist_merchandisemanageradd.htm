@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body style="width:780px;height:550px;" class="body_none">
+	<div class="pop_cont pop_table" style="height:550px">
+		<form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/merchandiselist/merchandisemanageradd}" method="post" >
+			<input type='hidden' name='type' value="do">
+			<div class="mb10 prompt_text">
+				<label>商家:</label>
+				<select class="choosenShopid" name="choosenShopid">
+					<!--#foreach($shopList as $item) {#-->
+					<option <?php if($item['id'] == $choosenShopid) echo "selected"; ?> value="{$item['id']}" >{$item['name']}</option>
+					<!--#}#-->
+				</select>
+			</div>
+			<div class="">
+				<table id="bodyTable" width="100%">
+					<col class="th" />
+					<col />
+					<thead>
+						<tr>
+							<td>菜名</td>
+							<td>需要打包收费?</td>
+							<td>价格</td>
+							<td>单位</td>
+							<td>剩余数量</td>
+							<td>推荐?</td>
+							<td>上架?</td>
+							<td  style="display:none">描述</td>
+							<td>标签</td>
+						</tr>
+					</thead>
+					<tr id="tempRow">
+						<td>
+							<input name="foodname[]" type="text" class="input length_2">
+						</td>
+						<td>
+							<ul class="switch_list cc">
+                            <li>
+                            	<label>
+                            		<input type="checkbox" name="needPackingPrice[]" value="1" checked=checked><span>是</span>
+                            		
+                            	</label>
+                            </li>
+                        </ul>
+						</td>
+						<td>
+							<input name="price[]" type="text" class="input length_1">
+						</td>
+						<td>
+							<input name="unit[]" type="text" value="份" class="input length_0 unit">
+						</td>
+						<td>
+							<input name="remainder[]" value="100" type="number" class="input length_1 number">
+						</td>
+						<td>
+							<ul>
+                            <li>
+                            	<label>
+                            		<input type="checkbox" name="willRecommend[]" value="0"><span>是</span>
+                            		
+                            	</label>
+                            </li>
+                        </ul>
+						</td>
+						<td>
+							<ul>
+                            <li>
+                            	<label>
+                            		<input type="checkbox" name="isActive[]" value="1" checked=checked><span>是</span>
+                            		
+                            	</label>
+                            </li>
+                        </ul>
+						</td>
+						<td style="display:none">
+							<input name="description[]" type="text" class="input length_4"></textarea>
+						</td>	
+						<td>
+							<select name="tag[]" class="choosenTagid">
+								<!--# foreach($tagList as $item) {#-->
+								<option class="tag{$item['id']}" value="{$item['id']}" >{$item['name']}</option>
+								<!--#}#-->
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="btn_wrap">
+				<div class="btn_wrap_pd">
+					<input id="batch" type="number" class="input length_1" value="1">
+					<a id="addNew" class="btn" href="#" title="添加菜品" role="button"><span class="add"></span>添加</a><button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button></div></div>
+		</form>
+	</div>
+<template source='TPL:admin.common.footer' />
+<script>
+	$("#addNew").click(function(){
+		var num=$("#batch").val();
+		if (num) {
+			for (i = 0; i < num; i++) {
+				$("#tempRow").clone().prependTo("#bodyTable").removeAttr("id").children().each(function(){
+                    $(this).children().val("");
+                    $(".unit").val("份");
+                    $(".number").val("100");
+                    if ($(this).children().attr('class')=="choosenTagid")
+                        $(this).children().val($("#tempRow").find(".choosenTagid").val());
+				});
+			}
+		}
+	});
+</script>
+</body>
+</html>

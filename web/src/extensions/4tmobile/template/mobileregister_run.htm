@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/themes/default/jquery.mobile-1.4.0.min.css">
+        <style type="text/css">
+            body{
+                font-family: "microsoft yahei";
+            }
+
+            #content{
+                height: auto;
+                border-style:solid;
+                padding: 15px;
+                border-width:1px;
+                border-color:#f3f3f3;
+            }
+
+        </style>
+        <script src="{@G:url.extres}/4tschool/js/jquery.js" type="text/javascript">
+        </script>
+        <script src="{@G:url.extres}/4tschool/js/jquery.mobile-1.4.0.min.js">
+        </script>
+
+        <script src="{@G:url.extres}/4tschool/js/validate.js">
+        </script>
+        <script src="{@G:url.extres}/4tschool/js/jquery.validate.min.js">
+        </script>
+
+        <script type="text/javascript">
+        $(function(){
+            $("#registerForm").validate({
+                rules: {
+                    "text-password-again": {
+                        equalTo: "#text-password"
+                    }
+                },
+                messages: {
+                    "text-password-again": {
+                        equalTo: "Please enter the same password as above"
+                    }
+                }
+            });
+        });
+        </script>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+        <meta name="viewport" content="width=device-width,user-scalable=no" />
+    </head>
+    <body>
+        <div data-role="page" data-role="content" style="text-align: center;">
+            <div class="ui-header ui-header-fixed slidedown ui-bar-a" data-position="fixed" data-role="header" role="banner">
+                <!-- <a class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" 
+                   data-rel="back" href="../php/main.php" data-role="button" role="button">返回</a> -->
+                <h1 class="ui-title">注&nbsp;&nbsp;&nbsp;&nbsp;册</h1>
+            </div>
+            <div id="content">
+                <form action="{@url:app/4tmobile/mobileregister/run}" id="registerForm" class="validate" method="post" data-ajax="false">
+                    
+                    <input data-clear-btn="true" textVisible="true" data-msgtext="请输入昵称(不能有空格)" name="username" id="text-username" value="" placeholder="请输入昵称(不能有空格)" autocomplete="true" class="required" type="text" required="required">
+                
+                    <input data-clear-btn="true" textVisible="true" autocomplete="true" name="password" class="required" id="text-password" data-msgtext="输入密码" value="" placeholder="输入密码" type="password" required="required">
+                
+                    <input data-clear-btn="true" name="password-again" autocomplete="true" textVisible="true" class="required" id="text-password-again" data-msgtext="请再次确认密码" equalto="#text-password" value="" placeholder="请再次确认密码" type="password" required="required">
+                
+                    <input data-clear-btn="true" autocomplete="true" pattern= "[0-9]{11}" textVisible="true" data-msgtext="请输入11位手机号" name="passwordagain" class="required" id="text-number" value="" placeholder="请输入11位手机号" required="required" type="number">
+                    
+                    <br/>
+                    <div>
+                        <input class="btnLogin show-page-loading-msg" name="submit" type="submit" value="提交">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <template source='footer' load="true"/>
+</html>

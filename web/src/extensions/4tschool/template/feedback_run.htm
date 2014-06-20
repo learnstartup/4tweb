@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+
+	<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="my-login">
+        <div class="feedback_container formlyWrapper-Base">  
+            <form action="{@url:app/4tschool/feedback/run}" id="myAccountForm" method="post">
+            <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/feedback/savemessage}">
+            <input type="hidden" class="refreshurl" name="pageurl" value="{@url:app/4tschool/feedback/run}">
+            <table class="formbase feedback">
+              <tbody><tr>
+                <td align="left">(100字以内)<span id="leftchar" style="color:red"></span>
+                <textarea id="content" name="content"></textarea>
+                </td>
+              </tr>
+              <tr>
+              <td>
+                  <ul>
+                      <li>验证码：</li>
+                      <li><div id="J_verify_code" style="float:left;margin-left:50px;" class="ver_fillin"></div></li> 
+                      <li><input style="width:50px" type="text" name="scode" id="scode" maxlength="4" value=""></li>
+                      <li><input type="button" id="feedbackbtn" value="提交留言"></li>
+                      </ul>
+              </td>
+              </tr>
+            </tbody></table>
+        </form>
+        </div>
+        <!--#foreach ($messageList as $key => $item) {#-->
+       <ul class="feedback_loop">
+        <li class="feedback_message">
+            <div class="feedback_content">
+            <div>{$item['question']}</div>
+            <div class="feedback_un">{$item['userid']==0?"网站游客":"登录用户"}</div>
+            <div class="feedback_ut">{$item['createdat']}</div>
+            </div>
+        </li>
+        <li class="feedback_reply">
+            <p>{$item['repliedat']}<b>客服MM回复：</b></p>
+            <span>
+                <p>
+                    {$item['reply']}
+                </p>
+            </span>
+            </li>
+        </ul>
+        <!--# } #-->  
+        <div class="clear"></div>
+        <page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/schoolorder/myorder' args='$args' />
+    </div>
+  </div>
+</div>
+
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+
+    $("html").die().live("keydown",function(event){   
+              var target;     
+              if(event.keyCode==13){   
+                   
+                  target = event.target; 
+                  
+                  tag = target.tagName;
+                  if (tag == "TEXTAREA") { 
+                    
+                  }  
+                  else
+                  { 
+                    event.preventDefault(); 
+                    $("#feedbackbtn").click();
+                  }  
+                
+                }        
+    });
+    
+
+
+    $(document).ready(function(event)
+    {
+
+            getVerifyTemp({wrap : $('#J_verify_code')});
+
+            function getVerifyTemp(options){
+                //验证码模板
+                var _this = this,
+                    wrap = options.wrap,                //验证码容器
+                    afterClick = options.afterClick,    //点击换一个后回调
+                    clone = options.clone;              //获取失败后恢复内容
+                if(!wrap.length) {
+                    return;
+                }
+
+                wrap.html('<span class="tips_loading">验证码loading</span>');
+                var url = '<?php echo Wekit::app()->baseUrl,'/','admin.php?a=showVerify'; ?>';
+                $.post(url, {
+                    csrf_token : GV.TOKEN
+                }, function(data){
+                    if(data.state == 'success') {
+                        wrap.html(data.data);
+                    }else if(data.state == 'fail') {
+                        if(clone) {
+                            //恢复原代码
+                            wrap.html(clone.html());
+                        }else{
+                            //重试
+                            wrap.html('<a href="#" role="button" id="J_verify_update_a">重新获取</a>');
+                        }
+
+                        alert(data.message);
+                        /*_this.resultTip({
+                            error : true,
+                            elem : $('#J_verify_update_a'),
+                            follow : true,
+                            msg : data.message
+                        });*/
+                    }
+
+                }, 'json');
+
+                wrap.off('click').on('click', '#J_verify_update_a', function(e){
+                    //换一个
+                    e.preventDefault();
+
+                    if(wrap.find('.tips_loading').length) {
+                        //防多次点击
+                        return false;
+                    }
+
+                    var clone = wrap.clone();
+                    wrap.html('<span class="tips_loading">验证码loading</span>');
+                    getVerifyTemp({
+                        wrap : wrap,
+                        clone : clone
+                    });
+
+                    if(afterClick) {
+                        afterClick();
+                    }
+                }).on('click', '#J_verify_update_img', function(e){
+                    //点击图片
+                    $('#J_verify_update_a').click();
+                });
+            }
+    });
+
+
+    function getLength(str) {
+        var totLen = 0;
+        for (var i = 0; i < str.length; i++) {
+            // If the char is Chinese.
+            if (str.charCodeAt(i) > 256) {
+                totLen += 1;
+            }
+            else {
+                totLen += 0.5;
+            }
+        }
+        return Math.floor(totLen);
+    }
+
+    $("#content").keydown(function(event)
+    {
+        var length =  getLength($(this).val());
+
+        var left = 100 - length;
+        $("#leftchar").html(left + "字符剩余");
+
+    });
+
+
+
+	$("#feedbackbtn").click(function(event)
+	{
+		event.preventDefault();
+
+        //check content
+        var content = $.trim($("#content").val());
+        if(content == '')
+        {
+            alert("请输入留言内容");
+            return false;
+        }
+
+        var length =  getLength(content);
+        if(length > 100)
+        {
+            alert("超过字符限制");
+            return false;
+        }
+
+        //check 验证码
+        var scode = $.trim($("#scode").val());
+        if(scode == '')
+        {
+            alert("请输入验证码");
+            return false;
+        }
+
+
+		//update data for each order's delivery
+		var postUrl = $(".pageurl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+                    window.location.href = $(".refreshurl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+});
+</script>

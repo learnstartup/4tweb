@@ -1,0 +1,594 @@
+<!doctype html>
+<html dir="ltr" lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <template source='header1' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <!--<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-1.9.1.js"></script>-->
+    <!--<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui-1.10.3.custom.js"></script>-->
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+
+    <!--# if($schoolInfo['openshundai'] == 0 ) {#-->
+    <style>
+        .step-content, .setp-banner, .step-shop-menu {
+            width:890px;
+        }
+        html,body{
+            width:100%;
+            height:100%;
+        }        
+    </style>
+    <!--# } #-->
+</head>
+<body>
+<div class="clear"></div>
+<div class="wrap-sd">
+<div class="sdrow">
+<template source='header2' load="true"/>
+<div id="wrapper" class="twelvecol" style="width:75%">
+<!--# if($schoolInfo['openshundai'] == 1 && $openshundai == 1) {#-->
+<div class="step-left">
+    <div class="step-incidentally-header"><a>顺带</a></div>
+    <div id="accordion">
+        <!--# foreach ($incidentallyTagList as $tagItem) { #-->
+        <h3>{$tagItem['name']}</h3>
+
+        <div>
+            <!--# foreach ($incidentallyMerchandiseList as $item) {#-->
+            <!--# if ($item['tagid']==$tagItem['id']) { #-->
+            <div class="step-incidentally-menu">
+                <form class="jcart" action="" method="post">
+                     <!--# if($shop['openorder'] == 1) {#-->
+                    <input type="hidden" value="{$item['id']}" name="my-item-id">
+                    <input type="hidden" value="{$item['name']}" name="my-item-name">
+                    <input type="hidden" value="{$item['currentprice']}" name="my-item-price">
+                    <input type="hidden" value="1" name="my-item-qty">
+                    <input type="hidden" value="{$IncidentallyShopId}" name="my-vendor-guid">
+                    <input type="hidden" value='顺带' name="my-vendor-name">
+                    <input type="hidden" value="1" name="my-box-qty">
+                    <input type="hidden" value="1" name="my-box-unitprice">
+                    <input type="hidden" value="{$item['unit']}" name="my-unitname">
+                    <input type="hidden" value="{$item['needPackingPrice']}" name="my-needPackingPrice">
+                    <input type="hidden" value="{$item['startingprice']==''?0:$item['startingprice']}" name="my-startingprice">
+                    <input type="hidden"
+                           value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}"
+                           name="my-item-url">
+                    <input type="hidden" name="jcartToken"
+                           value="<?php echo $_SESSION['jcartToken'];?>"/>
+                    <!--# } #-->
+
+                    <div class="s-left">
+                        <span><a target="_blank" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}" style="display:inline">{$item['name']}</a></span>
+                    </div>
+                    <div class="s-right">
+                        <span>￥{$item['currentprice']}/{$item['unit']}</span>
+
+                        <a target="_blank" class="btn" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}" style="display:inline">详情</a>
+
+                        <!--# if($shop['openorder'] == 1) {#-->
+                        <!--# if($item['remainder'] > 0) { #-->
+
+                        <input class="btn" type="submit" value="来一份" name="my-add-button">
+                        <!--# } else { #-->
+                                    <input type="submit" value="缺货" disabled="disabled">
+                        <!--# } #-->
+                        <!--# } #-->
+                    </div>
+                </form>
+            </div>
+            <!--# } #-->
+            <!--# } #-->
+        </div>
+        <!--# } #-->
+    </div>
+    
+</div>
+<!--# } #-->
+
+<div class="step-content">
+    <div class="my-step-left">
+        <div class="step-fenge">
+            <div class="setp-banner">
+                <ul class="step-shop-left">
+                    <li class="step-title">
+						<span>
+                            {$shop['name']}
+                        </span>
+                        <!--# if($shop['averagespeed']) { #-->                        
+                        <span class="little-font light-font">平均送餐速度
+                            <!--# if($shop['averagespeed']<=40) { #-->
+                            <span class="delivery-time-fast">{$shop['averagespeed']}分钟</span>
+                            <!--# } elseif($shop['averagespeed']<=60) {#-->
+                            <span class="delivery-time-mid">{$shop['averagespeed']}分钟</span>
+                            <!--# } else {#-->
+                            <span class="delivery-time-slow">{$shop['averagespeed']}分钟</span>
+                            <!--# } #-->                            
+                        </span>  
+                        <!--# }else{ #-->
+                        <span class="little-font light-font">该商家暂无人点评送餐速度</span>
+                        <!--# } #--> 
+
+                                <!--# if($schoolInfo['openorder'] == 1){ #-->
+                                <span class="order-open" title="该商家支持送外卖">外</span>
+                                <!--# } #-->
+
+                                <!--# if($schoolInfo['openorder'] == 1 && $shop['isshopopen'] == 1 && $shop['openorder'] == 1){ #-->
+                                <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                <!--# } #-->
+
+                                <!--# if($shop['ifrebate']){ #-->
+                                <span class="discount" title="该商家点餐返点币">返</span>
+                                <!--# } #-->
+
+                                <!--# if($schoolInfo['openorder'] == 1 && $shop['isshopopen']==0 && $shop['openorder'] == 1){ #-->
+                                <span class="no-online-service" title="该商家支持送外卖">仅电话下单</span>
+                                <!--# } #--> 
+
+                                <!--# if($shop['isshopopen']==0 && $shop['openorder'] == 0){ #-->
+                                <br/>
+                                <span class="icon stop-service" title="该商家暂不提供服务">该商家暂不提供服务</span>
+                                <!--# } #-->                                                     
+                    </li>
+                   
+                   <li>电话：
+                    <!--# if(!empty($shop['phonenumber']) && $shop['phonenumber'] != '无') {#-->
+                        {$shop['phonenumber']} 
+                     <!--# } #--> 
+                     &nbsp;
+                     <!--# if(!empty($shop['contactnumber']) && $shop['contactnumber'] != '无') {#-->
+                        {$shop['contactnumber']} 
+                     <!--# } #--> 
+                     
+                   </li>
+
+                   <!--# if(!empty($timeList)) {#-->
+                    <li>外卖时间:
+                        <!--# foreach($timeList as $mkey => $item) { #-->
+                            <!--<?php echo "<br/>"; ?>-->
+                            {$item['begintime']} - {$item['endtime']}
+                        <!--# } #--> 
+                    </li>
+
+                    <!--# } #-->
+                    <li>备注：{$shop['description']}</li>
+                    <li>地址：{$shop['address']}</li>
+                    <li><template source='jiathis' load="true"/></li>
+                </ul>
+                <ul class="step-shop-right">
+                    <li style="padding-right:100px;" class="step-notice-open"><b>{$shop['openorder']==0?'此商家不送外卖':"此商家送外卖"}
+                     <!--# if($schoolInfo['openorder'] == 1 && $shop['isshopopen'] == 1 && $shop['openorder']) {#-->
+                        ,支持在线下单
+
+                     <!--# } #--> 
+                    </b></li>
+
+                    <!--# if($shop['openorder'] == 1) {#-->
+                    <li>起送金额：<font color="#FF4400">{$shop['startingprice']}元</font>
+                        <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                            <img alt="diancanyo.com - 点餐哟" width="20px" height="20px" title='商家电话' src="themes/extres/4tschool/images/Phone_page.png">
+                        </a>
+                    </li>
+
+                    <li>外卖打包费：每份<font color="#FF4400">{$shop['packingprice'] + $shop['deliveryprice']}</font>元(注: 商家行为)</li>
+
+                    <!--# } #--> 
+
+
+                    <li>店铺人气：<a id="shop_favorites_count">{$shop['ordercount']}</a>
+                    </li>
+                    <li>
+                        <div id="marked" style="display: {$isFavorite?'block':'none'}">
+                            <font color="#FF4400"><span>[已收藏]</span></font>
+                        </div>
+                        <div id="mark" style="display: {$isFavorite?'none':'block'}">
+                            <a id="add_favorites" href="{$userId}">[点击收藏]</a>
+
+                            <form action="{@url:app/4tschool/Shopdetails/myFavorite}" id="schoolordersForm"
+                                  method="post">
+                                <input type="hidden" name="shopId" value="{$shop['id']}">
+                                <input type="hidden" class="bookmarkShopUrl" name="bookmarkShopUrl"
+                                       value="{@url:app/4tschool/shopdetails/myFavorite}">
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear">
+            <input id="addToCart" type="hidden" value="{$cartMid}">
+        </div>
+        <!--# if(!empty($hotMerchandiseList)) {#-->
+        <div class="step-sign">
+            <p class="site-title">热卖美食</p>
+            <div id="special-food" style="width: 648px; overflow: hidden;">
+                <div style="overflow: hidden; width: 32766px;">
+                    <div style="float: left;">
+                        <!--# foreach($hotMerchandiseList as $mkey => $item) { #-->
+                        <div class="top-4">
+                            <form class="jcart" action="" method="post">
+                                <!--# if($shop['openorder'] == 1) {#-->
+                                <input type="hidden" value="{$item['id']}"
+                                       name="my-item-id">
+                                <input type="hidden" value="{$item['name']}" name="my-item-name">
+                                <input type="hidden" value="{$item['currentprice']}" name="my-item-price">
+                                <input type="hidden" value="1" name="my-item-qty">
+                                <input type="hidden" value="{$item['dmoney']}" name="my-item-dmoney">
+                                <input type="hidden" value="{$shop['id']}"
+                                       name="my-vendor-guid">
+                                <input type="hidden" value="{$shop['name']}" name="my-vendor-name">
+                                <input type="hidden" value="1" name="my-box-qty">
+                                <input type="hidden" value="1" name="my-box-unitprice">
+                                <input type="hidden" value="{$item['shoppromoid']}" name="my-promo">
+                                <input type="hidden" value="{$item['startingprice']==''?0:$item['startingprice']}" name="my-startingprice">
+                                <input type="hidden"
+                                       value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}"
+                                       name="my-item-url">
+                                <input type="hidden" value="{$item['needPackingPrice']}" name="my-needPackingPrice">
+                                <input type="hidden" name="jcartToken"
+                                       value="<?php echo $_SESSION['jcartToken'];?>"/>
+
+                                <!--# } #-->
+                                 <img width="135px" height="100px" src={$item['imageurl']}>
+                                <div style="width:100%">
+                                    <a target="_blank" title="{$item['name']}" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}" style="display:inline">{$item['substrname']}...</a></div>
+                                <div style="width:100%">
+                                    ￥{$item['currentprice']}/{$item['unit']}
+                                    <!--# if($shop['openorder'] == 1 && $schoolInfo['openorder'] == 1 && $item['isshopopen'] == 1) {#-->
+                                    <!--# if($item['remainder'] > 0) { #-->
+                                    <input class="btn" type="submit" value="来一份" name="my-add-button">
+                                    <!--# } else { #-->
+                                    <input type="submit" value="缺货" disabled="disabled">
+                                    <!--# } #-->
+                                    <!--# } #-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--#if($mkey==3)break;#-->
+                        <!--# } #-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--# } #-->
+
+        <div class="clear"></div>
+        <div id="catab" class="step-tab">
+            <p class="site-title">菜品分类</p>
+            <ul>
+                <!--# foreach($tagList as $key => $item) { #-->
+                <li><span class="{$item==$defaultSelected?'ctgmenu ctgactive':'ctgmenu'}"
+                          curindex={$key}>{$item}</span>
+                </li>
+                <!--#}#-->
+            </ul>
+        </div>
+        <div class="clear"></div>
+
+        <ul class="step-shop-list">
+            <li>
+                <ul>
+                    <!--# foreach($tagList as $tkey => $item) { #-->
+                    <li style=" display: {$item==$defaultSelected?'block':'none'}" id="list{$tkey}"
+                        class="li-first">
+                        <!--# foreach($merchandiseList as $mkey => $item) { #-->
+                        <!--# if($item['tagid']==$tkey) { #-->
+                        <div id="{$item['id']==$mid?"m$mid":""}" class="{$item['id']==$mid?"step-shop-menu selected":"step-shop-menu"}">
+                            <form class="jcart" action="" method="post">
+                                <!--# if($shop['openorder'] == 1) {#-->
+                                <input type="hidden" value="{$item['id']}" name="my-item-id">
+                                <input type="hidden" value="{$item['name']}" name="my-item-name">
+                                <input type="hidden" value="{$item['currentprice']}" name="my-item-price">
+                                <input type="hidden" value="1" name="my-item-qty">
+                                <input type="hidden" value="{$item['dmoney']}" name="my-item-dmoney">
+                                <input type="hidden" value="{$shop['id']}" name="my-vendor-guid">
+                                <input type="hidden" value="{$shop['name']}" name="my-vendor-name">
+                                <input type="hidden" value="1" name="my-box-qty">
+                                <input type="hidden" value="1" name="my-box-unitprice">
+                                <input type="hidden" value="{$item['unit']}" name="my-unitname">
+                                <input type="hidden" value="{$item['shoppromoid']}" name="my-promo">
+                                <input type="hidden" value="{$item['startingprice']==''?0:$item['startingprice']}" name="my-startingprice">
+                                <input type="hidden"
+                                       value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}"
+                                       name="my-item-url">
+                                <input type="hidden" value="{$item['needPackingPrice']}" name="my-needPackingPrice">
+                                <input type="hidden" name="jcartToken"
+                                       value="<?php echo $_SESSION['jcartToken'];?>"/>
+                                <!--# } #-->
+
+                                <!--# if(empty($item['descriptionurl'])){ #-->
+                                <div class="s-left">
+                                    <span><a target="_blank" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}">{$item['name']}</a></span>
+                                </div>
+                                <!--# }else{#-->
+                                <div class="s-left">
+                                    <span><a target="_blank" href="{$item['descriptionurl']}">{$item['name']}</a></span>
+                                </div>
+                                <!--# }#-->
+                                <div class="s-right">
+                                    <span>￥{$item['currentprice']}/{$item['unit']}</span>
+                                    <!--# if(empty($item['descriptionurl'])){ #-->
+                                    <a target="_blank" class="btn" href="{@url:app/4tschool/shopdetails/mdetail?shopid=$shop['id']&mid=$item['id']&schoolid=$schoolInfo['schoolid']}" style="display:inline">详情</a>
+                                    <!--# }else{#-->
+                                    <a target="_blank" class="btn" href="{$item['descriptionurl']}" style="display:inline">详情</a>
+                                    <!--# }#-->
+
+                                    <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen'] == 1 && $item['openorder'] == 1) {#-->
+                                    <!--# if($item['remainder'] > 0) { #-->
+                                    <input class="btn" type="submit" value="来一份" name="my-add-button">
+                                    <!--# } else { #-->
+                                    <input type="submit" value="缺货" disabled="disabled">
+                                    <!--# } #-->
+                                    <!--# } #-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--# } #-->
+                        <!--# } #-->
+                    </li>
+                    <!--# } #-->
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <template source='footer'/>
+    </div>        
+</div>
+</div>
+</div>
+</div>
+<div style="margin-top:8px;">
+    <img src="themes/extres/4tschool/images/cartoon.png"/>
+</div>
+<div class="clear"></div>
+<div class="step-right">
+    <div id="sidebar" class="my-step-right">
+
+         <!--# if(empty($topAnn) == false) {#-->
+         <!-- 最新公告 -->
+        <div class="my-info" style="display:none">
+           
+                <table width="100%" class="menu-express">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <span><strong>最新公告:</strong>
+                              <a target="_blank" href="{@url:app/4tschool/announcedetails/run}&id={$topAnn['aid']}"><font>{$topAnn['subject']}</font></a>
+                            <span>
+                        </td>
+                    </tr>
+                    
+                    </tbody>
+                </table>
+        </div>
+        <!--# } #-->
+
+        <!-- BEGIN JCART -->
+        <div id="jcart">
+            {$jcart->display_cart()}
+        </div>
+        <!-- END JCART -->
+        
+        <div class="my-info">
+            <div id="cart_anchor" type="hidden"></div>
+            <form method="post" action="{@url:app/4tschool/orderpreview/run}" id="orderInfo">
+                <table width="100%" class="menu-express">
+                    <tbody>
+                    <tr>
+                        <td align="left">
+                             <input type="button" value="清空" name="clearCart" id="clearCart" class="fancybox" style="margin:0px;background-color:#EC7B48">
+                        </td>
+                        <td align="right">
+
+                            <!--# if($schoolInfo['openorder'] == 1 ) {#-->
+                            <input type="submit" value="结算" name="confirmOrder" id="confirmOrder" class="fancybox" style="margin:0px">
+                            <!--# } #-->
+                        </td>
+                    </tr>
+
+                    <!--# if(!empty($promotionalShopList) && $aa){ #-->
+                    <tr class="promotional-manage">
+                        <td colspan="2">
+                            <strong>
+                                你可能喜欢的店铺推荐
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr class="promotional-content">
+                        <td colspan="2">
+                            <div>
+                                <ul style="width:285px">
+                                    <!--#foreach ($promotionalShopList as $key => $item) {#-->
+                                    <!--# if($item['isopen']){#-->
+                                    <a target="_blank" href="{@url:app/4tschool/shopdetails/run?schoolid=$item['schoolid']&shopid=$item['shopid']}">
+                                        <li class="{$item['isopen']==1?"":"shop-closed"}" style="background-color:#FFF1ED">
+                                            <div class="hot-shops">
+                                                <div class="hot-shops-img">
+                                                    <img class="{$item['isopen']==1?"":"shop-logo"}" alt="{$item['shopname']}" src="{$item['imageurl']}">
+                                                </div>
+                                                <div class="hot-shops-info">
+                                                    <span class="name">{$item['shopname']}</span><br/>
+                                                    <span class="description">{$item['description']}</span>
+                                                </div>
+                                            </div>
+                                            <div class="shop-status">
+                                                <div style="float:left">
+                                                <span class={$item['isopen']==1?"status-open":"status-closed"} title={$item['isopen']==1?"该商家正在营业中":"该商家已经打烊"}>{$item['isopen']==1?"营":"烊"}</span>
+                                                <!--# if($item['isopen']==1){ #-->
+                                                <!--# if($item['openorder']==1){ #-->
+                                                <span class="order-open" title="该商家支持送外卖">外</span>
+                                                <!--# } #-->
+                                                <!--# if($item['hasterminal']==1 && $schoolInfo['openorder'] == 1){ #-->
+                                                <span class="terminal-open" title="该商家支持在线下单">订</span>
+                                                <!--# } #-->
+                                                </div>
+                                                <div style="float:right">
+                                                    <span>{$item['startingprice']}元起送</span>
+                                                    <a href="{@url:app/4tschool/shopdetails/showphone?shopid=$item['shopid']&schoolid=$schoolInfo['schoolid']}" target="_blank">
+                                                    <img alt="diancanyo.com - 点餐哟" width="14px" height="14px" title="商家电话" src="themes/extres/4tschool/images/Phone_page.png">
+                                                    </a>
+                                                </div>    
+                                                <!--# } #-->
+                                            </div>
+                                        </li>
+                                    </a>
+                                    <!--#}else{#-->
+                                        暂无推荐
+                                    <!--#}#-->
+                                    <!--#}#-->
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <!--# } #-->
+                    </tbody>
+
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#add_favorites").click(function (event) {
+            event.preventDefault();
+            //not login
+            if ($("#add_favorites").attr("href") == 0){
+                location.href="{@url:u/login/run}";
+                return;
+            }
+
+            var postUrl = $(".bookmarkShopUrl").val();
+            $.post(postUrl,
+                    $('#schoolordersForm').serialize(),
+                    function (msg) {
+                        if (msg) {
+                            $("#mark").remove();
+                            $("#marked").show();
+                        }
+                    });
+        });
+    });
+
+    //菜品列表背景色设置
+    $(".step-shop-menu").hover(function()
+    {
+        $(this).attr("style","background-color:#FFE4D8");
+    },
+    function()
+    {
+        $(this).attr("style","background-color:''");
+    });
+
+    $(".step-incidentally-menu").hover(function()
+    {
+        $(this).attr("style","background-color:#FFE4D8");
+    },
+    function()
+    {
+        $(this).attr("style","background-color:''");
+    });
+
+
+    $(function () {
+
+        $("#accordion").accordion({
+            collapsible: true,
+            heightStyle: "content"
+        });
+
+        // Hover states on the static widgets
+        $("#dialog-link, #icons li").hover(
+                function () {
+                    $(this).addClass("ui-state-hover");
+                },
+                function () {
+                    $(this).removeClass("ui-state-hover");
+                }
+        );
+    });
+
+    $(function () {
+        var tab_wrap = $('.J_tab_wrap');
+        Wind.use('tabs', function () {
+            tab_wrap.each(function () {
+                $(this).find('.J_tabs_nav').first().tabs($(this).find('div.J_tabs_contents').first().children('div'));
+            });
+        });
+    });
+
+    var added = false;
+    $(function () {
+        var mid = $("#addToCart").val();
+        if (mid != '') {
+            $("[name='my-item-id']").each(function () {
+                if (added) return;
+                if ($(this).val() == mid) {
+                    $(this).parent().find("[name='my-add-button']").trigger('click');
+                    added = true;
+                }
+            });
+        }
+    });
+
+    $(".ctgmenu").click(function () {
+        var tag = $(this);
+
+        $(".ctgmenu").each(function () {
+            $(this).attr('class', 'ctgmenu');
+        });
+
+
+        $(tag).attr('class', 'ctgmenu ctgactive');
+
+        $(".li-first").each(function () {
+            if ($(tag).attr('curindex') == $(this).attr('id').substring(4))
+                $(this).css('display', 'block');
+            else
+                $(this).css('display', 'none');
+        });
+    });
+
+    //clear the shopping cart
+    $("#clearCart").click(function () {
+        $.ajax({
+            type: "POST", dataType: "text", async: false, url: "{$BASE_URL}",
+            data: {"jcartEmpty": "1"},
+            success: function (data) {
+                $('#jcart').html(data);
+                repositionCart();
+            },
+            error: function (res, msg, err) {
+                alert(err);
+            }
+        });
+    });
+
+
+    //check order information
+    $("#orderInfo").submit(function () {
+        if ($("#merchandiseCount").val() == 0) {
+            alert("您的餐车还没有餐品.");
+            return false;
+        }
+        return true;
+    }); 
+
+    $(function(){
+        var anchor="{$anchor}";
+        if(anchor!="")
+        {
+            $("html,body").animate({scrollTop:$("#"+anchor).offset().top-100},0)
+        }
+    });
+
+    $(function(){
+        $(".step-shop-menu").live("click",function(event){
+            if(event.target.tagName.toLowerCase() != 'input' && event.target.tagName.toLowerCase() != 'a')
+            $(this).find("[name='my-add-button']").trigger("click");
+        });
+    });
+</script>
+</html>

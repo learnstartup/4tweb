@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<application>
+		<name>4tschool应用</name>
+		<alias>4tschool</alias>
+		<version>1.0</version>
+		<pw-version>9.0</pw-version>
+		<type>app</type>
+		<description>4tschool
+		</description>
+		<charset>utf-8</charset>
+		<logo>images/logo.jpg</logo>
+		<website></website>
+		<author-name>4Tteam</author-name>
+		<author-email>yangyan7777@gmail.com</author-email>
+		<author-icon>
+		</author-icon>
+	</application>
+	<res>resource</res>
+	<!-- 应用钩子注册 -->  
+ 
+	<hooks>      
+ 
+		<hook-name> <!-- 钩子名称 -->  
+         
+			<documents>        
+       
+				<description></description> <!-- 钩子描述，接收一串描述字符串，表述钩子的定义的位置，作用以及使用方法，调用类型(run,verify...) -->
+        
+				<param></param> <!-- 钩子定义的参数类型列表说明，接收一串描述字符串，表述参数类型意义是否可选填等信息 -->
+        
+				<interface></interface> <!-- 钩子定义对扩展接口返回值要求，接收一串描述字符串，表述是否需要返回值，返回值类型等 -->
+        
+			</documents>
+             
+		</hook-name> 
+     
+	</hooks> 
+ 
+	<!-- 扩展注册 -->
+ 
+	<inject-services>    
+ 
+		<hook-name> <!-- 钩子名称 -->
+             
+			<alias> <!-- 扩展别名 -->  
+     
+				<class></class> <!-- 必填 扩展实现类的绝对路径地址， 路径别名方式 --> 
+             
+				<method></method> <!-- 根据钩子类型不同 可选 自定义扩展执行方法 --> 
+                 
+				<loadway></loadway> <!-- 可选 默认 load加载方式 -->      
+             
+				<expression></expression> <!-- 可选 填写钩子执行表达式，当表达式成立时执行该挂载，在 Controller 类型的钩子位置可用 -->  
+                     
+				<description></description> <!-- 扩展定义描述信息，接收一串字描述字符串， 表述扩展定义的功能作用 -->    
+             
+			</alias>     
+     
+		</hook-name> 
+ 
+	</inject-services>
+	
+</manifest>

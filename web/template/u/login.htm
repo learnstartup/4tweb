@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' suffix='htm' />
+<link href="{@theme:css}/register.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+<style type="text/css">
+	.loginregister dl dd span{
+		margin-left:124px;
+	}
+
+	.app{
+
+		float:right;
+		height:400px;
+		margin:10px;
+	}
+
+	.app-banner{
+	    background:url("themes/extres/4tschool/images/app.png") no-repeat scroll center center;
+	    width:450px;
+	    height: 340px;
+	}
+
+	.logreg-btn-qr {
+	    background-color: #DC4830;
+	    background-image: linear-gradient(0deg, #DC4830, #E0533C);
+	    border: 1px solid #C73516;
+	    border-radius: 4px;
+	    bottom: 160px;
+	    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	    color: #FFFFFF;
+	    display: block;
+	    font: 16px/0.9em "Helvetica Neue",Arial,"Microsoft Yahei",sans-serif;
+	    height: 40px;
+	    width: 132px;
+	    padding: 10px 0 0 18px;
+	    margin-top: 190px;
+	}
+	.logreg-btn-qr:hover {
+	    color: #FFFFFF;
+	    text-decoration: none;
+	}
+	.logreg-btn-qr > small {
+	    font: 11px/1em "Helvetica Neue",Arial,"Microsoft Yahei",sans-serif;
+	    margin-left: 2px;
+	}
+
+	.icon-logreg-download {
+	    background: url("themes/extres/4tschool/images/download_app.png") no-repeat scroll 0 rgba(0, 0, 0, 0);
+	    display: block;
+	    float: left;
+	    height: 32px;
+	    margin-right: 10px;
+	    width: 32px;
+	}
+
+</style>
+
+<script type="text/javascript" src="themes/extres/4tschool/js/jquery.js"></script>
+<script type="text/javascript" src="themes/extres/4tschool/js/thickbox.js"></script>
+<link rel="stylesheet" href="themes/extres/4tschool/css/thickbox.css" type="text/css" media="screen" />
+
+</head>
+<body>
+<div class="wrap">
+<template source='TPL:common.header' suffix='htm'/>
+	<div class="main_wrap">
+		<div class="main">
+			<div class="box_wrap register cc">
+<!--#
+$_errMsg = $url ? '登录' : '登录';
+//TODO 不一样的登录提示类型
+if ($_GET['_type'] == 2) {
+$_errMsg = '为保证帐户安全，请重新登录';
+}
+#-->
+				<h2 class="reg_head">{$_errMsg}</h2>
+				<div class="reg_cont_wrap">
+					<div class="reg_cont" style="width:950px;">
+						<form id="J_u_login_form" action="{@url:u/login/dorun}" method="post">
+						<div class="reg_form loginregister" style="float:left;width:440px">
+							<!--#if ($url) {#-->
+							<div class="tips" style="width:400px">
+								<span class="tips_icon">
+									请登录后再继续浏览
+								</span>
+							</div>
+							<!--#}#-->
+							<dl class="cc leftcc" style="width:400px">
+								<dt><label for="J_u_login_username">帐号：</label></dt>
+								<dd><input id="J_u_login_username" data-id="username" name="username" type="text" class="input length_4" aria-required="true" value=""></dd>
+								<dd id="J_u_login_tip_username" role="tooltip" aria-hidden="true" class="dd_r"></dd>
+							</dl>
+							<dl class="cc leftcc" style="width:400px">
+								<dt><label for="J_u_login_password">密码：</label></dt>
+								<dd><input id="J_u_login_password" data-id="password" name="password" type="password" aria-required="true" class="input length_4" value=""></dd>
+								<dd class="dd_r">
+									<span id="J_u_login_tip_password" role="tooltip" aria-hidden="true"></span>
+								</dd>
+							</dl>
+							<div id="J_login_qa" style="display:none;"></div>
+							
+							<!--#if ($verify) {#-->
+							<dl class="cc dl_cd leftcc" style="width:400px">
+								<dt><label for="J_login_code">验证码：</label></dt>
+								<dd>
+									<input data-id="code" id="J_login_code" name="code" type="text" class="input length_4 mb5">
+									<div id="J_verify_code"></div>
+								</dd>
+								<dd class="dd_r"><span id="J_u_login_tip_code"></span></dd>
+							</dl>
+							<!--#}#-->
+
+							<dl class="cc pick leftcc" style="width:400px">
+								<dt>&nbsp;</dt>
+								<dd><a rel="nofollow" href="{@url:u/findPwd/findByMobile}" class="fr mr10">找回密码</a><input name="rememberme" type="checkbox" class="checkbox" id="cktime"><label for="cktime">自动登录</label></dd>
+							</dl>
+							<dl class="cc leftcc" style="width:400px">
+								<dt>&nbsp;</dt>
+								<dd><button class="btn btn_big btn_submit mr20" type="submit">登录</button>
+								<input type="hidden" name="backurl" value="{$url}">
+								<input type="hidden" name="invite" value="{$invite}" />
+								</dd>
+							</dl>
+							<div class="" style="margin-left:60px;">
+								<div class="">
+									<div>
+										<div>
+											还没有帐号？&nbsp;
+											<a rel="nofollow" href="{@url:u/register/run}<!--#if ($invite) {#-->?invite={$invite}<!--#}#-->" class="btn btn_big">免费注册</a>&nbsp;
+											<a href="{@url:app/com_qq_login/index/run}" target="_blank"><img src="themes/extres/com_qq_login/Connect_logo_3.png" valign="middle" /></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="app-banner" style="float:right;margin-right:40px;">
+							<a class="logreg-btn-qr thickbox" title="" href="themes/extres/4tschool/images/two_dimension_code.png"   >
+								<i class="icon-logreg-download"></i>
+								手机客户端
+								<br>
+								<small>Android</small>
+							</a>
+							<a class="logreg-btn-qr thickbox" style="margin-top:14px" title="" href="themes/extres/4tschool/images/getqrcode.jpg"   >
+								<i class="icon-logreg-download"></i>
+								微信下单
+								<br>
+								<small>Android</small>
+							</a>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<template source='TPL:common.footer' suffix='htm'/>
+</div>
+<script>
+Wind.use('jquery', 'global', 'validate', 'ajaxForm', function(){
+	
+	//聚焦时默认提示
+	var focus_tips = {
+		username : '{$loginWay}',
+		password : '',
+		answer : '',
+		myquestion : '',
+		code : ''
+	};
+
+	var login_qa = $('#J_login_qa'), $qa_html = $('<dl id="J_qa_wrap" class="cc">\
+							<dt><label for="J_login_question">安全问题</label></dt>\
+							<dd><select id="J_login_question" name="question" class="select_4"></select></dd>\
+						</dl>\
+						<dl class="cc">\
+							<dt><label for="J_login_answer">您的答案</label></dt>\
+							<dd><input id="J_login_answer" name="answer" type="text" class="input length_4" value=""></dd>\
+							<dd id="J_u_login_tip_answer" class="dd_r"></dd>\
+						</dl>');
+	var _statu = '',
+		login_tip_username = $('#J_u_login_tip_username');
+
+	var u_login_form = $("#J_u_login_form"),
+			u_login_username = $('#J_u_login_username');
+
+	u_login_form.validate({
+		errorPlacement: function(error, element) {
+			//错误提示容器
+			$('#J_u_login_tip_'+ element[0].name).html(error);
+		},
+		errorElement: 'span',
+		errorClass : 'tips_icon_error',
+		validClass		: 'tips_icon_success',
+		onkeyup : false, //remote ajax
+		focusInvalid : false,
+		rules: {
+			username: {
+				required	: true,
+				//nameCheck : true
+				remote		: {
+					url : '{@url:u/login/checkname}',
+					//beforeSend : '', //取消startRequest方法
+					dataType: "json",
+					type : 'post',
+					data : {
+						'username' : function(){
+							return u_login_username.val();
+						}
+					},
+					complete : function(jqXHR, textStatus){
+						if(!textStatus === 'success') {
+							return false;
+						}
+						var data = $.parseJSON(jqXHR.responseText);
+						if(data.state === 'success') {
+							if(data.message.safeCheck){
+								var q_arr = [];
+								$.each(data.message.safeCheck, function(i, o){
+									q_arr.push('<option value="'+ i +'">'+ o +'</option>')
+								});
+								$qa_html.find('#J_login_question').html(q_arr.join(''));
+								login_qa.html($qa_html).show();
+								_statu = data.message._statu;
+							}else{
+								login_qa.html('')
+							};
+							login_tip_username.html('<span class="tips_icon_success"><span>');
+						}else{
+							login_tip_username.html('<span class="tips_icon_error"><span>' + data.message);
+						}
+					}
+				}
+			},
+			password : {
+				required	: true/*,
+				remote : {
+					url : "{@url:u/login/checkpwd}",
+					dataType: "json",
+					type : 'post',
+					data : {
+						username :  function(){
+							return u_login_username.val();
+						},
+						password : function(){
+							return $('#J_u_login_password').val();
+						}
+					}
+				}*/
+			},
+			code : {
+				required : true,
+				remote : {
+					url : "{@url:verify/index/check}",
+					dataType: "json",
+					data : {
+						code :  function(){
+							return $("#J_login_code").val();
+						}
+					}
+				}
+			},
+			question : {
+				required : true
+			},
+			answer : {
+				required : true,
+				remote : {
+					url : '{@url:u/login/checkquestion}',
+					dataType: "json",
+					type : 'post',
+					ignoreRepeat : true,
+					data : {
+						question : function(){
+							if($('#J_login_myquestion').length) {
+								return $('#J_login_myquestion').val();
+							}else{
+								return $('#J_login_question').val();
+							}
+						},
+						answer :  function(){
+							return $("#J_login_answer").val();
+						},
+						_statu : function(){
+							return _statu;
+						}
+					}
+				}
+			}
+		},
+		highlight	: false,
+		unhighlight	: function(element, errorClass, validClass) {
+			if(element.name === 'password') {
+				$('#J_u_login_tip_password').html('');
+				return;
+			}
+			//$('#J_u_login_tip_'+ $(element).data('id')).html('<span class="'+ validClass +'" data-text="text"><span>');
+		},
+		onfocusin	: function(element){
+			var name = element.name;
+			$(element).parents('dl').addClass('current');
+			$('#J_u_login_tip_'+ name).html('<span class="reg_tips" data-text="text">'+ focus_tips[name] +'</span>');
+		},
+		onfocusout	:  function(element){
+			$(element).parents('dl').removeClass('current');
+			//$('#J_u_login_tip_'+ $(element).data('id')).html('');
+			if(element.name === 'username'){
+				this.element(element);
+			}
+		},
+		messages : {
+			username : {
+				required	: '帐号不能为空'
+			},
+			password : {
+				required : '密码不能为空'
+			},
+			code : {
+				required	: '验证码不能为空',
+				remote : '验证码不正确或已过期' //ajax验证默认提示
+			},
+			myquestion : {
+				required	: '自定义问题不能为空',
+				remote : ''
+			},
+			answer : {
+				required	: '问题答案不能为空'
+			}
+		},
+		submitHandler:function(form) {
+			var btn = $(form).find('button:submit');
+			
+			$(form).ajaxSubmit({
+				dataType : 'json',
+				beforeSubmit : function(){
+					//global.js
+					Wind.Util.ajaxBtnDisable(btn);
+				},
+				success : function(data, statusText, xhr, $form) {
+					if(data.state === 'success') {
+					
+						//是否需要设置验证问题
+						if(data.message.check) {
+							$.post(data.message.check.url, function (data) {
+								//引入所需组件并显示弹窗
+								Wind.use('draggable', function (){
+									$('body').append(data);
+									var question_set_wrap = $('#J_login_question_set_wrap');
+									Wind.Util.popPos(question_set_wrap);
+									question_set_wrap.find('input:text:visible').focus();
+								});
+							}, 'html');
+						}else{
+							window.location.href = data.referer;
+						}
+						
+					}else if(data.state === 'fail'){
+						//global.js
+						Wind.Util.ajaxBtnEnable(btn);
+
+						if(data.message.qaE) {
+							//回答安全问题
+							return;
+						}
+						
+						if(RegExp('答案').test(data.message)) {
+							//配合ignoreRepeat 处理问题答案不修改 再次验证
+							$('#J_u_login_tip_answer').html('<span for="J_login_answer" generated="true" class="tips_icon_error">'+ data.message +'</span>');
+						}else{
+							//global.js
+							Wind.Util.resultTip({
+								elem : btn,
+								error : true,
+								msg : data.message,
+								follow : true
+							});
+						}
+						
+					}
+				}
+			});
+		}
+	});
+
+	u_login_form.on('change', '#J_login_question', function(){
+		if($(this).val() == '-4') {
+			$('#J_qa_wrap').after('<dl id="J_myquestion_wrap" class="cc"><dt><label>自定义问题</label></dt><dd><input id="J_login_myquestion" type="text" name="myquestion" value="" class="input length_4"></dd><dd class="dd_r" id="J_u_login_tip_myquestion"></dd></dl>');
+		}else{
+			$('#J_myquestion_wrap').remove();
+		}
+	});
+
+
+	//聚焦第一个input
+	u_login_form.find('input.input:visible:first').focus();
+
+});
+</script>
+</body>
+</html>

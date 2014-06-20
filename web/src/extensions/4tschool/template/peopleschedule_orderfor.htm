@@ -1,0 +1,436 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+<style>
+
+tr{
+	border-bottom: 1px;
+}
+
+table.display td {
+padding: 8px 15px;
+}
+
+td.group {
+color: blue;
+}
+
+fieldset.set{
+	border: 3px;
+	padding: 5px;
+	font-size: 14px;
+	margin-top: 20px;
+	background-color: rgb(242, 245, 245);
+	border-top-width: 5px;
+	border-color: blue;
+}
+</style>
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+    <form action="{@url:app/4tschool/peopleschedule/delete}" id="deleteScheduleForm" method="post">
+      <input type="hidden" name="deleteScheduleId" id="deleteScheduleId">
+      <input type="hidden" class="deleteurl" name="deleteurl" value="{@url:app/4tschool/peopleschedule/delete}">
+    </form>
+		<form action="{@url:app/4tschool/peopleschedule/orderfor}" id="scheduleListForm" method="post">
+			<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/peopleschedule/orderfor}">
+			<div class="myddorder_search clearfix">
+				<div class="time_box" style="width:100%;padding-bottom:5px;">
+					<strong>从</strong>
+					<input type="text" id="fromTime" value="{$fromTime}" name="fromTime"><strong>到</strong>
+					<input type="text" value="{$toTime}" id="toTime" name="toTime">
+					<span style="float:right">
+						<input type="submit" id="searchBtn" name="searchBtn" value="点击搜索"></input>
+					</span>
+				</div>
+				
+			</div>
+			<fieldset class="set">
+				<legend><h2>下单人员排班管理</h2></legend>
+				<p>
+			
+				</p>
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmgrouping">
+					<thead>
+						<tr>
+							<th></th>
+
+							<!--#foreach ($mergedResult as $daykey => $eachShopSchedule) {#-->
+							<th>{$daykey}</th>
+							<!--# } #-->
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--#foreach ($shopList as $key => $eachShop) {#-->
+						<tr class="">
+							<td>{$eachShop['id']}.&nbsp;{$eachShop['name']}
+							</td>
+							<!--#foreach ($mergedResult as $daykey => $eachShopSchedule) {#-->
+							<td>
+                  <input type="hidden" name="shopid" id="shopid" value="{$eachShop['id']}">
+                  <input type="hidden" name="shopName" id="shopName" value="{$eachShop['name']}">
+                  <input type="hidden" name="currentDate" id="currentDate" value="{$daykey}">
+								<!--# if (empty($eachShopSchedule[$eachShop['id']])) { #-->
+                <!--# } #-->
+									<a href="#" id="create-schedule" class="create-schedule">Add</a><br/>
+								
+
+								<!--#foreach ($eachShopSchedule[$eachShop['id']] as $currentShop => $currentShopSchedule) {#-->
+                <span style="border:1px;">
+                  {$currentShopSchedule['datetimeBegin']}  - {$currentShopSchedule['datetimeEnd']} : {$currentShopSchedule['username']}
+                  <input type="hidden" name="rangeSchedule" id="rangeSchedule" value=
+                  "{$currentShopSchedule['datetimeBegin']}-{$currentShopSchedule['datetimeEnd']}({$currentShopSchedule['username']})" ></input>
+                   <input type="hidden" name="rangeScheduleId" id="rangeScheduleId" value=
+                  "{$currentShopSchedule['id']}" ></input>
+                  <a href="#" class="changeSchedule">调</a>|<a href="#" class="deleteSchedule">删</a>
+                </span><br/>
+
+								<!--# } #-->
+							</td>
+							<!--# } #-->
+						</tr>
+						<!--# } #-->
+						
+					</tbody>
+				</table>
+			</fieldset>
+		</form>
+	</div>
+
+</div>
+
+<div id="dialog-createSchedule-form" style="display:none" title="排班管理">
+  <form  action="{@url:app/4tschool/peopleschedule/saveSchedule}" id="manageScheduleForm" method="post">
+  <input type="hidden" class="saveScheduleUrl" name="saveScheduleUrl" value="{@url:app/4tschool/peopleschedule/saveSchedule}">
+  <input type="hidden" name="choosenShopId" id="choosenShopId">
+  <input type="hidden" name="choosenDate" id="choosenDate">
+  <fieldset>
+  	<table width="100%">
+  		<tr style="padding:10px">
+  			<td><label for="shopname">商店名</label></td>
+  			<td class="shopNameTd">
+  				 
+  			</td>
+  		</tr>
+  		<tr>
+  			<td><label for="when">排班日期</label></td>
+  			<td class="workDateTd">
+
+  			</td>
+  		</tr>
+      <tr>
+        <td><label for="when">开始时间</label></td>
+        <td>
+            <input type="text" name="fromTimeCreate"></input> 
+        </td>
+      </tr>
+
+      <tr>
+        <td><label for="when">结束时间</label></td>
+        <td>
+            <input type="text" name="toTimeCreate"></input> 
+        </td>
+      </tr>
+
+  		<tr>
+  			<td><label for="orderfor">下单人员</label></td>
+  			<td>
+  				<select type="text" name="orderfor" id="orderfor" class="text">
+  					<option value="-1">请选择</option>
+  					<!--#foreach ($orderForPPls as $key => $eachPPL) {#-->
+  						<option value="{$eachPPL['userid']}">{$eachPPL['username']}</option>
+  					<!--# } #-->
+  				</select>
+  			</td>
+  		</tr>
+  		<tr>
+  			<td><label for="applyfordays">应用于接下来7天<strong style="color:red">(会进行覆盖)</strong></label></td>
+  			<td><input type="checkbox" name="applyfordays" id="applyfordays"/>
+          <p>
+
+          </p>
+  			</td>
+  		</tr>
+  	</table>
+
+  </fieldset>
+  </form>
+</div>
+
+
+<div id="dialog-changeSchedule-form" style="display:none" title="更改班次管理">
+  <form  action="{@url:app/4tschool/peopleschedule/changeSchedule}" id="changeScheduleForm" method="post">
+  <input type="hidden" class="changeScheduleUrl" name="chnageScheduleUrl" value="{@url:app/4tschool/peopleschedule/changeSchedule}">
+  <input type="hidden" name="changeShopId" id="changeShopId">
+  <input type="hidden" name="changeDate" id="changeDate">
+  <input type="hidden" name="changeScheduleId" id="changeScheduleId">
+  
+  <fieldset>
+    <table width="100%">
+      <tr style="padding:10px">
+        <td><label for="shopname">商店名</label></td>
+        <td class="shopNameChangeTd">
+           
+        </td>
+      </tr>
+      <tr>
+        <td><label for="when">现有排班计划</label></td>
+        <td class="workDateChangeTd">
+
+        </td>
+      </tr>
+      <tr>
+        <td><label for="orderChangefor">下单人员</label></td>
+        <td>
+          <select type="text" name="orderChangefor" id="orderChangefor" class="text">
+            <option value="-1">请选择</option>
+            <!--#foreach ($orderForPPls as $key => $eachPPL) {#-->
+              <option value="{$eachPPL['userid']}">{$eachPPL['username']}</option>
+            <!--# } #-->
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="splitTime">从时间点进行分割(请选择现有排班计划中的一个时间点)</label></td>
+        <td>
+            <input type="text" name="splitTime" id="splitTime"></input>
+        </td>
+      </tr>
+    </table>
+
+  </fieldset>
+  </form>
+</div>
+
+<div class="clear"></div>
+<template source='footer' />
+
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+	$( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "10D" 
+    });
+
+    $( "#searchBtn" ).button();
+
+
+    $( "#dialog-createSchedule-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 450,
+      modal: true,
+      buttons: {
+        "保存": function() {
+
+          var orderFor = $("#orderfor").val();
+          if(orderFor <= 0)
+          {
+              alert("请选择下单人员");
+              return;
+          }
+
+          //update data for each order's delivery
+          var postUrl = $(".saveScheduleUrl").val();
+
+          $.post(postUrl, 
+            $('#manageScheduleForm').serialize(), 
+            function(returndata) {
+              returndata=eval("("+returndata+")");
+
+              if(returndata.success)
+              {
+                alert(returndata.data);
+                $( "#searchBtn" ).click();
+                
+              }else
+              {
+                alert(returndata.data);
+              }
+              
+          });
+          
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      close: function() {
+        
+      }
+    });
+ 
+
+    //创建计划
+    $( ".create-schedule" ).each(function(index,element)
+    {
+      $(element).click(function(event) {
+
+        var shopid = $(this).parent().find("#shopid").val();
+        var currentDate = $(this).parent().find("#currentDate").val();
+
+        if(shopid <=0)
+          return false;
+
+        if(currentDate == '')
+          return false;
+
+        $("#choosenShopId").val(shopid);
+        $("#choosenDate").val(currentDate);
+
+        //shopName
+        var shopName = $(this).parent().find("#shopName").val();
+        
+        $(".shopNameTd").html(shopName);
+        $(".workDateTd").html(currentDate);
+
+
+      	event.preventDefault();
+        $( "#dialog-createSchedule-form" ).dialog( "open" );
+      });
+    });
+
+    //================================================================
+    //  change schedule
+    //================================================================
+    
+    $( "#dialog-changeSchedule-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 450,
+      modal: true,
+      buttons: {
+        "保存": function() {
+
+          var orderFor = $("#orderChangefor").val();
+          if(orderFor <= 0)
+          {
+              alert("请选择下单人员");
+              return;
+          }
+
+          //update data for each order's delivery
+          var postUrl = $(".changeScheduleUrl").val();
+
+          $.post(postUrl, 
+            $('#changeScheduleForm').serialize(), 
+            function(returndata) {
+              returndata=eval("("+returndata+")");
+
+              if(returndata.success)
+              {
+                alert(returndata.data);
+                $( "#searchBtn" ).click();
+                
+              }else
+              {
+                alert(returndata.data);
+              }
+              
+          });
+          
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      close: function() {
+        
+      }
+    });
+
+    //调班计划
+    $( ".changeSchedule" ).each(function(index,element)
+    {
+      $(element).click(function(event) {
+
+        
+        var shopid = $(this).parent().parent().find("#shopid").val();
+        var currentDate = $(this).parent().find("#rangeSchedule").val();
+        var scheduleId = $(this).parent().find("#rangeScheduleId").val();
+
+        if(shopid <=0)
+          return false;
+
+        if(rangeSchedule == '')
+          return false;
+
+        $("#changeShopId").val(shopid);
+        $("#changeDate").val(currentDate);
+        $("#changeScheduleId").val(scheduleId);
+
+        //shopName
+        var shopName = $(this).parent().parent().find("#shopName").val();
+        
+        $(".shopNameChangeTd").html(shopName);
+        $(".workDateChangeTd").html(currentDate);
+
+
+        event.preventDefault();
+        $( "#dialog-changeSchedule-form" ).dialog( "open" );
+      });
+    });
+
+    //调班计划
+    $( ".deleteSchedule" ).each(function(index,element)
+    {
+      $(element).click(function(event) {
+
+        event.preventDefault();
+
+        var scheduleId = $(this).parent().find("#rangeScheduleId").val();
+
+        if(confirm("确定删除这个排班吗?") == false)
+        {
+            return;
+        }
+
+        if(scheduleId <=0)
+        {
+          alert("无效的排班号");
+          return false;
+        }
+
+        $("#deleteScheduleId").val(scheduleId);
+
+        $.post($(".deleteurl").val(), 
+            $('#deleteScheduleForm').serialize(), 
+            function(returndata) {
+              returndata=eval("("+returndata+")");
+
+              if(returndata.success)
+              {
+                alert(returndata.data);
+                $( "#searchBtn" ).click();
+                
+              }else
+              {
+                alert(returndata.data);
+              }
+              
+          });
+        
+      
+      });
+    });
+
+	
+});
+</script>
+
+

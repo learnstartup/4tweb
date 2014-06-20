@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.6.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<style type="text/css">
+body { font-family:verdhana; font-size: 12px; text-align: center;background-color: white; }
+#main_portion{ width:1100px; text-align: left; padding:0; float: left;}
+#public { width:95%; border-bottom:3px dotted #ccc; height:137px;  padding:10px; }
+.members{cursor: pointer; width:180px; position: relative; float: left; border:1px dotted #ccc; text-align: left; padding:3px;font-size: 14px; margin-top: 3px; margin-left: 3px;z-index:999;}
+#groupsall{ clear:both; width:100%; height:auto; padding:10px; padding-left: 0px; margin-top: 5px; }
+.group{ float:left; position:relative; width:250px; border:1px solid #ccc; padding:3px; margin-left: 9px; text-align: left; min-height:70px; height:auto; background-color:#f5f5f5; z-index:0;}
+.group ul{ padding:0; margin:0;}
+.group li { float:left; list-style: none; padding:5px;}
+.add{ position: absolute; z-index:99;}
+.remove{ position: absolute; z-index:99;}
+h2{ text-align: left;}
+h1{ font-family: 'Love Ya Like A Sister', cursive; color: #cc0000; font-size: 40px;}
+h4{ font-family: 'Love Ya Like A Sister', cursive; }
+</style> 
+<script type="text/javascript" >
+	$(function() {	
+		// Initiate draggable for public and groups
+		var $gallery = $( ".members, .group" );
+		$( "li", $gallery ).live("mouseenter", function(){
+			 var $this = $(this);
+			  if(!$this.is(':data(draggable)')) {
+			    $this.draggable({
+			     	helper: "clone",
+					containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", 
+					cursor: "move"
+			    });
+			  }
+		});
+		
+		$(".group").droppable({
+			activeClass: "ui-state-highlight",
+			drop: function( event, ui ) {
+				var m_id = $(ui.draggable).attr('rel');
+				
+				if(!m_id)
+					{
+						casePublic = true;
+						var m_id = $(ui.draggable).attr("id");
+						m_id = parseInt(m_id.substring(3));
+					}					
+				var g_id = $(this).attr('id');
+				var image_src = $("#mem"+m_id).find("img").attr("src");
+				var image_rel = $("#mem"+m_id).find("img").attr("rel");
+				var name = $("#mem"+m_id).find("b").text();
+				$("#mem"+m_id).hide();
+				$("#"+g_id+" ul").append("<li><img src='"+image_src+"' rel='"+image_rel+"'>"+ "<b>" + name + "</b>" +"</li>");
+				$("#added"+g_id).animate({"opacity" : "10" },10);
+				$("#added"+g_id).show();
+				$("#added"+g_id).animate({"margin-top": "-50px", "z-index":"999"}, 450);
+				$("#added"+g_id).animate({"margin-top": "0px","opacity" : "0" }, 450);
+			},
+			 out: function(event, ui) {
+			 	var m_id = $($(ui.draggable).find("img")[0]).attr("rel");
+				var g_id = $(this).attr('id');			 	
+			 	$(ui.draggable).hide("explode", 1000);
+			 	$("#removed"+g_id).animate({"opacity" : "10" },10);
+				$("#removed"+g_id).show();
+				$("#removed"+g_id).animate({"margin-top": "-50px"}, 450);
+				$("#removed"+g_id).animate({"margin-top": "0px","opacity" : "0" }, 450);
+			 	$("#mem"+m_id).show();
+			 }
+		});
+
+		
+		$(".save").click(function(event)
+		{
+			event.preventDefault();
+			var relationshiptosave = '';
+			var relationshiptodelete = '';
+			$(".group").each(function(index,element)
+			{
+				var groupid = $(element).attr("id");
+				relationshiptosave = relationshiptosave + groupid + ":";
+				relationshiptodelete = relationshiptodelete + groupid + ":";
+
+				var ulElements = $(element).find("ul");
+				var len = ulElements.length;
+				if(len > 0)
+				{
+					ulEle = ulElements[0];
+					$(ulEle).find("li").each(function(liindex,lielement)
+					{
+						var imgEle = $(lielement).find("img");
+						if($(imgEle[0]).is(':visible'))
+						{
+							var userid = $(imgEle[0]).attr("rel");
+							relationshiptosave = relationshiptosave + userid + ",";
+							//save user and group relationship
+
+						}
+						else
+						{
+							var userid = $(imgEle[0]).attr("rel");
+							relationshiptodelete = relationshiptodelete + userid + ",";
+						}
+						
+					});
+				}
+
+				relationshiptosave = relationshiptosave + ";";
+				relationshiptodelete = relationshiptodelete + ";";
+
+			});
+
+			//save into hidden element
+			$(".relationshiptosave").val(relationshiptosave);
+			$(".relationshiptodelete").val(relationshiptodelete);
+
+			var postUrl = $(".posturl").val();
+			$.post(postUrl, 
+				$('#peopleingroupForm').serialize(), 
+				function(returndata) {
+					alert(returndata);
+					returndata=eval("("+returndata+")");
+
+					if(returndata.success)
+					{
+						alert(returndata.data);
+					}else
+					{
+						alert(returndata.data);
+					}
+
+			});
+
+		});
+	
+	
+	});
+</script>
+</head>
+<body> 
+
+<div class="wrap">
+	<template load="true" source="links"/>
+<form action="{@url:app/4tschool/schoolpeople/savepeopleingroup}" id="peopleingroupForm" method="post">
+<input type="hidden" class="relationshiptosave" name="relationshiptosave" value="">
+<input type="hidden" class="relationshiptodelete"  name="relationshiptodelete" value="">
+<input type="hidden" class="posturl"  name="posturl" value="{@url:app/4tschool/schoolpeople/savepeopleingroup}">
+
+<h2>配送人员(通过拖拽操作)<button type="submit" name="save"  value="save" class="save btn btn_submit fr J_ajax_submit_btn">保存改变</button></h2>
+<div id="main_portion">
+
+	<div id="public">
+		<!--#foreach ($deliveryppls as $key => $item) {#-->
+			<div id="mem{$item['userid']}" class="members" {$item['notin']==true?"":"style=display:none"} >
+				<li>
+					<img rel="{$item['userid']}" src="{@G:url.extres}/4tschool/images/avatar.jpg" >
+					<b>{$item['username']}</b>
+				</li>
+			</div>
+		<!--#}#-->
+	</div>
+
+	<div id="groupsall">
+	<h2>配送组(通过拖拽操作)&nbsp;&nbsp;</h2>
+	<!--#foreach ($groups as $key => $item) {#-->
+		{$item['name']}
+		<div class="group ui-droppable" id="{$item['id']}"><strong>{$item['groupname']}</strong>
+			<div style="display:none;" class="add" id="added{$item['id']}">
+				<img width="25" height="25" src="{@G:url.extres}/4tschool/images/avatar.jpg">
+			</div>
+			<div style="display:none;" class="remove" id="removed{$item['id']}">
+				<img width="25" height="25" src="{@G:url.extres}/4tschool/images/avatar.jpg">
+			</div>
+			<ul>
+				<!--#foreach ($pplsingroup as $key1 => $item1) {#-->
+					<!--# if($item1['groupid'] == $item['id']) {#-->
+						<li><img src="{@G:url.extres}/4tschool/images/avatar.jpg" rel="{$item1['userid']}"><b>{$item1['username']}</b></li>
+					<!--#}#-->
+				<!--#}#-->
+			</ul>
+		</div>
+	<!--#}#-->
+	</div>
+	
+
+</div>
+
+</form>
+</div>
+</html> 

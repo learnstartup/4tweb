@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <template source='TPL:admin.common.head' />
+</head>
+<body style="width:780px;" class="body_none">
+<div class="pop_cont pop_table">
+    <!--J_ajaxForm-->
+    <form class="J_ajaxForm" action="{@url:app/4tschool/promo/add}" method="post">
+        <input type='hidden' name='type' value="do">
+        <input type='hidden' name='shopId' value='{$shopId}'>
+        <div class="table_list">
+            <table id="J_table_list" width="100%">
+                <col width="120">
+                <col width="240">
+                <col width="240">
+                <thead>
+                <tr>
+                    <td>活动名称</td>
+                    <td>请选择菜品</td>
+                    <td>请输入折扣</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <table width="100%">
+                <tr>
+                    <td colspan="4"><a href="#" class="link_add mr20" id="J_add_root" data-type="" data-html="tbody">添加</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="">
+            <div class="btn_wrap_pd">
+                <!--J_ajax_submit_btn-->
+                <button class="btn btn_submit mr10 J_ajax_submit_btn" type="submit">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<template source='TPL:admin.common.footer' />
+<script>
+    //forumTree_table.js
+    var root_tr_html = '<tr>\
+				<td><select name="promotionList[]">\<!--# foreach ($promoTemplateList as $item) { #--><option value="{$item["templateid"]}">{$item["name"]}</option>\<!--# } #--></select></td>\
+    <td><select name="merchandiseList[]">\<!--# foreach ($merchandiseList as $item) { #--><option value="{$item["id"]}">{$item["name"]}</option>\<!--# } #--></select></td>\
+    <td><input type="text" name="discountList[]" class="input length_3"></td>\
+    <td><a href="" class="J_newRow_del">[删除]</a></td>\
+    </tr>';
+
+    Wind.js(GV.JS_ROOT+ 'pages/admin/common/forumTree_table.js?v=' + GV.JS_VERSION, function(){
+        //删除
+        $('a.J_recharge_del').on('click', function(e){
+            e.preventDefault();
+            $(this).parents('tr').remove();
+        });
+    });
+</script>
+</body>
+</html>

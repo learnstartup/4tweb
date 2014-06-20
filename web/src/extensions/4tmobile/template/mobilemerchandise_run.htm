@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+        <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>       
+        <style type="text/css">
+        .total-count{
+            color: blue;
+        }
+        .mer-count-group{
+            line-height: 1.6em;
+            margin-top: -0.88em;
+            padding: 0 0.48em;
+            position: absolute;
+            right: 0.2em;
+            text-align: center;
+            top: 40%;
+        }
+        .stop-service{
+            color: red;
+            font-family: "microsoft yahei";
+            text-align: center;
+        }
+        .jcart_mobile{
+            display: none;
+        }
+        </style>
+    </head>
+    <body>
+        <!--# if($is_weixin){ #-->
+        <div data-role="page" data-theme="f">
+            <div data-role="header" data-position="fixed" data-theme="c">            
+                <h1 style="display:none">{$shop['name']}({$shop['startingprice']}元起送)</h1>
+                <template source='navbar' load="true" />
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="#"><span>点餐总计：￥</span><span id="subtotal">{$subtotal}</span></a></li>
+                        <li><a href="#"><span>本店小计：￥</span><span id="cur-shop-subtotal">{$curShopSubtotal}</span></a></li>
+                    </ul>
+                </div>                
+            </div>
+    
+            <div role="main" class="ui-content" data-theme="a">
+                <!--# if($shop['isshopopen']==0 && $shop['openorder'] == 1 && $schoolInfo['openorder'] == 1){ #-->
+                    <a href="tel:{$shop['phonenumber']=='无'?$shop['contactnumber']:$shop['phonenumber']}" data-role="button" data-ajax="false">电话订餐:{$shop['phonenumber']=="无"?$shop['contactnumber']:$shop['phonenumber']}</a>
+                <!--# } #-->
+
+                <!--# if($shop['isshopopen']==0 && $shop['openorder'] == 0){ #-->
+                    <h3 class="stop-service">该商家暂不提供服务</h3>
+                <!--# } #-->
+                
+                <!--# foreach($tagList as $tkey => $tag){ #-->
+
+                <div data-role="collapsible" data-corners="false" data-collapsed={$tkey==$firstTagKey?"false":"true"} data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" >
+                <h3>{$tag}</h3>                                 
+                <ul data-role="listview" name="mer-list">
+
+                <!--# foreach($merchandiseList as $item) { #-->
+                
+                <!--# if($item['tagid']==$tkey){ #-->                
+                <li>
+                    <span>{$item['name']}</span><br/>
+                    <span>￥{$item['currentprice']}</span>
+
+                    <!--# if($shop['openorder'] == 1 && $shop['isshopopen'] == 1 && $item['remainder']>=0) {#-->
+                    <div data-role="controlgroup" data-type="horizontal" data-mini="true" class="mer-count-group">
+                        <!--# if($orderedMerchandises[$item['id']]) { #-->
+                        <a name="mer_sub" href="#" class="ui-btn ui-corner-all">-</a>
+                        <a name="orderedCount" href="#" class="ui-btn ui-corner-all">{$orderedMerchandises[$item['id']]}</a>
+                        <!--# } #-->
+                        <a name="mer_add" href="#" class="ui-btn ui-corner-all">
+                            <span>+</span>
+                            <form class="jcart_mobile" action="" method="post">
+                            <input type="hidden" value="{$item['id']}" name="my-item-id">
+                            <input type="hidden" value="{$item['name']}" name="my-item-name">
+                            <input type="hidden" value="{$item['currentprice']}" name="my-item-price">
+                            <input type="hidden" value="1" name="my-item-qty">
+                            <input type="hidden" value="{$shop['id']}" name="my-vendor-guid">
+                            <input type="hidden" value="{$shop['name']}" name="my-vendor-name">
+                            <input type="hidden" value="1" name="my-box-qty">
+                            <input type="hidden" value="1" name="my-box-unitprice">
+                            <input type="hidden" value="{$item['unit']}" name="my-unitname">
+                            <input type="hidden" value="{$item['shoppromoid']}" name="my-promo">
+                            <input type="hidden" value="{$item['startingprice']==''?0:$item['startingprice']}" name="my-startingprice">
+                            <input type="hidden" value="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}" name="my-item-url">
+                            <input type="hidden" value="{$item['needPackingPrice']}" name="my-needPackingPrice">
+                            <input type="hidden" name="jcartToken" value="<?php echo $_SESSION['jcartToken'];?>"/>
+                            </form>                            
+                        </a>                        
+                    </div>
+                    <!--# } #-->
+
+                    <!--# if($item['remainder']<0) { #-->
+                    <span class="ui-li-count">缺货</span>
+                    <!--# } #-->
+                </li>
+                <!--# } #-->
+                <!--# } #-->
+                </ul>
+                </div>
+                <!--# } #-->
+            </div>
+            
+            <div data-role="footer" data-position="fixed" data-theme="b">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>                            
+                            <a href="#" data-theme="b"  data-icon="money">返点币:<span id="DMoney">{$curShopDMoney}({$curShopDMoney/10}元RMB)</span></a>
+                        </li>                        
+                        <li>
+                            <a id="checkout" href="#" data-icon="sign-in" data-role="button" data-ajax="false" data-theme="b">去下单</a>
+                        </li>
+                    </ul>
+                </div>                
+                 <input id="shop-starting-price" type="hidden" value="{$shop['startingprice']}">
+            </div>           
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->
+    </body>
+    <script>
+    $(function(){
+        checkStartingPrice();
+
+        $("a[name=mer_add]").bind("tap",function (e) {
+            var targetForm=$(this).find("form");
+            if(targetForm.length==1){
+                $(targetForm).submit();
+            };
+
+            //note: this way need update ui first
+            updateMerCountUI($(this));
+            updateSubtotals($(this));
+            checkStartingPrice();
+            calculteDMoney();
+            e.preventDefault();
+        });
+
+        $('ul[name=mer-list]').on("tap","a[name=mer_sub]",function(e){
+            var merSubObj=e.target;
+            updateMerchandiseOrderedCount(merSubObj);
+            updateSubtotals(merSubObj);
+            updateMerCountUI(merSubObj);            
+            checkStartingPrice();
+            calculteDMoney();
+            e.preventDefault(); 
+        });
+    });
+
+    function updateSubtotals (a) {
+        if (!$(a).parent()) return;
+        var container=$(a).parent();
+        var merPrice=container.find("input[name=my-item-price]").val();
+        var subtotal=$("#subtotal").text();
+        var curShopSubtotal= $("#cur-shop-subtotal").text();
+
+        if ($(a).attr("name")=="mer_add") {
+            var lastetSubtotal=parseFloat(parseFloat(subtotal)+parseFloat(merPrice)).toFixed(1);
+            $("#subtotal").text(lastetSubtotal);
+            var lastetCurShopSubtotal=parseFloat(parseFloat(curShopSubtotal)+parseFloat(merPrice)).toFixed(1);
+            $("#cur-shop-subtotal").text(lastetCurShopSubtotal);
+        }
+
+        if ($(a).attr("name")=="mer_sub") {
+            var lastetSubtotal=parseFloat(parseFloat(subtotal)-parseFloat(merPrice)).toFixed(1);
+            $("#subtotal").text(lastetSubtotal);
+            var lastetCurShopSubtotal=parseFloat(parseFloat(curShopSubtotal)-parseFloat(merPrice)).toFixed(1);
+            $("#cur-shop-subtotal").text(lastetCurShopSubtotal);                
+        };        
+    }
+
+    function checkStartingPrice () {
+        var subtotal= $("#cur-shop-subtotal").text();
+        var startingPrice=$("#shop-starting-price").val();
+        if (parseFloat(subtotal)<parseFloat(startingPrice)) 
+        {
+            var balance=parseFloat(parseFloat(startingPrice)-parseFloat(subtotal)).toFixed(1);
+            $("#checkout").text("还差"+balance+"元起送").attr("style","color:red");
+            $("#checkout").attr("href","#");
+            $("#shoppingCart").attr("href","#");
+        }
+        else
+        {
+            $("#checkout").text("去买单").attr("style","");
+            $("#checkout").attr("href","{@url:app/4tmobile/mobileorderpreview/run?openid=$openId}");
+            $("#shoppingCart").attr("href","{@url:app/4tmobile/mobileorderpreview/run?openid=$openId}");
+        }  
+    }
+
+    function updateMerchandiseOrderedCount(a) {
+        if (!$(a).parent()) return;
+
+        var container=$(a).parent();
+        // The id of the item to update
+        var updateId = container.find("input[name='my-item-id']").val();
+
+        var qty=container.find("a[name='orderedCount']").text();
+
+        var newQty=parseInt(qty)-1;
+
+        //access token
+        var token= container.find("input[name='jcartToken']").val();
+
+        // As long as the visitor has entered a quantity
+        $.ajax({
+            data: {
+            "jcartUpdate": 1, // Only the name in this pair is used in jcart.php, but IE chokes on empty values
+            "itemId": updateId,
+            "itemQty": newQty,
+            "jcartToken": token
+            },success:function(){
+                // $('#orderedTotalCount').text((parseInt($('#orderedTotalCount').text())-1));
+            },
+        });
+    }
+
+    function updateMerCountUI(a)
+    {
+        if (!$(a).parent()) return;
+
+        var container=$(a).parent();        
+        var qtyObj=container.find("a[name='orderedCount']");
+        var merSubObj=container.find("a[name='mer_sub']");        
+
+        if ($(a).attr("name")=="mer_sub") {
+            var qty=parseInt(qtyObj.text())-1;
+            if (qty<=0) {
+                qtyObj.remove();
+                merSubObj.remove();
+            };
+            if (qtyObj) {
+                qtyObj.text(qty);
+            };
+        };
+
+        if ($(a).attr("name")=="mer_add") {
+            if (qtyObj.length){
+                qtyObj.text(parseInt(qtyObj.text())+1);
+            }else{
+                var html="<a name='mer_sub' href='#' class='ui-btn ui-corner-all'>-</a><a name='orderedCount' href='#' class='ui-btn ui-corner-all'>1</a>";
+                $(html).prependTo(container);                
+            }
+        };
+
+        container.parent().controlgroup();
+    }
+
+    function calculteDMoney(){
+        var total=$("#cur-shop-subtotal").text();
+        var money=total * {$shop['rebatefromshop']};
+        var userRate={$userRate};
+        var taxRate={$taxRate};
+
+        var taxMoney = money*taxRate;
+
+        var userMoney=Math.floor((money-taxMoney) * userRate * 10)/10;
+
+        var DMoney=userMoney*10;
+
+        var moneyText=DMoney+"("+userMoney+"元RMB)";
+
+        $("#DMoney").html(moneyText);
+    }
+    </script>
+</html>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3bf15cf5566f3927e165b2d12ea5534e' type='text/javascript'%3E%3C/script%3E"));
+</script>

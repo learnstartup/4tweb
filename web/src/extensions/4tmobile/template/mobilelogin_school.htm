@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>选择学校</title>
+        <link rel="stylesheet" type="text/css" href="{@G:url.extres}/4tschool/css/themes/default/jquery.mobile-1.4.0.min.css">
+        <style type="text/css">
+            #schoollist a{
+                text-decoration: none;
+                line-height: 35px;
+                list-style-type: none;
+            }
+            #schoollist{
+                text-align: left;
+                padding: 5px;
+            }
+        </style>
+        <script src="{@G:url.extres}/4tschool/js/jquery.js" type="text/javascript">
+        </script>
+        <script src="{@G:url.extres}/4tschool/js/jquery.mobile-1.4.0.min.js" type="text/javascript">
+        </script>
+        <script src="{@G:url.extres}/4tschool/js/validate.js" type="text/javascript">
+        </script>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+        <meta name="viewport" content="width=device-width,user-scalable=no" />
+    </head>
+    <body>
+        <div data-role="page" style="background-color: #FFFFFF;">
+            <div class="ui-header ui-header-fixed slidedown ui-bar-a" data-theme="a" data-position="fixed" data-role="header" style="background-color:#0888ED;color:white;font-size:16px" role="banner">
+                <a class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" 
+                   data-rel="back" href="../php/main.php" data-role="button" role="button">返回</a>
+                <h1 class="ui-title">选择学校</h1>
+                <!-- <a href="{@url:app/4tmobile/mobileregister/run}" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all">注册</a> -->
+            </div>
+            <div data-role="content" class="content">
+                <ul id="schoollist">
+                	<!--#foreach ($schoolList as $key => $val) {#-->
+                	<a href="{@url:app/4tmobile/mobileshop/run?schoolId=$val['schoolid']}" target="_blank">
+                		<li>{$val['name']}</li>
+                	</a>
+                	<!--# } #-->
+                </ul>
+           </div>
+        </div>
+    </body>
+</html>

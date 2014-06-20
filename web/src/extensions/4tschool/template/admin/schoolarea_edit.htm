@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body style="width:450px;" class="body_none">
+<div class="pop_cont pop_table">
+<!--添加用户-->
+	<div class="h_a">提示信息- 编辑区域</div>
+	<div class="mb10 prompt_text">
+		使用此功能可以由管理员为高校添加特定的区域<br>
+		创始人可以使用此功能添加站点管理员(普通管理员无此权限)
+		请注意，重名的区域不可以添加
+		
+	</div>
+	
+	<div class="h_a">添加区域</div>
+	<form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/schoolarea/edit?id=$id&choosenSchoolid=$choosenSchoolid&choosenProvinceid=$choosenProvinceid}" method="post">
+	<input type='hidden' name='type' value="do">
+	<div class="">
+		<table width="100%">
+			<col class="th" />
+			<col />
+			<thead>
+				<tr>
+					<th>id</th>
+					<td>{$id}</td>
+				</tr>
+			<tr>
+				<th>区域名字</th>
+				<td><input name="areaname" type="text" value="{$areainfo['areaname']}" class="input input_long"></td>
+			</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>高校</th>
+					<td><select disabled name="school" class="select_long">
+					<!--#foreach ($allSchool as $item) {#-->
+						<option <?php if($areainfo['schoolid'] == $item['schoolid']) echo "selected" ?> value="{$item['schoolid']}">{$item['name']}</option>
+					<!--#}#-->
+						</select>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="pop_bottom">
+		<button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+	</div>
+	
+</form>
+</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

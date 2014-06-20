@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>请正确填写手机号码及地址</li>
+			</ol>
+		</div>
+		<div class="mb10"><a class="btn J_dialog" href="{@url:app/4tschool/shop/add}" title="添加商家" role="button"><span class="add"></span>添加商家</a>
+
+		<button type="button" class="btn opendaike"/>开启代客下单商家</button>
+		<button type="button" class="btn closedaike">关闭代客下单商家</button>
+		<!--# if ('' !=$message) { #-->
+        	<strong style="color:red">{$message}！</strong>
+		<!--# } #-->
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="J_ajaxForm" action="{@url:app/4tschool/shop/run}" method="post">
+				<input type="hidden" name="page" value="{$page}">
+				<input type='hidden' name='type' value="do">
+				<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shop/run}">
+
+				<!-- <label>商家名:</label>
+					<select class="choosenShopid" name="choosenShopid">
+						<option value="-1">全部商家</option>	
+						<!--#foreach($allShopList as $item) {#-->
+						<option value="{$item['id']}" <?php if($item['id'] == $searchCondition['choosenShopid']) echo "selected"; ?> >{$item['name']}</option>
+						<!--#}#-->
+					</select> -->
+				<label>一级区域选择:</label>
+					<select class="chooseschool" style="width:60px" name="choosenschoolid">
+						<option value="-1">全部</option>
+	                    <!--#foreach($allSchool as $item) {#-->
+	                    <option class="school{$item['schoolid']}"
+	                    <?php if($item['schoolid'] == $choosenschoolid) echo "selected"; ?>
+	                    value="{$item['schoolid']}" >{$item['name']}
+	                	</option>
+	                    <!--#}#-->
+                	</select>	
+				<label>活动?</label>
+					<select name="isactive">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($isactive == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($isactive == '0') echo "selected"; ?>>否</option>
+					</select>
+				<label>合作商家?</label>
+					<select name="ispartner">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($ispartner == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($ispartner == '0') echo "selected"; ?>>否</option>
+					</select>
+				<label>商家状态?</label>
+					<select name="isaudit">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($isaudit == '1') echo "selected"; ?>>审核通过</option>
+						<option value="0" <?php if($isaudit == '0') echo "selected"; ?>>审核中...</option>
+					</select>
+				<label>返利?</label>
+					<select name="ifrebate">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($ifrebate == '1') echo "selected"; ?>>有</option>
+						<option value="0" <?php if($ifrebate == '0') echo "selected"; ?>>无</option>
+					</select>
+				<label>代客下单?</label>
+					<select name="openordertouser">
+						<option value="-1">全部</option>
+						<option value="1" <?php if($openordertouser == '1') echo "selected"; ?>>是</option>
+						<option value="0" <?php if($openordertouser == '0') echo "selected"; ?>>否</option>
+					</select>	
+				<label>商家名</label>
+					<input type="text" value="{$shopname}" style="width:100px" name="shopname" />
+				<label>商家ID</label>
+					<input type="text" value="{$shopid}" style="width:100px" name="shopid" />	
+				<button type="submit" class="btn btn_submit">搜索</button>
+			</form>
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>商家名</td>
+						<td>地址</td>
+                        <td>打包费(元)</td>
+                        <td>外卖费(元)</td>
+						<td>区域</td>
+						<td>手机号码</td>
+						<td style="display:none">最后更新时间</td>
+						<td>订单总数</td>
+						<td>上线?</td>
+						<td>商家状态</td>
+						<td>合作商家</td>
+						<td>功能</td>
+					</tr>
+				</thead>
+				<!--# if ($shopList) { #-->
+				<!--#foreach ($shopList as $key => $item) {#-->
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['address']}</td>
+                    <td>{$item['packingprice']}</td>
+                    <td>{$item['deliveryprice']}</td>
+					<td>{$item['areaname']}</td>
+					<td>{$item['phonenumber']}</td>
+					<td style="display:none">{@Pw::time2str($item['lastupdatetime'], 'Y-m-d H:i:s')}</td>
+					<td>{$item['ordercount']}</td>
+					<td>{$item['isactive']==1?'是':'否'}</td>
+					<td>{$item['isaudit']==1?'审核通过':'审核中...'}</td>
+					<td>{$item['ispartner']==1?'是':'否'}</td>
+					<td><a href="{@url:app/4tschool/shop/edit?id=$item['id']}" class="mr10 J_dialog" title="编辑商家">[编辑]</a>
+                        <a href="{@url:app/4tschool/shop/imgupload?sid=$item['id']&url=$item['breviaryphoto']}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+                        <label>{@Pw::strlen($item['imageurl'])==0?"无图":"有图"}</label>
+					</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前还没有商家哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+			<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' args='$args' url='app/4tschool/shop/run' />
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+<script type="text/javascript">
+$('.opendaike').click(function(event){
+	daike(1);
+});
+$('.closedaike').click(function(event){
+	daike(0);
+});
+
+function daike(status)
+{
+	window.location.href = $(".pageurl").val() + "&status=" + status + "&yes=yes"; 
+}
+
+</script>
+</body>
+</html>

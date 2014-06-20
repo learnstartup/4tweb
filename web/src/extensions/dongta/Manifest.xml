@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+	<application>
+		<name>动他一下</name>                  
+		<alias>dongta</alias>
+		<version>1.0</version>	 
+		<pw-version>9.0</pw-version>       
+		<description>用虚拟动作和朋友打个招呼吧！</description>   
+		<logo>images/logo.png</logo>		
+		<type>app</type>					
+		<charset>UTF-8</charset>		 
+		<website>http://www.phpwind.net</website>	 
+		<author-name>chenjm</author-name>		     
+		<author-email>sky_hold@163.com</author-email>		  	
+		<author-icon>your icon</author-icon>	         
+	</application>
+
+	<res>res</res>
+
+	<installation-service>nav_main</installation-service>
+	<inject-services>
+<s_admin_menu>
+	<app_dongta>
+	<class>EXT:dongta.service.srv.App_Dongta_ConfigDo</class>
+	<loadway>load</loadway>
+	<method>getAdminMenu</method>
+	<description>动他一下admin menu</description>
+	</app_dongta>
+	</s_admin_menu>
+
+<s_space_user_info>
+	<app_dongta>
+	<class>EXT:dongta.service.srv.App_Dongta_Service</class>
+	<loadway>load</loadway>
+	<method>spaceButton</method>
+	<expression>config:site.app.dongta.space.ifopen==1</expression>
+	<description>动他一下空间按钮</description>
+	</app_dongta>
+	</s_space_user_info>
+
+<c_read_run>
+	<app_dongta>
+	<class>EXT:dongta.service.srv.App_Dongta_ThreadDisplayDoDongtaInjector</class>
+	<expression>config:site.app.dongta.read.ifopen==1</expression>
+	<description>动他一下帖子页按钮</description>
+	</app_dongta>
+	</c_read_run>
+</inject-services>
+</manifest>

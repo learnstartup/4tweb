@@ -1,0 +1,38 @@
+<!--# if($is_weixin){ #-->
+    <div data-role="page" id="userInfoPage" data-close-btn="right" data-theme="f">
+        <div data-role="header">
+            <h2>{$isenough?"收货信息":"提示"}</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <!--# if($isenough){ #-->
+            <p>
+                请认真填写相关收货信息<br/>
+                如因提供错误信息导致点币损失，点餐哟不予负责。
+            </p>            
+            <form method="post" action="{@url:app/4tmobile/mobilereceiveinformation/dosaveinformation?openid=$openId}">
+                <div class="ui-field-contain">
+                    <input type="hidden" value="{$openId}" name="openid">
+                    <input type="hidden" value="{$prize['id']}" name="pid">        
+                    <input type="hidden" value="{$key}" name="key">
+                    <label for="receiveContactor">收货人姓名</label>
+                    <input type="text" id="receiveContactor" name="receiveContactor">
+                    <label for="receivePhone">手机号码</label>
+                    <input type="text" id="receivePhone" name="receivePhone">
+                    <label for="receiveQQ">QQ号码</label>
+                    <input type="text" id="receiveQQ" name="receiveQQ">
+                    <!--# if($prize['type']==O){ #-->                
+                    <label for="receiveAddress">收货地址</label>
+                    <input type="text" id="receiveAddress" name="receiveAddress" class="validate[required]">
+                    <!--# } #-->
+                </div>
+                <a id="confirmChange" href="#" data-role="button" data-ajax="false" data-theme="d">确定兑换</a>
+            </form>
+            <!--# } else{#-->
+            <p>
+                亲，您的点币不够哦！
+            </p>            
+            <a id="closeDialog" href="#" data-role="button" data-ajax="false" data-theme="d">关闭</a>
+            <!--# } #-->
+        </div>
+    </div> 
+<!--# } #-->    

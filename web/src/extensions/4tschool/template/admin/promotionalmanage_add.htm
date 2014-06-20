@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body style="width:450px;" class="body_none">
+	<div class="pop_cont pop_table">	
+		<form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/promotionalmanage/add}" method="post" >
+			<input type='hidden' name='type' value="do">
+			<input type='hidden' name='schoolId' value="{$oneShopPromotionalList['schoolid']}">
+			<div class="">
+				<table width="100%">
+					<thead>
+						<tr>
+		                    <th>高校</th>
+		                    <td>
+		                    	<span class="must_red">*</span>
+		                        <select class="choosenSchoolid length_5" name="choosenSchoolId">
+		                        	<option value="">---请选择学校---</option>
+		                            <!--#foreach($allSchool as $item) {#-->
+		                            <option class="school{$item['schoolid']}"
+		                            <?php if($item['schoolid'] == $oneShopPromotionalList['schoolid']) echo "selected"; ?>
+		                            value="{$item['schoolid']}" >{$item['name']}</option>
+		                            <!--#}#-->
+		                        </select>
+		                    </td>
+		                </tr>	
+					</thead>
+					
+					<tr>
+						<th>商家</th>
+						<td>
+							<span class="must_red">*</span>
+							<select class="choosenShopid" name="choosenShopid">
+								<option value="">---请选择商店---</option>	
+								<!--#foreach($shopList as $item) {#-->
+								<option value="{$item['id']}" >{$item['name']}</option>
+								<!--#}#-->
+							</select>
+						</td>
+					</tr>
+                    <tr>
+                        <th>状态</th>
+                        <td>
+                        	<ul class="switch_list cc">
+	                            <li>
+	                            	<label>
+	                            		<input type="radio" name="promotionalStatus" value="1" {@Pw::ifcheck($oneShopPromotionalList['promotionalstatus'] == 1)}>
+	                            		<span>是</span>
+	                            	</label>
+	                            </li>
+	                            <li>
+	                            	<label>
+	                            		<input type="radio" name="promotionalStatus" value="0" {@Pw::ifcheck($oneShopPromotionalList['promotionalstatus'] == 0)}>
+	                            		<span>否</span>
+	                            	</label>
+	                            </li>
+                        	</ul>
+                        </td>
+                    </tr>
+					<tr>
+						<th>有效时间</th>
+						<td>
+							<span class="must_red">*</span>
+							<input name="promotionalStarTime" type="text" class="input length_2 J_date mr20" value="{$oneShopPromotionalList['promotionalstartime']}">
+							<span class="mr20">至</span>
+							<input name="promotionalEndTime" type="text" value="{$oneShopPromotionalList['promotionalendtime']}" class="input length_2 J_date">
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="pop_bottom">
+				<button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+			</div>
+
+		</form>
+	</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

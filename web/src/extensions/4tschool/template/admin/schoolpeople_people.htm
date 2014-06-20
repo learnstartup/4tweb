@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+
+</head>
+<body style="width:450px;" class="body_none">
+<div class="pop_cont pop_table">
+	<div class="h_a">{$schoolInfo['name']}</div>
+	<div class="mb10 prompt_text">
+		选择此学校的相应人员分配
+	</div>
+	
+	<div class="h_a">{$typename}相关人员</div>
+	<form class="" data-role="list" action="{@url:app/4tschool/schoolpeople/people?schoolid=$schoolid&type=$type}" method="post">
+	<input type='hidden' name='type' value="do">
+	<div class="">
+		<table width="100%">
+			<col class="th" />
+			<col />
+			<thead>
+			<tr>
+				<th>输入帐号</th>
+				<td><input name="peoplename"  autocomplete="off" type="text" value="" class="input input_long autocomplete-ajax">
+				<button type="submit" name="checkAndAdd" value="checkAndAdd" class="btn btn_submit fr ">检测并提交</button>	
+				</td>
+			</tr>
+			<!--# if ($type =="notdefine") { #-->
+			<tr>
+				<th>选择区域</th>
+				<td>
+					<select class="carea" name="carea" class="input input_long">
+						<option <?php if(0 == $carea) echo "selected"; ?>  value='0'></option>
+						<!--#foreach($areaList as $key => $value) {#-->
+						<option 
+							<?php if($value['id'] == $carea) echo "selected"; ?> value="{$value['id']}" >{$value['areaname']}
+						</option>
+						<!--#}#-->
+				</select>
+
+				</td>
+			</tr>
+			<!--# } #-->
+			</thead>
+		</table>
+	</div>
+	<div class="table_list">
+		<table width="100%">
+			<thead>
+				<tr>
+					<td><input class="checkAll" type="checkbox" name="checkAll" /> </td>
+					<td style="display:none"></td>
+					<td>姓名</td>
+					<td>区域</td>
+				</tr>
+			</thead>
+		<!--# if ($ppls) { #-->
+		<!--#foreach ($ppls as $key => $item) {#-->
+			<tr>
+				<td><input class="checkSingle" type="checkbox" name="checkItem[]" value="{$item['id']}"/> </td>
+				<td style="display:none"><input type="hidden" name="eachItem[]" value="{$item['id']}"> {$item['id']}</td>
+				<td>{$item['username']}</td>
+				<td>{$item['areaname']}</td>
+			</tr>
+		<!--#}#-->
+		<!--# } else { #-->
+			<tbody>
+				<tr><td colspan="7" class="tac"> 没有相关的人！</td></tr>
+			</tbody>
+		<!--# } #-->
+		</table>
+	</div>
+	<div class="pop_bottom">
+		<button type="submit" name="deleteSelected"  value="deleteSelected" class="deleteSelected btn btn_submit fr J_ajax_submit_btn">删除选中</button>
+	</div>
+<div class="autocomplete-suggestions" style="position: absolute; display: none; width: 325px; top: 196px; left: 283px; max-height: 300px; z-index: 9999;"></div>
+	
+</form>
+</div>
+<template source='TPL:admin.common.footer' />
+<link href="{@G:url}/src/extensions/4tschool/resource/css/autocomplete.css?v={@G:version}" rel="stylesheet" />
+<script type="text/javascript" src="{@G:url}/src/extensions/4tschool/resource/js/jquery.autocomplete.js?v={@G:version}"  ></script>
+<script>
+$(".checkAll").click(function()
+{
+	var checked =  $(this).attr("checked");
+	$(".checkSingle").each(function(i,item)
+	{
+		$(item).attr("checked",checked =="checked"?true:false);
+	});
+});
+
+$(".checkSingle").click(function()
+{
+	var allChecked = true;
+	$(".checkSingle").each(function(i,item)
+	{
+		var checked = $(item).attr("checked");
+		if(checked != "checked")
+		{
+			allChecked = false;
+		}
+	});
+
+	$(".checkAll").attr("checked",allChecked?true:false);
+});
+
+$(".deleteSelected").click(function()
+{
+	if(confirm("你确定要删除吗?") == false)
+		event.preventDefault();
+});
+	
+</script>
+</body>
+</html>

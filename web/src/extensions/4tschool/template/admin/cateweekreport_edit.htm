@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <template source='TPL:admin.common.head'/>
+</head>
+<body>
+<div class="wrap" style="width:1580px;height:900px">
+    <template load="true" source="links"/>
+    <div class="nav">
+        <div class="return"><a href="{@url:app/4tschool/cateweekreport/run}">返回上一级</a></div>
+    </div>
+    <div class="h_a">更新周报</div>
+    <form class="J_ajaxForm" id="J_cateweekreport_form" data-role="list" action="{@url:app/4tschool/cateweekreport/edit?id=$cateWeekReportList['id']}" method="post">
+        <input type='hidden' name='type' value="do">
+        <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/cateweekreport/edit?id=$cateWeekReportList['id']}">
+        <input type="hidden" name="page" value="{$page}">
+        <input type="hidden" name="hdschoolid" value="{$choosenSchoolid}">
+        <input type="hidden" name="hdprovinceid" value="{$choosenProvinceid}">
+
+        <div class="table_full">
+            <table width="100%">
+                <colgroup>
+                    <col class="th">
+                    <col width="1420px">
+                </colgroup>
+                <tr>
+                    <th>高校</th>
+                    <td>
+                        <select class="choosenSchoolid length_5" name="choosenSchoolId">
+                            <!--#foreach($allSchool as $item) {#-->
+                            <option class="school{$item['schoolid']}"
+                            <?php if($item['schoolid'] == $cateWeekReportList['schoolid']) echo "selected"; ?>
+                            value="{$item['schoolid']}" >{$item['name']}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>标题</th>
+                    <td><span class="must_red">*</span><input name="title" type="text" class="input length_5" value="{$cateWeekReportList['title']}"></td>
+                </tr>
+                <tr>
+                    <th>链接</th>
+                    <td><input name="link" type="text" class="length_5" value="{$cateWeekReportList['link']}"></td>
+                </tr>   
+                <tr>
+                    <th>类型</th>
+                    <td>
+                        <span class="must_red">*</span>
+                        <select name="cateType">
+                            <option value="">---请选择---</option>
+                            <!--#foreach($cateTypeClass as $key => $item) {#-->
+                            <option value="{$key+1}" <?php if($cateWeekReportList['type'] == ($key+1)) echo "selected"; ?>>{$item}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tbody id="J_announce_content" class="J_radio_tbody">
+                <tr>
+                    <th>内容</th>
+                    <td colspan="2"><span class="must_red">*</span><textarea id="J_textarea" name="content" style="width:600px;height:400px">{$cateWeekReportList['content']}</textarea></td>
+                </tr>
+                </tbody>
+                <tr>
+                    <th>联系方式</th>
+                    <td><span class="must_red">*</span><input name="contactInfo" type="text" class="input length_5" value="{$cateWeekReportList['contactinfo']}"></td>
+                </tr>
+                <tr>
+                    <th>是否审核</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="isAudited" value="1" {@Pw::ifcheck($cateWeekReportList['audited'] ==1)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="isAudited" value="0" {@Pw::ifcheck($cateWeekReportList['audited'] ==0)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>是否发布</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="isReleased" value="1" {@Pw::ifcheck($cateWeekReportList['released'] ==1)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="isReleased" value="0" {@Pw::ifcheck($cateWeekReportList['released'] ==0)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="pop_bottom">
+            <button type="submit" class="btn btn_submit" id="J_cateweekreport_sub">提交</button>
+        </div>
+
+    </form>
+</div>
+<template source='TPL:admin.common.footer'/>
+<script>
+
+    Wind.js(GV.JS_ROOT + '/pages/cateweekreport/admin/cateweekreportSub.js?v=' + GV.JS_VERSION);
+                    
+</script>
+</body>
+</html>

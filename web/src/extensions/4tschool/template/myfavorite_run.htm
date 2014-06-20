@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<div class="spacer"></div>
+	<form action="{@url:app/4tschool/myfavorite/run}" id="myFavoriteForm" method="post">
+	<!--# if ($shopid <= 0) { #-->
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myfavorite/run}">
+	<!--#}else{#-->
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myfavorite/run?shopid=$shopid}">
+	<!--#}#-->
+	
+	<input type="hidden" class="deleteFavoriteUrl" name="deleteFavoriteUrl" value="{@url:app/4tschool/myfavorite/delete}">
+	<input type="hidden" class="deleteFavoriteMUrl" name="deleteFavoriteMUrl" value="{@url:app/4tschool/myfavorite/deleteM}">
+	<input type="hidden" class="favoriteToDelete" name="favoriteToDelete" value=""></input>
+	<input type="hidden" class="favoriteMToDelete" name="favoriteMToDelete" value=""></input>
+	<div class="clear"></div>
+
+	<!--# if ($shopid <= 0) { #-->
+	<div class="merch_bord">
+        <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+           <tbody>
+            <tr>
+              <td class="tab_w7">
+              	<input type="hidden" name="page" value="{$page}">
+              </td>
+              <td class="tab_w1">商家名称</td>
+              <td class="tab_w7">所在区域</td>
+              <td class="tab_w1">营业时间</td>
+              <td class="tab_w1">详细地址</td>
+              <td class="tab_w1">操作</td>
+            </tr>
+          </tbody>
+        </table><br/>
+		<table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">
+            <tbody>
+            	<!--# if ($favoriteList) { #-->
+            	<!--#foreach ($favoriteList as $key => $item) {#-->
+            	<tr>
+            		<td class="tab_w7">
+            			<a name="productpic" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}" target="">
+            			<img width="67px" height="30px" src="{$item['imageurl']}" title="{$item['name']}">
+            			</a>
+            		</td>
+            		<td class="tab_w1">
+            			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']&schoolid=$schoolId}" target="" title="{$item['name']}">{$item['name']}</a>
+            		</td>
+            		<td class="tab_w7">{$item['areaname']}</td>
+            		<td class="tab_w1">{$item['orderbegin']} - {$item['orderend']}</td>
+            		<td class="tab_w1"><span>{$item['address']}</span></td>
+	            	<td class="tab_w1">
+	            		<span class="tab_w5_online">
+	            			 <a name="gotoDetail" class="gotoDetail" target="_blank" href="{@url:app/4tschool/myfavorite/run?shopid=$item['shopid']&schoolid=$schoolId}">[详情]</a>
+	            		</span>
+	            		<span class="tab_w5_online">
+	            			 <a name="deleteFavorite" class="deleteFavorite" target="_blank" href="{$item['shopid']}">[删除]</a>
+	            		</span>
+	            	</td>
+            	</tr>
+	            <!--#}#-->
+	            <!--# } else { #-->
+				<span class="noresult">没有符合条件的结果！</span>
+				<!--# } #-->
+			</tbody>
+		</table>
+	</div>
+	<div class="p10">
+		<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' args="$args" url='app/4tschool/myfavorite/run' />
+	</div>
+ 	<!--# } #-->
+
+	<!--# if ($shopid > 0) { #-->
+	<h3>
+	 	店铺:
+	 	<strong>
+	 		<a href="{@url:app/4tschool/shopdetails/run?shopid=$shopInfo['id']}">{$shopInfo['name']}</a>
+	 	</strong>
+	</h3><br/>
+	<div class="merch_bord">
+        <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+            <tr>
+              <td class="tab_w7">
+              	<input type="hidden" name="page" value="{$page}">
+              </td>
+              <td class="tab_w1">菜品名称</td>
+              <td class="tab_w7">操作</td>
+            </tr>
+      	</table>
+		<table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">
+        	<!--# if ($shopItems) { #-->
+        	<!--#foreach ($shopItems as $key => $item) {#-->
+        	<tr>
+        		<td class="tab_w7">
+        			<!--<a name="productpic" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']}" target="">
+        			<img width="67px" height="30px" src="{$item['imageurl']}" title="{$item['name']}">
+        			</a>-->
+        			暂不提供
+        		</td>
+        		<td class="tab_w1">
+        			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']}" target="" title="{$item['name']}">{$item['name']}</a>
+        		</td>
+        		<td class="tab_w7">
+            		<span class="tab_w5_online">
+            			 <a name="deleteFavoriteM" class="deleteFavoriteM" target="_blank" href="{$item['merchandiseid']}">删除</a>
+            		</span>
+            	</td>
+       		</tr>
+            <!--#}#-->
+            <!--# } else { #-->
+			<span class="noresult">您仅仅收藏了店铺,未收藏任何菜品</span>
+			<!--# } #-->
+		</table>
+	</div>
+	<div class="p10">
+		<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/myfavorite/run?shopid=$shopid' />
+	</div>
+	<!--# } #-->
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".deleteFavorite").click(function(event)
+	{
+		event.preventDefault();
+
+		var shopid = $(this).attr("href");
+
+		$(".favoriteToDelete").val(shopid);
+
+		if(confirm("确定删除选中的店铺吗?") == false)
+		{
+			return;
+		}	
+
+		//update data for each order's delivery
+		var postUrl = $(".deleteFavoriteUrl").val();
+		$.post(postUrl, 
+			$('#myFavoriteForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	$(".deleteFavoriteM").click(function(event)
+	{
+		event.preventDefault();
+
+		var mid = $(this).attr("href");
+
+		$(".favoriteMToDelete").val(mid);
+
+		if(confirm("确定删除选中的菜品吗?") == false)
+		{
+			return;
+		}	
+
+		//update data for each order's delivery
+		var postUrl = $(".deleteFavoriteMUrl").val();
+		$.post(postUrl, 
+			$('#myFavoriteForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+					//refresh the page
+					searchPage();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	function searchPage()
+	{
+		window.location.href = $(".pageurl").val();
+	}
+
+});
+</script>

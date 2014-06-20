@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<template source='EXT:4tshop.template.header' load="true" />
+<template source='EXT:4tshop.template.shopadvantageheader' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style type="text/css">
+.length_2{
+    width: 200px;
+}
+.shopadvantage_btn{
+    font-size:12px;
+    color:#1A66B3;
+    font-weight:bolder;
+}
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg control_top">
+	<template source='left_bar' load="true" />
+    <div style="float:right;width:760px;" class="search_type cc mb10">
+        <form class="" action="{@url:app/4tshop/shopadvantage/orderStatistics}" method="post">
+        <input type="hidden" name="type" value="search">
+        <br/>
+    	<label>时间段: </label>
+        <input name="startDate" id="fromTime" type="text" class="input length_2 J_date mr20" value="{$startDate}">
+        <span class="mr20">至</span>
+        <input name="endDate" id="toTime" type="text" value="{$endDate}" class="input length_2 J_date">
+        <button type="submit" id="searchBtn" class="sa_tag_add btn J_ajax_submit_btn shopadvantage_btn">搜索</button>
+        <br/><br/>
+        <div class="table_list">
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <td style="display:none">商家名</td>
+                        <td>总单数</td>
+                        <td>总金额(元)</td>
+                        <td>有效单数</td>
+                        <td>有效金额(元)</td>
+                        <td style="display:none">返利比例(商家,当前比例)</td>
+                        <td style="display:none">返利额(元)</td>
+                    </tr>
+                </thead>
+                <!--# if ($ShopSales) { #-->
+                <!--#foreach ($ShopSales as $key => $item) {#-->
+                <tr>
+                    <td style="display:none">{$item['name']}</td>
+                    <td>{$item['totalorders']}</td>
+                    <td>{$item['totalmoney']}</td>
+                    <td>{$item['validorders']}</td>
+                    <td>{$item['validmoney']}</td>
+                    <td style="display:none">{$item['rebatefromshop'] * 100}%</td>
+                    <td style="display:none">{$item['validshopreturn']}</td>
+                    
+                </tr>
+                <!--#}#-->
+                <!--# } else { #-->
+                <tbody>
+                    <tr><td colspan="14" class="tac">在指定的时间段内无数据</td></tr>
+                </tbody>
+                <!--# } #-->
+            </table>
+        </div> 
+        </form> 
+    </div>
+</div>
+<div class="clear"></div>
+<template source='EXT:4tschool.template.footer' />
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+    $( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "0D" 
+    });
+
+    oTable = $('#shopmgrouping').dataTable({
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+        "fnDrawCallback": function ( oSettings ) {
+            if ( oSettings.aiDisplay.length == 0 )
+            {
+                return;
+            }
+            
+            var nTrs = $('#shopmgrouping tbody tr');
+            var iColspan = nTrs[0].getElementsByTagName('td').length;
+            var sLastGroup = "";
+            for ( var i=0 ; i<nTrs.length ; i++ )
+            {
+                var iDisplayIndex = oSettings._iDisplayStart + i;
+                var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+                if ( sGroup != sLastGroup )
+                {
+                    var nGroup = document.createElement( 'tr' );
+                    var nCell = document.createElement( 'td' );
+                    nCell.colSpan = iColspan;
+                    nCell.className = "group";
+                    nCell.innerHTML = sGroup;
+                    nGroup.appendChild( nCell );
+                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+                    sLastGroup = sGroup;
+                }
+            }
+        },
+        "aoColumnDefs": [
+            { "bVisible": false, "aTargets": [ 0 ] }
+        ],
+        "aaSortingFixed": [[ 0, 'asc' ]],
+        "aaSorting": [[ 1, 'asc' ]],
+        "sDom": 'lfr<"giveHeight"t>ip'
+    });
+
+    oInProgressTable = $('#shopmInProgressGrouping').dataTable({
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+        "fnDrawCallback": function ( oSettings ) {
+            if ( oSettings.aiDisplay.length == 0 )
+            {
+                return;
+            }
+            
+            var nTrs = $('#shopmInProgressGrouping tbody tr');
+            var iColspan = nTrs[0].getElementsByTagName('td').length;
+            var sLastGroup = "";
+            for ( var i=0 ; i<nTrs.length ; i++ )
+            {
+                var iDisplayIndex = oSettings._iDisplayStart + i;
+                var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+                if ( sGroup != sLastGroup )
+                {
+                    var nGroup = document.createElement( 'tr' );
+                    var nCell = document.createElement( 'td' );
+                    nCell.colSpan = iColspan;
+                    nCell.className = "group";
+                    nCell.innerHTML = sGroup;
+                    nGroup.appendChild( nCell );
+                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+                    sLastGroup = sGroup;
+                }
+            }
+        },
+        "aoColumnDefs": [
+            { "bVisible": false, "aTargets": [ 0 ] }
+        ],
+        "aaSortingFixed": [[ 0, 'asc' ]],
+        "aaSorting": [[ 1, 'asc' ]],
+        "sDom": 'lfr<"giveHeight"t>ip'
+    });
+});
+
+ $('#searchBtn').click(function(){
+    var fromtime = $('#fromTime').val();
+    var totime = $('#toTime').val();
+
+    var timespan = TimeDiffirence(fromtime,totime).daysDiff;
+    if(timespan > 60){
+        alert("日期跨度不可大于两个月");
+        return false;
+    }
+ })
+
+//字符串转日期型
+function parseDate(str) 
+{
+    if (str instanceof Date) {
+        return str;
+    }
+    if (typeof str == 'string') {
+    var results = str.match(/^ *(\d{4})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 5)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2})\.(\d{1,9}) *$/);
+    if (results && results.length > 7)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10), parseInt(results[7],10));
+    }
+    return null;
+}
+
+//计算时间差函数
+function TimeDiffirence(startTime,endTime){
+    var diffDetail = {};
+    
+    try{
+        var date1 = getObjectType(startTime) == "date" ? startTime : parseDate(startTime);
+        var date2 = getObjectType(endTime) == "date" ? endTime : parseDate(endTime);
+        //毫秒差
+        diffDetail.msDiff = date2.getTime()-date1.getTime();
+        //分钟差
+        diffDetail.minutesDiff=Math.floor(diffDetail.msDiff/(60*1000));
+        //小时差
+        diffDetail.hoursDiff=Math.floor(diffDetail.minutesDiff/60);
+        //天数差
+        diffDetail.daysDiff=Math.floor(diffDetail.hoursDiff/24);
+        
+    }catch(e){}
+        
+    return diffDetail;
+}
+
+//判断变量类型
+function getObjectType(o) {
+    var _t;
+    return ((_t = typeof(o)) == "object" ? Object.prototype.toString.call(o).slice(8,-1):_t).toLowerCase();
+}
+</script>
+</body>

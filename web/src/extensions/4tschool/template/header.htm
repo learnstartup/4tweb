@@ -1,0 +1,291 @@
+<!-- saved from url=(0022)http://www.fenxiangyo.com/ -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <!--# if(empty($schoolInfo['schoolid'])) { #-->
+    <script src="{@G:url.extres}/qusite/qusite.js?v={@G:version}" type="text/javascript"></script>
+    <!--# } else { #-->
+    <script src="{@G:url.extres}/qusite/qusite_{$schoolInfo['schoolid']}.js?v={@G:version}" type="text/javascript"></script>
+    <!--# } #-->
+
+    <title>
+        <!--# if(!empty($SEOTitle)) { #-->
+            {$SEOTitle}
+        <!--# } else { #-->
+            点餐哟校园网络订餐,点餐哟校园手机订餐,分享哟生活轨迹服务平台,大学生的手机订餐系统,点餐哟平台让大学生在教室订餐,宿舍订餐以及实验室订餐
+        <!--# } #-->
+    </title>
+
+    <!--# if(!empty($SEOKeyword)) { #-->
+        <meta name="keywords" content="{$SEOKeyword}">
+    <!--# } else { #-->
+        <meta name="keywords" content="校园点餐哟 校园手机点餐 生活轨迹点餐 校园生活超市 短程服务 生活我帮带服务 校园物理位置社交平台 校园周边线上线下o2o平台">
+    <!--# } #-->
+
+    <!--# if(!empty($SEODescription)) { #-->
+        <meta name="description" content="{$SEODescription}">
+    <!--# } else { #-->
+        <meta name="description"
+        content="点餐哟平台是基于分享哟平台的点餐平台, 点餐哟平台让校园周边的商家以及消费者能够有机的结合起来, 让最后一公里买东西变得更加便捷, 商家重视提供优质的产品, 平台保证优质的服务;同时点餐哟平台让物理之间的距离不再冰冷呼吁生硬，让每一个人都能提供服务，让服务与被服务的人在生活圈中联系起来, 组成现实中的物理社交圈">
+    <!--# } #-->
+    
+    <template source='TPL:admin.common.head'/>
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="imagetoolbar" content="no">
+    <meta name="author" content="分享哟平台点餐哟点餐中心">
+    <meta name="copyright" content="分享哟平台点餐中心版权所有">
+    <base href=".">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/styles.css?v={@G:version}" type="text/css" media="screen">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/formly.css?v={@G:version}" type="text/css">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/colorbox.css?v={@G:version}">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/4t_table.css?v={@G:version}">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/iview.css?v={@G:version}">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/new_version.css?v={@G:version}">
+
+    <!--styles for IE -->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" href="/css/ie.css?ebed04bf49ed29a7" type="text/css" media="screen"/><![endif]-->
+    <!--styles -->
+    <script>
+        //全局变量 Global Variables
+        var GV = {
+            JS_ROOT: '{@G:url.res}/js/dev/',                   //js目录
+            JS_VERSION: '{@NEXT_RELEASE}',                     //js版本号(不能带空格)
+            JS_EXTRES: '{@G:url.extres}',
+            TOKEN: '{@Wind::getComponent('windToken')->saveToken('csrf_token')}',  //token $.ajaxSetup data
+            U_CENTER: '{@url:space/index/run}',    //用户空间(参数 : uid)
+            <!--#
+            $loginUser = Wekit::getLoginUser();
+            if ($loginUser->isExists()) {
+            #-->
+            //登录后
+            U_NAME: '{$loginUser->username}',                    //登录用户名
+            U_AVATAR: '{@Pw::getAvatar($loginUser->uid)}',             //登录用户头像
+            <!--#
+            }
+            #-->
+            theme : {
+                name : '4tschool'
+                ,getBaseUrl : function(){
+                  return '{@G:url.extres}/' + this.name + '/';
+                },getImageUrl : function(image){
+                  return this.getBaseUrl() + 'images/' + image;
+                },getJsUrl: function(js){
+                  return this.getBaseUrl() + 'js/' + js;
+                }
+            },
+            U_AVATAR_DEF: '{@G:url.images}/face/face_small.jpg',         //默认小头像
+            U_ID: parseInt('{$loginUser->uid}'),                 //uid
+            REGION_CONFIG: '',                           //地区数据
+            CREDIT_REWARD_JUDGE: '{@$loginUser->showCreditNotice()|html}',     //是否积分奖励，空值:false, 1:true
+            URL: {
+                LOGIN: '{@url:u/login/run}',                   //登录地址
+                QUICK_LOGIN: '{@url:u/login/fast}',                //快速登录
+                IMAGE_RES: '{@G:url.images}',                   //图片目录
+                CHECK_IMG: '{@url:u/login/showverify}',              //验证码图片url，global.js引用
+                VARIFY: '{@url:verify/index/get}',                 //验证码html
+                VARIFY_CHECK: '{@url:verify/index/check}',             //验证码html
+                HEAD_MSG: {
+                    LIST: '{@url:message/notice/minilist}'             //头部消息_列表
+                },
+                SHOP_DETAIL : 'index.php?m=app&app=4tschool&c=shopdetails&schoolid={$schoolInfo["schoolid"]}&shopid=', //商店详情地址
+                USER_CARD: '{@url:space/card/run}',                //小名片(参数 : uid)
+                LIKE_FORWARDING: '{@url:post/doreply/}',             //喜欢转发(参数 : fid)
+                REGION: '{@url:bbs/webData/area}',                 //地区数据
+                SCHOOL: '{@url:bbs/webData/school}',               //学校数据
+                EMOTIONS: "{@url:emotion/index/run?type=bbs}",         //表情数据
+                CRON_AJAX: '{$runCron}',                     //计划任务 后端输出执行
+                FORUM_LIST: '{@url:bbs/forum/list}',               //版块列表数据
+                CREDIT_REWARD_DATA: '{@url:u/index/showcredit}',         //积分奖励 数据
+                AT_URL: '{@url:bbs/remind/run}',                  //@好友列表接口
+                TOPIC_TYPIC: '{@url:bbs/forum/topictype}'             //主题分类
+            }
+        };
+    </script>
+
+    <script src="{@G:url.extres}/4tschool/js/jquery.ui.totop.js" type="text/javascript"></script>
+    <script src="{@G:url.extres}/4tschool/js/jquery.slides.min.js" type="text/javascript"></script>
+    <script src="{@G:url.extres}/4tschool/js/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/scroll.js"></script>
+    <script src="{@G:url.extres}/4tschool/js/main.js?v={@G:version}" type="text/javascript"></script>
+
+    <!-- 公告牌,基于最重要的显示权重最高的(永远显示权重为1000的) -->
+    <script src="{@G:url.extres}/4tschool/js/notify/jquery.noty.js" type="text/javascript"></script>
+    <script src="{@G:url.extres}/4tschool/js/notify/layouts/top.js" type="text/javascript"></script>
+    <script src="{@G:url.extres}/4tschool/js/notify/themes/defaulttheme.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div id="ADAREA"></div>
+
+<div class="site-header">
+    <div class="site-top new_box" style="background-color:<?php $hostname = $_SERVER['SERVER_NAME']; if($hostname == 'www.diancanyo.com' || $hostname == 'diancanyo.com'){echo '';}elseif($hostname == 'dev.diancanyo.com') {echo '#5ff6bb';}elseif($hostname == 'rc.diancanyo.com') {echo '#ebcda6';}else{echo '#94eaf2';} ?>">
+        <div class="clear"></div>
+        <div class="row">
+            <div class="twelvecol">
+                <div class="top-phone">
+                    <span class="welcome">
+                       <a href="{@url:app/4tschool/index/run?schoolid=$schoolInfo['schoolid']}"><font>首页</font></a>
+                      <!--# if ($loginUser->uid <= 0) { #-->
+                      您好! 欢迎来到点餐哟订餐 
+                        <a href="{@url:u/login/run?schoolid=$schoolInfo['schoolid']}"><font>[登录]</font></a> <a href="{@url:u/register/run?schoolid=$schoolInfo['schoolid']}"><font>[注册]</font></a>
+                      <!--# } else { #-->
+                      欢迎您来到点餐哟订餐,
+                        <!--# if($schoolInfo['openorder'] == 1) {#-->
+                         <a href="{@url:app/4tschool/schoolorder/myorder}">{$loginUser->username}</a> 
+                        <!--# } else { #-->
+                         <a href="{@url:app/4tschool/myaccount/run}">{$loginUser->username}</a>
+                        <!--# } #-->
+
+                        <a href="{@url:u/login/logout?schoolid=$schoolInfo['schoolid']}"><font>[登出]</font></a>
+                      <!--# } #-->
+                       / {$schoolInfo['name']}
+                        <a href="{@url:app/4tschool/choose/run}" style="margin-top:30px;"><font>[重选]</font></a> &nbsp;
+                         <a href="{@url:app/com_qq_login/index/run}" target="_blank" style="vertical-align:top"><img src="themes/extres/com_qq_login/Connect_logo_3.png" valign="middle" /></a>
+                                
+                    </span>
+
+                    <div class="clear"></div>
+                </div>
+                <div class="top-menu">
+                    <div class="head-link">
+                        <ul id="megamenu" class="mega-menu">
+                            <!--# if($schoolInfo['openorder'] == 1 && $loginUser->uid > 0) {#-->
+                                <li class="head-fav">
+                                    <a href="{@url:app/4tschool/schoolorder/myorder?schoolid=$schoolInfo['schoolid']}">
+                                    <font>我的订餐</font></a>
+                                </li>
+                                <li class='head_cart'>
+                                    <a id="topbar_cart" class="cart" rel="nofollow" href="{@url:app/4tschool/orderpreview/run}">美食篮
+                                    <span id="topbar-cart-food-num">{$itemCount==0?'(空)':'('.$itemCount.')'}</span>
+                                    </a>
+                                </li>
+                            <!--# } else { #-->
+
+                            <!--# } #-->
+                            <li><a id="addtoFavorite" href="http://www.diancanyo.com/">收藏本站</a></li>
+
+                            <!--# if($schoolInfo['openliuyanban'] == 1) {#-->
+                            <li style="display:none"><a href="{@url:app/4tschool/feedback/run}">留言板</a></li>
+                            <!--# } #-->
+                            
+                            <li style="display:none"><a href="{@url:app/4tshop/shopadvantage/run}">我是商家</a></li>
+
+
+                            <li><a href="{@url:app/4tschool/about/run}">帮助 </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row <?php if($addheaderlong){echo 'headercontrollout';} ?>" style="display:<?php if(!empty($webstatus)){echo 'none';}?>">
+        <div class="twelvecol" style="width:<?php if($addheaderlong){echo '1200px';} ?>">
+            <div class="line new_box">
+            <div class="my-logo">
+                <a href="{@url:app/4tschool/index/run}">
+                    <img src="themes/extres/4tschool/images/logo.png" alt="diancanyo.com - 点餐哟"/>
+                </a>
+            </div>
+            <div class="my-search">
+                <form id='searchForm' class="J_ajaxForm" action="{@url:app/4tschool/$searchArgs['target']/run?&ifdeliver=y}"
+                      method="post">
+                    <input id='searchType' type='hidden' name='type'
+                           value="{$searchArgs['type']==null?'m':$searchArgs['type']}">
+                    <input id='keyword' type='hidden' name='keyword' value=''>
+
+                    <div>
+                        <ul class="tabs">
+                            <li class="{$searchArgs['type']=='s'?'active':''}" tab="1"><a
+                                    href="javascript:void(0)">搜索店铺</a>
+                            </li>
+                            <li class="{$searchArgs['type']=='m'||$searchArgs['type']==''?'active':''}" tab="2"><a
+                                    href="javascript:void(0)">搜索美食</a></li>
+                        </ul>
+
+                        <div class="tab_container">
+                            <div id="tab1" class="tab_content"
+                                 style="{$searchArgs['type']=='s'?'display:block':'display:none'}">
+                                <input id="s_keyword" name="shop" class="my-input" type="text"
+                                       value="{$searchArgs['type']=='s'?$searchArgs['keyword']:''}">
+                                <button type="submit" class="btn btn_submit"
+                                        style="height:33px; width:85px; border-color:#F87D0B; background:url({@G:url.extres}/4tschool/images/search_submit.png)"></button>
+                            </div>
+
+
+                            <div id="tab2" class="tab_content"
+                                 style="{$searchArgs['type']=='m'||$searchArgs['type']==null?'display:block':'display:none'}">
+                                <input id="m_keyword" class="my-input" type="text" name="merchandise"
+                                       value="{$searchArgs['type']=='m'?$searchArgs['keyword']:''}">
+                                <button type="submit" class="btn btn_submit"
+                                        style="height:33px; width:85px; border-color:#F87D0B; background:url({@G:url.extres}/4tschool/images/search_submit.png)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="hot-tag" style="width:400px">
+                <template source='EXT:4tschool.template.hotsearch.hots' load="true"/>
+            </div>
+            </div>
+        </div>
+    <div class="spacer" style="height:10px;"></div>
+
+    <div class="twelvecol">
+        <a target="_blank" href="{@url:app/4tschool/dcymall/run}">
+            <img src="themes/extres/4tschool/images/dianbi.jpg" style="width:100%" title="点餐哟外卖平台">
+        </a>
+    </div>
+     
+    </div>
+    <div class="hiddenNotify" style="display:none">
+        <!--#  echo $topAnn['content'] #-->
+    </div>
+</div>
+
+<script language="JavaScript" type="text/JavaScript">
+
+    function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+    {
+        var Days = 30; //此 cookie 将被保存 30 天
+        var exp = new Date(); //new Date("December 31, 9998");
+        exp.setTime(exp.getTime() + Days*24*60*60*1000);
+        document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    }
+    function getCookie(name)//取cookies函数
+    {
+        var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+        if(arr != null) return unescape(arr[2]); return null;
+
+    }
+    function delCookie(name)//删除cookie
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+
+</script>
+
+
+<script language="javascript">
+    $(document).ready(function () {
+
+    $("#addtoFavorite").click(function (event) {
+
+        var ctrl = (navigator.userAgent.toLowerCase()).indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL';
+        var url = $(this).attr("href");
+        if (document.all)//ie
+            window.external.AddFavorite(url, '点餐哟校园订餐');
+        else//chrome and others
+            alert('您可以通过快捷键' + ctrl + ' + D 加入到收藏夹');
+
+        event.preventDefault();
+    });
+});
+
+</script> 

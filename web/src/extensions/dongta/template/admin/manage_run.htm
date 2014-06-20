@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:admin.common.head' />
+</head>
+<body>
+<div class="wrap">
+
+<div class="nav">
+	<ul class="cc">
+		<li class="current"><a href="{@url:/app/dongta/manage/run}">基本设置</a></li>
+		<!-- <li><a href="{@url:/app/dongta/manage/dong}">动作管理</a></li> -->
+	</ul>
+</div>
+
+<form method="post" class="J_ajaxForm" action="{@url:/app/dongta/manage/dorun}">
+<div class="h_a">动他一下设置</div>
+<div class="table_full">
+	<table width="100%">
+		<col class="th" />
+		<col width="400" />
+		<col />
+		<tr>
+			<th>动他一下</th>
+			<td>
+				<ul class="switch_list cc">
+					<li><label><input type="radio" name="ifopen" value="1" {@pw::ifcheck($config['app.dongta.ifopen'] == 1)}><span>开启</span></label></li>
+					<li><label><input type="radio" name="ifopen" value="0" {@Pw::ifcheck($config['app.dongta.ifopen'] == 0)}><span>关闭</span></label></li>
+				</ul>
+			</td>
+			<td><div class="fun_tips"></div></td>
+		</tr>
+		<tr>
+			<th>帖子阅读页按钮</th>
+			<td>
+				<ul class="switch_list cc">
+					<li><label><input type="radio" name="readifopen" value="1" {@pw::ifcheck($config['app.dongta.read.ifopen'] == 1)}><span>开启</span></label></li>
+					<li><label><input type="radio" name="readifopen" value="0" {@Pw::ifcheck($config['app.dongta.read.ifopen'] == 0)}><span>关闭</span></label></li>
+				</ul>
+			</td>
+			<td><div class="fun_tips"></div></td>
+		</tr>
+		<tr>
+			<th>个人空间按钮</th>
+			<td>
+				<ul class="switch_list cc">
+					<li><label><input type="radio" name="spaceifopen" value="1" {@pw::ifcheck($config['app.dongta.space.ifopen'] == 1)}><span>开启</span></label></li>
+					<li><label><input type="radio" name="spaceifopen" value="0" {@Pw::ifcheck($config['app.dongta.space.ifopen'] == 0)}><span>关闭</span></label></li>
+				</ul>
+			</td>
+			<td><div class="fun_tips"></div></td>
+		</tr>
+	</table>
+</div>
+<div class="btn_wrap">
+	<div class="btn_wrap_pd">
+		<button class="btn btn_submit mr10 J_ajax_submit_btn" type="submit">提交</button>
+	</div>
+</div>
+</form>
+
+</div>
+<template source='TPL:admin.common.footer' />
+</body>
+</html>

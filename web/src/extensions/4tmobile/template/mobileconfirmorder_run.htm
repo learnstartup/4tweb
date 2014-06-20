@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <template source='mobileheader' load="false" />
+    </head>
+    <body>
+        <!--# if($is_weixin){ #-->
+        <div data-role="page" data-theme="b">
+            <div data-role="header" data-position="fixed">
+                <h1 style="display:none">确认订单</h1>
+                <template source='navbar' load="true" />
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="#"><span>
+                            <!--# if($order['deservedpointcoin']){ #-->
+                            在您评价后 {$order['deservedpointcoin']} 点币将返到您的零钱包
+                            <!--# }else{ #-->
+                            该商家暂无返利
+                            <!--# } #-->
+                        </span></a></li>
+                    </ul>
+                </div>                
+            </div>
+            <div role="main" class="ui-content">
+                <div data-role="collapsible" data-collapsed="false" data-collapsed-icon="bullets" data-expanded-icon="bullets">                    
+                        <h3>订单:{$order['ordernumber']}</h3>                        
+                    <!--# if($order['isvalid']){ #-->    
+                    <form method="post" action="{@url:app/4tmobile/mobileconfirmorder/doSaveComment?openid=$openId}">
+                        <input type="hidden" name="orderId" value="{$order['id']}">
+                        <input type="hidden" name="shopId" value="{$order['shopid']}">
+                        <input type="hidden" name="openId" value="{$openId}">                        
+                        <span>{$order['shopname']}</span>                  
+                        <label for="deliveryTime"><a href="#" data-role="button">本次送餐时间(分钟)</a></label>
+                        <br/>
+                        <input type="range" name="deliveryTime" id="deliveryTime" data-mini="true" data-highlight="true" value="30" min="10" max="120" data-theme="d">
+                        <label for="comment">评论:</label>
+                        <textarea name="comment" placeholder="亲，快来评价吧！"></textarea>
+                        <br/>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <a href="#" data-rel="back" data-role="button" data-ajax="false">返回</a>
+                            </div>
+                            <div class="ui-block-b">
+                                <input data-theme="d" type="submit" value="提交">
+                            </div>
+                        </div>
+                    </form>
+                    <!--# } else{#-->
+                    <span>您无法评价该订单</span>
+                    <!--# } #-->                    
+                </div>                
+           </div>
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->
+    </body>
+</html>

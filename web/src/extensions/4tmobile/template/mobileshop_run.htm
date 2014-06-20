@@ -1,0 +1,148 @@
+<html>
+    <head>
+    <template source='mobileheader' load="false" />
+    <script src="{@G:url.extres}/4tschool/js/plugins/jquery.lazyload.min.js"></script>
+    <style type="text/css">
+    .icon{
+        font-size: 14px;
+        padding: 0 3px;        
+        
+    }
+    .corner{
+        border-radius: 4px 4px 4px 4px;
+    }
+    .order-open {
+        background-color:#FE6658;
+        color:#FFFFFF;
+    }
+    .terminal-open {
+        background-color:#4579C0;
+        color:#FFFFFF;
+    }
+    .stop-service{
+        background-color: #ACACAC;
+        color:#FFFFFF;
+    }
+    .no-online-service{
+        background-color:#EFC739;
+        color:#FFFFFF;        
+    }
+    .discount{
+        background-color:green;
+        color:#FFFFFF;        
+    }
+    .little-font{
+        font-size: 13px;
+    }
+    .append-border{
+        border:1px solid #d6d6d6;
+    }    
+    .delivery-time-fast {
+        color:green;
+    }
+    .delivery-time-mid {
+        color:#4579C0;
+    }
+    .delivery-time-slow {
+        color:#FE6658;
+    }
+    .light-font{
+        color: #999999;
+    }
+
+    </style>
+    </head>
+    <body>
+        <!--# if($is_weixin){ #-->
+        <div data-role="page" data-theme="a">
+            <div data-role="header" data-position="fixed">                
+                <h1 style="display:none">商家列表({$shopnumber})</h1>
+                <template source='navbar' load="true" />
+            </div>
+            <div role="main" class="ui-content">                
+                <ul data-role="listview" data-theme="c">
+                    <li data-role="list-divider" role="heading" data-theme="g">
+                        <h3><span class="icon corner terminal-open">订</span>该商家支持在线下单订外卖</h3>
+                        <h3><span class="icon corner order-open">外</span>该商家提供外卖服务</h3>
+                        <h3><span class="icon corner discount">返</span>该商家提供点餐返利活动</h3>
+                    </li>
+                    <!--#foreach ($shopList as $key => $item) {#-->
+                    <li class="append-border">
+                        <a href="{@url:app/4tmobile/mobilemerchandise/run?shopid=$item['id']}&openid={$openId}" data-ajax="false">
+                            
+                        <img class="lazy" src="{@G:url.extres}/4tschool/images/loading.gif" data-original="{$item['imageurl']}" style="top:0.7em">
+
+                        <span class="little-font">{$item['name']}</span>
+                        <br/>
+                        <span class="little-font">
+                            ￥
+                            <!--# if($item['startingprice'] == 0){ #-->
+                            0.0
+                            <!--# } else{#-->
+                            {$item['startingprice']}
+                            <!--# } #-->
+                            起送                            
+                        </span>                        
+
+                        <!--# if($schoolInfo['openorder'] == 1 && $schoolInfo['openorder'] == 1){ #-->
+                        <span class="icon corner order-open" title="该商家支持送外卖">外</span>
+                        <!--# } #-->
+
+                        <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen'] == 1 && $item['openorder'] == 1){ #-->
+                        <span class="icon corner terminal-open" title="该商家支持在线下单">订</span>
+                        <!--# } #-->
+
+                        <!--# if($item['ifrebate']){ #-->
+                        <span class="icon corner discount" title="该商家点餐享折扣">返</span>
+                        <!--# } #-->
+
+                        <!--# if($schoolInfo['openorder'] == 1 && $item['isshopopen']==0 && $item['openorder'] == 1){ #-->
+                        <span class="icon corner no-online-service" title="支持电话下单">仅支持电话下单</span>
+                        <!--# } #--> 
+
+                        <!--# if($item['isshopopen']==0 && $item['openorder'] == 0){ #-->
+                        <br/>
+                        <span class="icon corner stop-service" title="该商家暂不提供服务">该商家暂不提供服务</span>
+                        <!--# } #-->
+
+                        <br/>
+                        <!--# if($item['averagespeed']) { #-->                        
+                        <span class="little-font light-font">平均送餐速度
+                            <!--# if($item['averagespeed']<=40) { #-->
+                            <span class="icon delivery-time-fast">{$item['averagespeed']}分钟</span>
+                            <!--# } elseif($item['averagespeed']<=60) {#-->
+                            <span class="icon delivery-time-mid">{$item['averagespeed']}分钟</span>
+                            <!--# } else {#-->
+                            <span class="icon delivery-time-slow">{$item['averagespeed']}分钟</span>
+                            <!--# } #-->
+                            
+                        </span>  
+                        <!--# }else{ #-->
+                        <span class="little-font light-font">暂无速度点评</span>
+                        <!--# } #-->
+
+                        </a>
+
+                    </li>
+                    <!--# } #-->
+                </ul>
+            </div>
+        </div>
+        <!--# } else{#-->
+        <h3>非法访问</h3>
+        <!--# } #-->        
+    </body>
+    <script>
+    $(function() {
+        $("img.lazy").lazyload({
+            effect : "fadeIn",
+            event : "scrollstop"
+        });        
+    });
+    </script>
+</html>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3bf15cf5566f3927e165b2d12ea5534e' type='text/javascript'%3E%3C/script%3E"));
+</script>
+

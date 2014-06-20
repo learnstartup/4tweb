@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<template source='header' load="false" />
+
+<template source='left_bar' load="false" />
+
+<div id="normalorder" class="order_detail">
+
+    <div id="divorderhead" class="order_news"> 
+
+	    <p>
+	    
+	    订单号：{$order['ordernumber']}&nbsp;
+	
+	    <!--# if (0 ==$order['status']) { #-->
+        <input type=button name="cancelbutton" value="[取消订单]" id="detail_cancelorder" class="cancel"></input>
+        <!--# } #-->
+        </p>   
+
+	</div>
+	
+	<div class="order_detail_frame">
+   <form action="{@url:app/4tschool/schoolorder/changeItem}" id="schoolordersForm" method="post">
+	<input type="hidden" class="replaceItemUrl" name="replaceItemUrl" value="{@url:app/4tschool/schoolorder/updateItemtoAnother}">
+	<input type="hidden" class="pageUrl" name="pageUrl" value="{@url:app/4tschool/schoolorder/changeItem}">
+	<input type="hidden" class="noItemUrl" name="noItemUrl" value="{@url:app/4tschool/schoolorder/noItem?choosenStatusCategory=7}">
+	<input type="hidden" class="orderid" name="orderid" value="{$orderid}">
+	<input type="hidden" class="fromItemId" name="fromItemId" value="{$orderItemId}">
+	<input type="hidden" class="toMId" name="toMId" value="">
+	<div class="spacer"></div>
+    <p><strong style="color:red;">1. 要被替换的缺货商品如下:</strong>
+       <input type="button" id="btnCancelItem" name="btnCancelItem" value="取消当前缺货商品"></input>
+
+    </p>       
+         <div class="merch_bord">
+            <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+                <tbody>
+                <tr>
+                  <td class="tab_w1">菜品名称</td>
+                  <td class="tab_w7">流水号</td>
+                  <td class="tab_w7">单品积分</td>
+                  <td class="tab_w3">优惠价</td>
+                  <td class="tab_w6">数量</td>
+                  <td class="tab_w4">小计</td>
+                </tr>
+              </tbody>
+          </table>
+			  <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">  	 
+			            <tbody>
+			            	<!--# if ($orderItems) { #-->
+			            	<!--#foreach ($orderItems as $key => $item) {#-->
+			            	<!--# if ($item['id'] == $orderItemId) { #-->
+			            	<tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+			            		
+			            		<td class="tab_w1">
+			            			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$item['shopid']}" target="" title="{$item['name']}">{$item['shopname']}---{$item['mname']}</a>
+			            		</td>
+			            		<td class="tab_w7">{$item['sequence']}</td>
+			            		<td class="tab_w7">{$item['integral']}</td>
+			            		<td class="tab_w3"><span>￥{$item['price']}({$item['packingprice']==0?"无打包费用":"含打包费用"})</span></td>
+			            		<td class="tab_w6">{$item['quatity']}{$item['unit']}</td>
+			            		<td class="tab_w4">￥{$item['price'] * $item['quatity']}</td>
+			            </tr>
+			            <!--#}#-->
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span class="noresult">没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+		 </div>
+		 <div class="spacer"></div>
+		<p>
+			<strong style="color:red">
+			2. 点击右下方搜索按钮搜索菜品并推荐与替换
+			</strong>
+		</P>
+		<div class="myddorder_search clearfix">
+		<div class="time_box">
+			<select id="o_area" style="z-index:0;" class="carea" name="carea">
+				<option <?php if(0 == $carea) echo "selected"; ?>  value='0'>所有区域</option>
+				<!--#foreach($areaList as $key => $value) {#-->
+				<option 
+					<?php if($value['id'] == $chooseAreaId) echo "selected"; ?> value="{$value['id']}" >{$value['areaname']}
+				</option>
+			<!--#}#-->
+			</select>
+
+			<select id="o_time" style="z-index:0;" class="chooseShop" name="chooseShop">
+				<option value="-1">
+						所有商铺
+				</option>
+				<!--#foreach($shopList as $key => $eachShop) {#-->
+				<option 
+					<?php if($eachShop['id'] == $chooseShopId) echo "selected"; ?> value="{$eachShop['id']}" >{$eachShop['name']}
+				</option>
+				<!--#}#-->
+			</select>
+			<div class="myddorder_inquiry">
+			<input id="searchKey" class="text gray" style="width: 130px;" type="text" value="{$searchTxt==''?'':$searchTxt}">
+			<input type="submit" id="searchBtn" class="btn_search">
+			
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="merch_bord">
+            <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch merch_title">
+                <tbody>
+                <tr>
+                  <td class="tab_w">&nbsp;</td>
+                  <td class="tab_w1">菜品名称</td>
+                  <td class="tab_w3">单价</td>
+                  <td class="tab_w3">打包费</td>
+                  <td class="tab_w5">操作</td>
+                </tr>
+              </tbody>
+          </table>
+			  <table border="0" cellpadding="0" cellspacing="0" class="tabl_merch">  	 
+			            <tbody>
+			            	<!--# if ($merchandiseList) { #-->
+			            	<!--#foreach ($merchandiseList as $key => $eachM) {#-->
+			            	<tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+			            		<td class="tab_w">
+			            			<a name="productpic" href="{@url:app/4tschool/shopdetails/run?shopid=$eachM['shopid']}" target="">
+			            			<img width="67px" height="30px" src="{$eachM['imageurl']}" title="{$eachM['name']}">
+			            			</a>
+			            			<input type="hidden" name="shopids[]" value="{$eachM['shopid']}">
+			            		</td>
+			            		<td class="tab_w1">
+			            			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$eachM['shopid']}" target="" title="{$eachM['name']}">{$eachM['name']}</a>
+			            		</td>
+			            		<td class="tab_w3"><span>￥{$eachM['currentprice']}</span></td>
+			            		<td class="tab_w3"><span>￥{$eachM['packingprice']}</span></td>
+			            		<td class="tab_w5">
+			            			<a class='replaceCurrentItem' href="{$eachM['id']}">替换</a>
+			            		</td>
+			            </tr>
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span class="noresult">没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+		 </div>
+		 <div class="spacer"></div>
+		 <page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' postUrl='app/4tschool/schoolorder/changeItem' args='$args' />
+		 <div class="spacer"></div>
+		</div>
+		
+	</div>	
+</form>
+</div>
+</div>
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$("#btnCancelItem").click(function(event)
+	{
+		event.preventDefault();
+
+		if(confirm("您确定要取消吗?") == false)
+			return;
+		var postUrl = $(".replaceItemUrl").val();
+		$.post(postUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+
+					//跳转到订单缺货管理页面去
+					window.location.href = $(".noItemUrl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+	$(".btn_search").click(function(event)
+	{
+		event.preventDefault();
+		searchPage();
+	});
+
+	//school area chane
+	$(".carea").change(function(event)
+	{
+		searchPage();
+	});
+
+	//change school
+	$(".chooseShop").change(function(event)
+	{
+		searchPage();
+	});
+
+
+	$(".returnBack").click(function(event)
+	{
+
+		window.location.href = $(".myOrderUrl").val();
+		event.preventDefault();
+
+	});
+
+	$(".replaceCurrentItem").click(function(event)
+	{
+		event.preventDefault();
+
+		if(confirm("你确定要更换菜品吗?请提醒更换菜的价格以及打包费") == false)
+		{
+			return;
+		}
+		
+		var replacedTo = $(this).attr("href");
+
+		if(replacedTo <= 0)
+		{
+			alert("无法进行更换, 请联系管理员");
+		}
+
+		$(".toMId").val(replacedTo);
+
+		var postUrl = $(".replaceItemUrl").val();
+		$.post(postUrl, 
+			$('#schoolordersForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert(returndata.data);
+
+					//跳转到订单缺货管理页面去
+					window.location.href = $(".noItemUrl").val();
+				}else
+				{
+					alert(returndata.data);
+				}
+
+				
+				$(".btn-assign").append(returndata);
+		});
+
+
+	});
+
+	//post data and search
+	function searchPage()
+	{
+		var orderid = $(".orderid").val();
+		var fromItemId = $(".fromItemId").val();
+		var chooseShopId = $('.chooseShop').val();
+		var chooseAreaId = $(".carea").val();
+		var searchTxt =$("#searchKey").val();
+	
+
+		var orderidUrl = "&orderid=" + orderid;
+		var fromItemId = "&orderItemId=" + fromItemId;
+		var chooseShopIdUrl = "&chooseShopId=" + chooseShopId;
+		var chooseAreaIdUrl = "&chooseAreaId=" + chooseAreaId;
+		var searchTxtUrl = "&searchTxt="+searchTxt;
+
+		window.location.href = $(".pageUrl").val() + orderidUrl + fromItemId + chooseShopIdUrl + chooseAreaIdUrl + searchTxtUrl; 
+	}
+});
+</script>

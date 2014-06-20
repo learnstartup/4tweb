@@ -1,0 +1,49 @@
+<div class="twelvecol" style="width:<?php if($addheaderlong){echo '890px';} ?>">
+    <div class="line new_box">
+    <div class="my-logo">
+        <a href="{@url:app/4tschool/index/run}">
+            <img src="themes/extres/4tschool/images/logo.png" alt="diancanyo.com - 点餐哟"/>
+        </a>
+    </div>
+    <div class="my-search">
+        <form id='searchForm' class="J_ajaxForm" action="{@url:app/4tschool/$searchArgs['target']/run?&ifdeliver=y}"
+              method="post">
+            <input id='searchType' type='hidden' name='type'
+                   value="{$searchArgs['type']==null?'m':$searchArgs['type']}">
+            <input id='keyword' type='hidden' name='keyword' value=''>
+
+            <div>
+                <ul class="tabs">
+                    <li class="{$searchArgs['type']=='s'?'active':''}" tab="1"><a
+                            href="javascript:void(0)">搜索店铺</a>
+                    </li>
+                    <li class="{$searchArgs['type']=='m'||$searchArgs['type']==''?'active':''}" tab="2"><a
+                            href="javascript:void(0)">搜索美食</a></li>
+                </ul>
+
+                <div class="tab_container">
+                    <div id="tab1" class="tab_content"
+                         style="{$searchArgs['type']=='s'?'display:block':'display:none'}">
+                        <input id="s_keyword" name="shop" class="my-input" type="text"
+                               value="{$searchArgs['type']=='s'?$searchArgs['keyword']:''}">
+                        <button type="submit" class="btn btn_submit"
+                                style="height:33px; width:85px; border-color:#F87D0B; background:url({@G:url.extres}/4tschool/images/search_submit.png)"></button>
+                    </div>
+
+
+                    <div id="tab2" class="tab_content"
+                         style="{$searchArgs['type']=='m'||$searchArgs['type']==null?'display:block':'display:none'}">
+                        <input id="m_keyword" class="my-input" type="text" name="merchandise"
+                               value="{$searchArgs['type']=='m'?$searchArgs['keyword']:''}">
+                        <button type="submit" class="btn btn_submit"
+                                style="height:33px; width:85px; border-color:#F87D0B; background:url({@G:url.extres}/4tschool/images/search_submit.png)"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="hot-tag" style="width:400px">
+        <template source='EXT:4tschool.template.hotsearch.hots' load="true"/>
+    </div>
+    </div>
+</div>

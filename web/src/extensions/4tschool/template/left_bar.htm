@@ -1,0 +1,20 @@
+<div class="mydnew_sidel" style="background-color:white">
+
+<!--#foreach ($myMenus as $key => $item) {#-->
+<div class="mydnew_sidel_title">
+	<h3>{$key}</h3>
+</div>
+<ul class="my_content">
+	 <!--#foreach ($item as $eachkey => $eachMenu) {#-->
+		<li><a class="{$eachMenu['name'] == $selectedMenu?'current':''}" href="{$eachMenu['link']}&schoolid={$schoolId}" >
+			{$eachMenu['name']}<font style="color:red;font-weight:bolder"><?php if($eachMenu['name'] == '待评价'){echo '('.$countNoComment.')';}?></font>
+			<!--# if($eachMenu['isnew']){ #-->
+			<span class="order-open" style="font-size:10px">New</span>
+			<!--# } #-->			
+		</a>
+		</li>
+	<!--#}#-->
+</ul>
+
+<!--#}#-->
+</div>

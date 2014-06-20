@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+	<style>
+	td{
+		text-align: right;
+	}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul style="font-size: 16px;">
+			<li><strong>时间段: {$startDate} 至 {$endDate}</strong></li>
+		</ul>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>商家名</td>
+						<td>总单数</td>
+						<td>总金额(元)</td>
+						<td>有效单数</td>
+						<td>有效金额(元)</td>
+						<td>返利额(元)</td>
+					</tr>
+				</thead>
+				<!--# if ($ShopSales) { #-->
+				<!--#foreach ($ShopSales as $key => $item) {#-->
+				<tr>
+					<td>{$item['name']}</td>
+					<td>{$item['totalorders']}</td>
+					<td>{$item['totalmoney']}</td>
+					<td>{$item['validorders']}</td>
+					<td>{$item['validmoney']}</td>
+					<td>{$item['validshopreturn']}</td>
+			
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">在指定的时间段内无数据</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/merchandise/run' args='$args'/>
+		</div>
+
+	</div>
+<template source='TPL:admin.common.footer' />
+
+</body>
+</html>

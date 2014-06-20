@@ -1,0 +1,104 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style>
+td.group {
+color: blue;
+}
+
+strong{
+	color: red;
+}
+fieldset{
+	border: 3px;
+	padding: 5px;
+	font-size: 14px;
+	margin-top: 20px;
+	background-color: rgb(240, 255, 237);
+	border-top-width: 5px;
+	border-color: blue;
+}
+</style>
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+		<form action="{@url:app/4tschool/statistic/delivery}" id="schoolordersForm" method="post">
+			<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/statistic/delivery}">
+			<div class="myddorder_search clearfix">
+				<div class="time_box" style="width:100%;padding-bottom:5px;">
+					<strong>从</strong>
+					<input type="text" id="fromTime" value="{$fromTime}" name="fromTime"><strong>到</strong>
+					<input type="text" value="{$toTime}" id="toTime" name="toTime">
+					<span style="float:right">
+						<input type="submit" id="searchBtn" name="searchBtn" value="点击搜索"></input>
+					</span>
+				</div>
+				
+			</div>
+			<fieldset>
+				<legend><h2>配送人员订单核对(包含客户签收与拒签)</h2></legend>
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmgrouping">
+					<thead>
+						<tr>
+							<th>配送人</th>
+							<th>订单总数</th>
+							<th>签收总金额</th>
+							<th>总份数</th>
+							<th>提成份数</th>
+							<th>顺带份数</th>
+							<th>非提成份数</th>
+							<th>有未完成订单?</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--#foreach ($deliveryMOrders as $key => $eachDelivery) {#-->
+						<tr class="">
+							<td width="80px"><strong>
+								{$eachDelivery['deliverby'] == "" ?"未分配":$eachDelivery['deliverby']} {$eachDelivery['delivercontact']}
+							</strong>
+							</td>
+							<td>{$eachDelivery['totalOrder']}</td>
+							<td><strong>￥{$eachDelivery['totalAcceptMoney']}</strong></td>
+							<td>{$eachDelivery['totalQuantity']}</td>
+							<td>{$eachDelivery['totalBonusQuantity']}</td>
+							<td>{$eachDelivery['totalShunDaiQuantity']}</td>
+							<td>{$eachDelivery['totalNoBonusQuantity']}</td>
+							<th>
+								<strong style="color:red"> {$eachDelivery['NotFinishOrder'] == true?'有':'无'}</strong>
+							</th>
+						</tr>
+						<!--# } #-->
+						
+					</tbody>
+				</table>
+			</fieldset>
+
+		</form>
+	</div>
+
+</div>
+<div class="clear"></div>
+<template source='footer' />
+
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script> 
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+	$( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "0D" 
+    });
+
+	
+});
+</script>
+
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0020)http://kaichiba.com/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="开吃吧 – 在线叫外卖 – 全国最大的在线外卖订餐平台,为您提供最新外卖订餐菜单、特价优惠信息,收录了全国数万家餐厅,足不出户,便可轻松订餐。让我们在外卖订餐的时尚中,开吃吧！">
+<meta name="keywords" content="外卖,外卖网,网上订餐,高校外卖,外卖电话,高校周边餐厅,全国最大的外卖网">
+<meta property="qc:admins" content="2243437410301216375">
+<meta property="wb:webmaster" content="f21c7cc619566a14">
+    
+<link rel="shortcut icon" href="http://kaichiba.com/image/favicon.ico">
+<link href="{@G:url.extres}/4tschool/css/choose.css" rel="stylesheet" type="text/css">
+<title>分享哟-高校订餐</title>
+<script src="{@G:url.extres}/4tschool/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="{@G:url.extres}/4tschool/js/jquery.cookie.js" type="text/javascript"></script>
+   
+</head>
+<body onload="pageLoad()">
+    <div class="top">
+        <span>
+          <!--# if ($loginUser->uid <= 0) { #-->
+          您好! 欢迎来到点餐哟订餐 
+            <a href="{@url:u/login/run}"><font>[登录]</font></a> <a href="{@url:u/register/run}"><font>[注册]</font></a>
+          <!--# } else { #-->
+          欢迎您来到点餐哟订餐,
+            <a href="{@url:app/4tschool/schoolorder/myorder}">{$loginUser->username}</a> <a
+                href="{@url:u/login/logout}"><font>[登出]</font></a>
+          <!--# } #-->                    
+        </span>
+    </div>
+    <div class="Main_body">
+      <div class="titleimg">
+        <img src="{@G:url.extres}/4tschool/images/logo.png">
+      </div>
+      <div class="Sub_body">
+          <div class="body_top">
+            <span style="" class="topspan">请选择所在城市</span>
+            <span id="city" style="" class="nc"></span>
+            <img src="{@G:url.extres}/4tschool/images/dot.png">
+            <span id="area" style="" class="topspan">
+            </span>
+            <img src="{@G:url.extres}/4tschool/images/dot.png">
+            <span id="shoparea" style="" class="topspan">
+            </span>
+            <a class="triangle" style="display: block; left: 59px;"></a>
+          </div>
+          <div class="Main_subbody">
+               <div class="allareas" style="">
+                  <ul class="areas" id="nc" style="display: block;">
+                      <li><span class="nc-hgtx" style="width:500px">江西师范大学科学技术学院</span>
+                      </li>
+                      <li>
+                        <span class="" style="width:500px">
+                          <a style="width:500px;color:#333333" href="{@url:app/4tschool/index/run?schoolid=1001292}" title="江西省南昌大学[南院]周边餐厅">
+                           江西省南昌大学南院校区
+                          </a>  
+                        </span>
+                      </li>
+                  </ul>
+               </div>
+               <div class="list" id="schools">
+                  <ul id="nc-hgtx" style="display: block;">
+                      <li style="width:800px">
+                        <span style="width:500px">
+                          <a style="width:500px" href="{@url:app/4tschool/index/run?schoolid=11045}" title="江西师范大学科学技术学院(老校区)周边餐厅"> 江西师范大学科学技术学院(老校区)</a>
+                        <span>  
+                      </li>
+                  </ul>
+               </div>
+          </div>
+      </div>
+    </div>
+    <div class="footer">
+        <p class="firenf_link">
+            友情链接:
+        </p>
+           <div class="hr"></div>
+        <p class="last">
+            Copyright © 2013 分享哟 订餐 All Rights Reserved
+        </p>
+    </div>
+        <input name="findschool" type="hidden" id="findschool">
+        <input name="findcity" type="hidden" id="findcity" value="南昌,nc">
+    <script src="{@G:url.extres}/4tschool/js/fenxiangyo_nav.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+      document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3bf15cf5566f3927e165b2d12ea5534e' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</body>
+</html>

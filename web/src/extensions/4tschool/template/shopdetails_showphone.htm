@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <template source='header' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+    <style>
+        td{
+            border-left: 1px solid #eadbc9;
+            border-bottom: 1px solid #eadbc9;
+            border-right: 1px solid #eadbc9;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="clear"></div>
+<div class="wrap-sd">
+<div class="sdrow">
+<div id="wrapper" class="twelvecol">
+
+<div class="step-content" style="margin-left:130px;padding:10px;">
+    <h2>
+        商家:<font> <a style="color: #FF4400"  href="{@url:app/4tschool/shopdetails/run?shopid=$shop['id']&schoolid=$schoolInfo['schoolid']}">{$shop['name']}</a></font> 
+        <template source='jiathis' load="true"/><br>
+    </h2>
+    <h4>
+        联系电话1: {$shop['phonenumber'] == ''?"无":$shop['phonenumber']} (<font color="red">联系我时，请说是在点餐哟上看到的，谢谢！</font>)<br/>
+        联系电话2: {$shop['contactnumber'] == ''?"无":$shop['contactnumber']}<br/>
+    </h4>
+
+</div>
+
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer'/>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui-1.10.3.custom.js"></script>
+
+</body>
+</html>

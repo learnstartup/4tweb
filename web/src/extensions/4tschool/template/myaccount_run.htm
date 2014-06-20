@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">提示信息</div>
+		<div class="mb10 prompt_text">
+			<ol>
+				<li>请输入首次下单用户的ID</li>
+			</ol>
+		</div>
+		<div>
+		<form class="" action="{@url:app/4tschool/myaccount/run}" method="post">
+			<input type='hidden' name='type' value="do">
+			用户ID：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="userid" id="userid" value="{$userid}" /><br/><br/>
+			添加点币数：<input type="text" name="mymoney" id="mymoney" value="{$mymoney}" /><br/><br/>
+			添加描述：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="description" id="description" /><br/><br/>
+			添加前币数：<input type="text" name="addbeforemoney" id="addbeforemoney" value="{$addbeforemoney}" style="background-color:grey;color:white" disabled/><br/><br/>
+			添加后币数：<input type="text" name="addafteremoney" id="addafteremoney" value="{$addafteremoney}" style="background-color:grey;color:white" disabled/><br/><br/>
+			<button type="submit" class="btn btn_submit">添加</button>
+			<!--#if($status)#-->
+			<span style="color:red">{$show}</span>
+			<!--##-->
+		</form>
+		</div>
+	</div>
+<template source='TPL:admin.common.footer' />
+<script type="text/javascript">
+$('.btn_submit').click(function(){
+
+	//判断输入的一个数是不是正整数  
+	var userid = $('#userid').val(); 
+	var mymoney = $('#mymoney').val();  
+    if((/^(\+|-)?\d+$/.test( userid )) && (/^(\+|-)?\d+$/.test( mymoney ))){  
+        return true;  
+    }else{  
+        alert("两个都不能为空，且必须数字");
+        return false;  
+    }
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+	<template source='TPL:admin.common.head' />
+</head>
+<body>
+	<div class="wrap">
+		<template load="true" source="links"/>
+		<div class="h_a">搜索</div>
+		<div class="search_type cc mb10">
+			<form class="" action="{@url:app/4tschool/shopstatusrecord/run?id}" method="post">
+				<input type="hidden" name="type" value="search">
+				<input type='hidden' name='type' value="do">
+				<input type="hidden" name="page" value="{$page}">
+				<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shopstatusrecord/run}">
+				<label>商店ID:</label>	
+				<input type="text" name="shopId" value="{$shopId}"/>	
+					<button type="submit" class="btn btn_submit J_ajax_submit_btn">搜索</button>
+			</form>			
+		</div>
+		<div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<td>学校</td>
+						<td>商家名</td>
+						<td>用户</td>
+						<td>时间</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<!--# if ($shopStatusRecordList) { #-->
+				<!--#foreach ($shopStatusRecordList as $key => $item) {#-->
+				<tr>
+					<td>{$item['schoolname']}</td>
+					<td>{$item['shopname']}</td>
+					<td>{$item['userId']}</td>
+					<td>{$item['actiontime']}</td>
+					<td>{$item['actionstatus']==1?'开':'关'}</td>
+				</tr>
+				<!--#}#-->
+				<!--# } else { #-->
+				<tbody>
+					<tr><td colspan="14" class="tac">啊哦，目前没有记录哟！</td></tr>
+				</tbody>
+				<!--# } #-->
+			</table>
+		</div>
+		<div class="p10">
+				<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/shopstatusrecord/run' args='$args'/>
+		</div>
+	</div>
+<template source='TPL:admin.common.footer' />
+<script>
+	$(".chooseschool").change(function()
+	{
+		searchchange(true,false);
+	
+	});
+	$(".choosenShopid").change(function()
+	{
+		searchchange(true,false);
+	
+	});
+	function searchchange(showP)
+	{
+		var schoolpara = '&chooseschool='+$(".chooseschool").val();
+		var shoppara = '&choosenShopid='+$(".choosenShopid").val();
+		if(!showP)
+		{
+			provincepara = "";	
+		}
+		window.location.href= $(".pageurl").val()+schoolpara+shoppara; 
+	}
+</script>
+</body>
+</html>

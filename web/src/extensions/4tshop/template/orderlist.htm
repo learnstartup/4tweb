@@ -1,0 +1,342 @@
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style type="text/css">
+.length_2{
+    width: 200px;
+}
+.shopadvantage_btn{
+    font-size:12px;
+    color:#1A66B3;
+    font-weight:bolder;
+}
+</style>
+<div class="search_type cc mb10">
+			<form class="" action="{@url:app/4tshop/shopadvantage/shoporder}" method="post">
+				<input type="hidden" name="type" value="search">
+				<br/>
+				<label>时间段: </label>
+				<input name="startDate" type="text" id="fromTime" class="input length_2 J_date mr20 shopadvantageinput" value="{$startDate}">
+				<span class="mr20">至</span>
+				<input name="endDate" type="text" id="toTime" value="{$endDate}" class="input length_2 J_date shopadvantageinput">
+				<button type="submit" id="searchBtn" class="btn J_ajax_submit_btn shopadvantage_btn">搜索</button>
+			</form>			
+		</div>
+<!--# if ($count > 0) { #-->
+<span class="showmsg">仅能搜索到一个月内的订单，</span>
+<span class="showmsg">共查询到{$count}条记录,涉及金额<strong style="color:red">{$orderTotalMoney}元</strong>,每页显示{$perPage}条 </span>
+<!--# } #-->
+
+<ul class="myddorder_list">
+		
+	   <!--# if ($orderList) { #-->
+		<!--#foreach ($orderList as $key => $item) {#-->
+	   <li class="myddorder_list_li" onmouseout="this.style.background='#ffffff'" onmouseover="this.style.background='#ffffff'" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
+	   	<div class="orderinfo">
+	   		<span class="list_input">
+	   			<!--# if ($showcheckbox) { #-->
+	   			<div style="display:none">
+	   			<input name=checkeditem[{$item['id']}]} class="checkSingle" type="checkbox"></checkbox>
+	   			</div>
+	   			<!--# } #-->
+	   		</span>
+	   		<span class="list_order">订单号:{$item['ordernumber']}</span>
+	   		<span class="list_name">收货人:{$item['towho']}</span>
+	   		<span class="list_name">客户电话:{$item['tomobile']}</span>
+			<span class="list_way">流水号:{$item['sequence']}</span>
+			<span class="list_total"><strong style="color:red">共计: ￥{$item['ordermoney']}</strong></span>
+			<span class="list_time"> {$item['orderdate']}</span>
+			<span class="list_operation">
+
+				<!--# if (!$finishedStatus[$item['status']]) { #-->
+				<strong  style="color:red">
+				<!--# } #-->
+
+				{$allStatus[$item['status']]}
+				<!--# if ($allowChangeResponsible) { #-->
+				<a href="" class="mr10 assignSingle" title="点击分配或者更改">{$item['deliveruser'] ==''?'[点击分配]':$item['deliveruser']}</a>
+				<!--# } else { #-->
+				<!-- {$item['deliveruser'] ==''?'[无配送人]':$item['deliveruser']} -->
+				<!--# } #-->
+
+				<!--# if (!$finishedStatus[$item['status']]) { #-->
+				</strong>
+				<!--# } #-->
+
+				<!--# if ($item['firstorder']) { #-->
+				<strong style="color:#4966D1">
+					(首次下单)
+				</strong>
+				<!--# } #-->
+
+			</span>
+
+			<span class="list_estimatedelivery" style="padding:8px;">
+				配送地址: {$item['to']}
+				
+			</span>
+			<span class="list_note" style="padding-left:5px;"><strong style="color:red">备注: {$item['note']==""?"无":$item['note']}</strong></span>
+			<!--# if(($item['status']==2||$item['status']==3||$item['status']==4)&&$needConfirm){ #-->
+			<input type="button" class="btnSearch" name="confirmOrder" value="确认收货" style="float:right;margin-right:10px">
+			<!--# } #-->
+			<!--#if(!$defaultShowPhone){#-->
+			<span style="background-color:#FFFB75">商家电话：{$item['phonenumber']},{$item['contactnumber']}</span>
+			<!--#}#-->
+			</div>
+			<!--# if(($item['status']==2||$item['status']==3||$item['status']==4)&&$needConfirm){ #-->
+			<div id="commentAndConfirmOrder" name="commentAndConfirmOrder" class="order-comment" style="display:none">
+					<input type="hidden" name="confirmOrderUrl" value="{@url:app/4tschool/schoolorder/doSaveComment}">
+					<input type="hidden" name="orderId" value="{$item['id']}">
+					<input type="hidden" name="shopId" value="{$item['shopid']}">					
+					<div class="root">
+						<div class="time">
+							<lable>送餐速度(分钟)</lable><br/>
+						</div>
+                        <div id="note_wrapper" name="note_wrapper">
+                            <div class="note-bubble" id="note_bubble" style="width:305px;margin-left:50px;margin-top:-10px">
+                                <div class="quick-notes clearfix" id="quick_notes">
+                                    <a class="bubble-triangle" time="15">火箭</a>
+                                    <a time="30">飞机</a>
+                                    <a time="45">汽车</a>
+                                    <a time="60">步行</a>
+                                    <a time="120">爬行</a>
+                                </div>
+                            </div>
+                            <input type="button" value="-" class="ui-btn-green" name="decrease" style="width:10%">
+                            <input type="text" value="" id="deliveryTime" name="deliveryTime" readonly="readonly">
+                            <input type="button" value="+" class="ui-btn-green" name="increase" style="width:10%">
+                        </div>						
+					</div>
+					<div class="root">
+						<div class="comment">
+							<label>评论</label><br/>
+						</div>
+						<textarea name="comment"></textarea>
+					</div>
+					<div class="root">
+						<div class="confirm">
+							<label>确认评价</label><br/>
+						</div>
+						<input id="confirmOrderBtn" name="confirmOrderBtn" class="ui-btn-violet" type="button" value="提交">
+					</div>
+			</div>
+			<!--# } #-->
+			<br/>
+			<div style="float:left">
+			<table border="0" cellpadding="0" cellspacing="0" class="tabl_merch orderitemtable">  	 
+			            <tbody>
+			            	<!--# if ($orderItems) { #-->
+			            	<!--#foreach ($orderItems as $key => $orderitem) {#-->
+			            	<!--# if ($orderitem['orderid'] == $item['id']) { #-->
+			            	<tr onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" >
+			            		<td class="tab_w">
+			            			<input type="hidden" name="shopids[]" value="{$orderitem['shopid']}">
+			            		</td>
+			            		<td class="tab_w1">
+			            			<a name="productname" href="{@url:app/4tschool/shopdetails/run?shopid=$orderitem['shopid']&schoolid=$schoolId}" target="" title="{$orderitem['name']}">{$orderitem['shopname']} -- {$orderitem['quatity']}{$orderitem['unit']}{$orderitem['mname']} -- ({$orderitem['sequence']})</a>
+			            			<!--# if ($orderitem['promoUsed'] != '') { #-->
+			            				<br/>
+			            				<strong style="color:red">{$orderitem['promoUsed']}</strong>
+
+			            			<!--# } #-->
+			            		</td>
+			            		
+			            		<td class="tab_w7">积分:{$orderitem['integral']}</td>
+			            		<td><span>单价:￥{$orderitem['price']}({$orderitem['packingprice']==0?"无外卖费用":"含外卖费用"})</span></td>
+			            		<td class="list_total"><strong>&nbsp;共计￥{$orderitem['totalMoney']}
+
+			            		</strong>
+			            		</td>
+			            		<td>
+			            			&nbsp;<strong style="color:red">{$allStatus[$orderitem['status']]==""?"已授理":$allStatus[$orderitem['status']]}</strong> &nbsp;
+
+			            			 <!--# if ($allowChangeItem) { #-->
+
+			            			<!--# if ($orderitem['status']=="-1") { #-->
+			            				<a href="{@url:app/4tschool/schoolorder/changeItem?orderid=$item['id']&orderItemId=$orderitem['id']}" class="changeItem">进行换货>></input>
+
+			            			<!--# } #-->
+			            			<!--# } #-->
+
+			            		</td>
+			            </tr>
+			            <!--# } #-->
+			            <!--#}#-->
+			            <!--# } else { #-->
+						<span class="noresult">没有符合条件的结果！</span>
+						<!--# } #-->
+			 </tbody>
+			</table>
+			</div>
+	   </li>
+	   <!--#}#-->
+		<!--# } else { #-->
+			<span class="noresult">没有符合条件的结果！</span>
+		<!--# } #-->
+	</ul>
+	<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+	$( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "0D" 
+    });
+
+	oTable = $('#shopmgrouping').dataTable({
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+		"fnDrawCallback": function ( oSettings ) {
+			if ( oSettings.aiDisplay.length == 0 )
+			{
+				return;
+			}
+			
+			var nTrs = $('#shopmgrouping tbody tr');
+			var iColspan = nTrs[0].getElementsByTagName('td').length;
+			var sLastGroup = "";
+			for ( var i=0 ; i<nTrs.length ; i++ )
+			{
+				var iDisplayIndex = oSettings._iDisplayStart + i;
+				var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+				if ( sGroup != sLastGroup )
+				{
+					var nGroup = document.createElement( 'tr' );
+					var nCell = document.createElement( 'td' );
+					nCell.colSpan = iColspan;
+					nCell.className = "group";
+					nCell.innerHTML = sGroup;
+					nGroup.appendChild( nCell );
+					nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+					sLastGroup = sGroup;
+				}
+			}
+		},
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [ 0 ] }
+		],
+		"aaSortingFixed": [[ 0, 'asc' ]],
+		"aaSorting": [[ 1, 'asc' ]],
+		"sDom": 'lfr<"giveHeight"t>ip'
+	});
+
+ 	oInProgressTable = $('#shopmInProgressGrouping').dataTable({
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+		"fnDrawCallback": function ( oSettings ) {
+			if ( oSettings.aiDisplay.length == 0 )
+			{
+				return;
+			}
+			
+			var nTrs = $('#shopmInProgressGrouping tbody tr');
+			var iColspan = nTrs[0].getElementsByTagName('td').length;
+			var sLastGroup = "";
+			for ( var i=0 ; i<nTrs.length ; i++ )
+			{
+				var iDisplayIndex = oSettings._iDisplayStart + i;
+				var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+				if ( sGroup != sLastGroup )
+				{
+					var nGroup = document.createElement( 'tr' );
+					var nCell = document.createElement( 'td' );
+					nCell.colSpan = iColspan;
+					nCell.className = "group";
+					nCell.innerHTML = sGroup;
+					nGroup.appendChild( nCell );
+					nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+					sLastGroup = sGroup;
+				}
+			}
+		},
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [ 0 ] }
+		],
+		"aaSortingFixed": [[ 0, 'asc' ]],
+		"aaSorting": [[ 1, 'asc' ]],
+		"sDom": 'lfr<"giveHeight"t>ip'
+	});
+});
+
+ $('#searchBtn').click(function(){
+ 	var fromtime = $('#fromTime').val();
+ 	var totime = $('#toTime').val();
+
+ 	var timespan = TimeDiffirence(fromtime,totime).daysDiff;
+ 	if(timespan > 60){
+ 		alert("日期跨度不可大于两个月");
+ 		return false;
+ 	}
+ })
+
+//字符串转日期型
+function parseDate(str) 
+{
+    if (str instanceof Date) {
+        return str;
+    }
+    if (typeof str == 'string') {
+    var results = str.match(/^ *(\d{4})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 5)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2})\.(\d{1,9}) *$/);
+    if (results && results.length > 7)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10), parseInt(results[7],10));
+    }
+    return null;
+}
+
+//计算时间差函数
+function TimeDiffirence(startTime,endTime){
+    var diffDetail = {};
+    
+    try{
+	    var date1 = getObjectType(startTime) == "date" ? startTime : parseDate(startTime);
+	    var date2 = getObjectType(endTime) == "date" ? endTime : parseDate(endTime);
+	    //毫秒差
+	    diffDetail.msDiff = date2.getTime()-date1.getTime();
+	    //分钟差
+	    diffDetail.minutesDiff=Math.floor(diffDetail.msDiff/(60*1000));
+	    //小时差
+	    diffDetail.hoursDiff=Math.floor(diffDetail.minutesDiff/60);
+	    //天数差
+	    diffDetail.daysDiff=Math.floor(diffDetail.hoursDiff/24);
+	    
+	}catch(e){}
+		
+	return diffDetail;
+}
+
+//判断变量类型
+function getObjectType(o) {
+    var _t;
+    return ((_t = typeof(o)) == "object" ? Object.prototype.toString.call(o).slice(8,-1):_t).toLowerCase();
+}
+</script>

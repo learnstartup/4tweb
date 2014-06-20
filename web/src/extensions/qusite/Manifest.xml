@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+	<application>
+		<name>客服在线</name>
+		<!--这里的alias需要改成你真实应用文件夹名,更改此处后，需搜索包里的代码把这个值替换为更改后的值-->
+		<alias>qusite</alias>
+		<version>1.0.0</version>
+		<pw-version>9.0</pw-version>
+		<type>app</type>
+		<description>在线客服代码，适用于P9RC以上版本(包括)</description>
+		<charset>utf-8</charset>
+		<logo>icon/q.png</logo>
+		<website>http://www.yhcms.com</website>
+		<author-name>芸烩工作室</author-name>
+		<author-email>89652519@qq.com</author-email>
+		<author-icon>http://www.yhcms.com</author-icon>
+	</application>
+	
+	<res>resource</res>
+	<inject-services>
+	</inject-services>
+</manifest>

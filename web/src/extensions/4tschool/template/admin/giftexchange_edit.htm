@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <template source='TPL:admin.common.head'/>
+</head>
+<body style="width:500px;" class="body_none">
+<div class="pop_cont pop_table">
+
+    <div class="h_a">提示信息</div>
+    <div class="mb10 prompt_text">
+        <ol>
+            <li>不能存在两种是</li>
+        </ol>
+    </div>
+    <form class="J_ajaxForm" data-role="list" action="{@url:app/4tschool/giftexchange/edit?id=$oneGiftExchange['id']}" method="post">
+        <input type='hidden' name='type' value="do">
+        <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/giftexchange/edit?id=$oneGiftExchange['id']}">
+        <input type="hidden" name="page" value="{$page}">
+
+        <div class="">
+            <table width="100%">
+                <col class="th"/>
+                <col/>
+                <thead>
+                <tr>
+                    <th>兑换成功?</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="exchangesuccess" value="1" {@Pw::ifcheck($oneGiftExchange['exchangesuccess'] ==1)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="exchangesuccess" value="0" {@Pw::ifcheck($oneGiftExchange['exchangesuccess'] ==0)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>异常兑换?</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="exceptionexchange" value="1" {@Pw::ifcheck($oneGiftExchange['exceptionexchange'] ==1)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="exceptionexchange" value="0" {@Pw::ifcheck($oneGiftExchange['exceptionexchange'] ==0)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="pop_bottom">
+            <button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+        </div>
+
+    </form>
+</div>
+<template source='TPL:admin.common.footer'/>
+<script>
+    $(".choosenProvinceid").change(function () {
+        searchchange(true, false);
+
+    });
+
+    $(".choosenSchoolid").change(function () {
+        searchchange(true, true);
+
+    });
+
+    $(".search").click(function () {
+        searchchange(true, true);
+    });
+
+    function searchchange(showP, showS) {
+        var provincepara = '&choosenProvinceid=' + $(".choosenProvinceid").val();
+        if (!showP) {
+            provincepara = "";
+        }
+        var schoolpara = '&choosenSchoolid=' + $(".choosenSchoolid").val();
+        if (!showS) {
+            schoolpara = "";
+        }
+        var isChange = '&isChange=';
+        window.location.href = $(".pageurl").val() + provincepara + schoolpara + isChange;
+    }
+    var root_tr_html ='<tr>\
+                         <td><input name="newdata[root_][begintime]" type="time" class="input length_2">&nbsp;至&nbsp;\
+                         <input name="newdata[root_][endtime]" type="time" class="input length_2">&nbsp;权重&nbsp;\
+                         <input name="newdata[root_][weights]" class="input length_1">&nbsp;启用&nbsp;\
+                         <input name="newdata[root_][isactive]" type="checkbox" value="1"></td>\
+                       </tr>';
+    Wind.js(GV.JS_ROOT+ 'pages/admin/common/forumTree_table.js?v=' +GV.JS_VERSION);       
+</script>
+</body>
+</html>

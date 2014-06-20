@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+    <template source='header' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+    <style>
+    	td{
+    		border-left: 1px solid #eadbc9;
+    		border-bottom: 1px solid #eadbc9;
+			border-right: 1px solid #eadbc9;
+			width: 200px;
+    	}
+        a.float_a_left{
+            float:left;
+            width:100px;
+        } 
+
+        #announce-content{
+            margin:15px;
+        }
+    </style>
+</head>
+<body>
+<div class="clear"></div>
+<div class="wrap-sd">
+<div class="sdrow">
+<div id="wrapper" class="twelvecol">
+<div class="step-content" style="margin-left:150px;padding:10px;">
+    
+    <!--# if(!empty($schoolAnnounceInfo)) {#-->
+    <h3>
+        {$schoolAnnounceInfo['subject']}
+    </h3>        
+         <!--# if($currentime >= $schoolAnnounceInfo['start_date'] && $currentime <= $schoolAnnounceInfo['end_date']) {#-->
+    </h4>    
+          <br/>有效期：{$startdate} ~ {$enddate}
+    </h4>     
+         <!--# } #-->
+     <!--# } #-->
+    
+    <div class="clear"></div>
+    <div class="spacer"></div>
+    <div class="merch_bord">
+    <table class="tabl_merch merch_title">
+    	<tbody>
+            <tr>
+                <td colspan="2">
+                    <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'previous') {#-->
+                        已经是第一篇了
+                    <!--# } else { #-->
+                        <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'next') {#-->
+                            <a href="{@url:app/4tschool/announcedetails/run?id=$id}" class="float_a_left">上一篇</a>
+                        <!--# } else { #-->
+                            <a href="{@url:app/4tschool/announcedetails/run?pagetag=previous&id=$schoolAnnounceInfo['aid']}" class="float_a_left">上一篇</a>
+                         <!--# } #-->
+                    <!--# } #-->
+
+                    <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'next') {#-->
+                        已经是最后一篇了
+                    <!--# } else { #-->
+                        <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'previous') {#-->
+                            <a href="{@url:app/4tschool/announcedetails/run?id=$id}">下一篇</a>
+                        <!--# } else { #-->
+                            <a href="{@url:app/4tschool/announcedetails/run?pagetag=next&id=$schoolAnnounceInfo['aid']}">下一篇</a>
+                         <!--# } #-->
+                    <!--# } #-->
+
+                </td>
+	    	<tr>
+	    		<td colspan="2">
+                    <div id="announce-content">
+
+                        <!--# 
+                            echo $schoolAnnounceInfo['content']
+                        #-->
+                    </div>
+                </td>
+	    	</tr>
+
+            <tr>
+                <td colspan="2">
+                    <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'previous') {#-->
+                        已经是第一篇了
+                    <!--# } else { #-->
+                        <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'next') {#-->
+                            <a href="{@url:index?m=app&app=4tschool&c=announcedetails&a=run}&id={$id}" class="float_a_left">上一篇</a>
+                        <!--# } else { #-->
+                            <a href="{@url:index?m=app&app=4tschool&c=announcedetails&a=run&pagetag=previous}&id={$schoolAnnounceInfo['aid']}" class="float_a_left">上一篇</a>
+                         <!--# } #-->
+                    <!--# } #-->
+
+                    <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'next') {#-->
+                        已经是最后一篇了
+                    <!--# } else { #-->
+                        <!--# if(empty($schoolAnnounceInfo) && $pagetag == 'previous') {#-->
+                            <a href="{@url:index?m=app&app=4tschool&c=announcedetails&a=run}&id={$id}">下一篇</a>
+                        <!--# } else { #-->
+                            <a href="{@url:index?m=app&app=4tschool&c=announcedetails&a=run&pagetag=next}&id={$schoolAnnounceInfo['aid']}">下一篇</a>
+                         <!--# } #-->
+                    <!--# } #-->
+                </td>
+            </tr>
+    	</tbody>
+    <table>
+    <table class="tabl_merch">
+    	<tbody>
+    	
+    	</tbody>
+    </table>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer'/>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui-1.10.3.custom.js"></script>
+
+</body>
+</html>

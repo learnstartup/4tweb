@@ -1,0 +1,305 @@
+<!doctype html>
+<html>
+    <head>
+    <template source='TPL:admin.common.head' />
+</head> 
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style style="text/css">
+    #content{
+        margin-left: 90px;
+        padding: 1px 20px 30px 20px;
+    }
+
+    #content table tr{
+        line-height: 40px;
+    }
+
+    #content tr th{ 
+        width:200px;
+        font-weight: bolder;
+        line-height:30px;
+    }
+
+    #hidden-info{
+        width:100%;
+        padding-bottom:3px;
+    }
+</style>
+<div class="clear"></div>
+<div class="wrapper">
+    <template source='left_bar' load="false" />
+    <div class="centersidebar" id="orderList">
+        <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shoplist/shopmanageadd?schoolid=$schoolId}">
+        <form action="{@url:app/4tschool/shoplist/shopmanageadd?schoolid=$schoolId}" id="shopmanageaddForm" method="post">
+        <div class="nav">
+            <div class="return"><a href="{@url:app/4tschool/shoplist/shopmanage?schoolid=$schoolId}">返回上一级</a></div>
+        </div>
+        <div class="h_a">提示信息</div>
+        <div class="mb10 prompt_text">
+            <ol>
+                <li>请正确填写手机号码及地址</li>
+            </ol>
+        </div>
+        <div class="time_box" id="hidden-info">
+            <input type='hidden' name='type' value="do">
+            <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shop/edit?id=$shop['id']}">
+            <input type="hidden" name="page" value="{$page}">
+            <input type="hidden" name="hdschoolid" value="{$choosenSchoolid}">
+            <input type="hidden" name="hdprovinceid" value="{$choosenProvinceid}">
+        </div>
+        <div id="content">
+            <table width="100%">
+                <col class="th"/>
+                <col/>
+                <thead>
+                <tr>
+                    <th>高校</th>
+                    <td>
+                        <select class="choosenSchoolid length_5" name="choosenSchoolid" disabled="disabled">
+                            <!--#foreach($allSchool as $item) {#-->
+                            <option class="province{$item['areaid']}"
+                            <?php if($item['schoolid'] == $choosenSchoolid) echo "selected"; ?>
+                            value="{$item['schoolid']}" >{$item['name']}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>区域</th>
+                    <td>
+                        <select class="choosenAreaid length_5" name="area">
+                            <!--#foreach($areaList as $item) {#-->
+                            <option class="area{$item['id']}" value="{$item['id']}">{$item['areaname']}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>商家账户</th>
+                    <td>
+                        <select class="choosenUserid length_5" name="choosenUserid">
+                            <!--#foreach($userList as $item) {#-->
+                            <option
+                            <?php if($item['userid'] == $choosenUserid) echo "selected"; ?> value="{$item['userid']}"
+                            >{$item['username']}</option>
+                            <!--#}#-->
+                        </select>
+                    </td>
+                </tr>
+                </thead>
+                <tr>
+                    <th>商家名</th>
+                    <td><input name="shopname" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td>
+                        <textarea name="description" class="length_5">{$config['protocol']}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>地址</th>
+                    <td><input name="address" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>纬度(lat)</th>
+                    <td><input name="lat" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>经度(lng)</th>
+                    <td><input name="lng" type="text" class="input length_5"></td>
+                </tr>                
+                <tr>
+                    <th>打包费</th>
+                    <td><input name="packingprice" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>外送费</th>
+                    <td><input name="deliveryprice" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>商家起送价</th>
+                    <td><input name="startingprice" type="text" class="input length_5"></td>
+                </tr> 
+                <tr>
+                    <th>手机号码</th>
+                    <td><input name="phonenumber" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>座机号码</th>
+                    <td><input name="contactnumber" type="text" class="input length_5"></td>
+                </tr>
+                <tr>
+                    <th>开放订餐</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="openorder" value="1" {@Pw::ifcheck(false)}><span>开启</span></label></li>
+                            <li><label><input type="radio" name="openorder" value="0" {@Pw::ifcheck(true)}><span>关闭</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>每日开放订餐时间</th>
+                    <td><input name="orderbegin" type="time" class="input length_2">&nbsp;至&nbsp;
+                        <input name="orderend" type="time" class="input length_2"></td>
+                </tr>
+                <tr>
+                    <th>活动的</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="isactive" value="1" {@Pw::ifcheck(false)}><span>开启</span></label></li>
+                            <li><label><input type="radio" name="isactive" value="0" {@Pw::ifcheck(true)}><span>关闭</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>合作商家</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="ispartner" value="1" {@Pw::ifcheck(false)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="ispartner" value="0" {@Pw::ifcheck(true)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>有手机端</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="hasterminal" value="1" {@Pw::ifcheck(false)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="hasterminal" value="0" {@Pw::ifcheck(true)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>有打印机</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="hasprint" value="1" {@Pw::ifcheck(false)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="hasprint" value="0" {@Pw::ifcheck(true)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>商家是否开放</th>
+                    <td>
+                        <ul class="switch_list cc">
+                            <li><label><input type="radio" name="isshopopen" value="1" {@Pw::ifcheck(false)}><span>是</span></label></li>
+                            <li><label><input type="radio" name="isshopopen" value="0" {@Pw::ifcheck(true)}><span>否</span></label></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>配置几个时间（分钟)<br/>
+                        <p style="color:red;line-height:15px"> (当这几个时间同时写出时，<br/>才会预估订单完结时间，<br/>不然会30分钟为基准)
+                        </p>
+                    </th>
+                    <td>
+                        <table>
+                            <thead>
+                                <td>下单</td>
+                                <td>出餐</td>
+                                <td>送达中心</td>
+                                <td>中心到用户</td>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                     <td><input name="actualmakeordertime" type="text" class="input length_1"></td>
+                                    <td><input name="actualbakeouttime" type="text" class="input length_1"></td>
+                                    <td><input name="actualtocentertime" type="text" class="input length_1"></td>
+                                    <td><input name="actualdeliverytime" type="text" class="input length_1"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        系统统计得出(参考,分钟)
+
+                    </th>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>下单</td>
+                                <td>出餐</td>
+                                <td>送达中心</td>
+                                <td>中心到用户</td>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><input name="averagemakeordertime" type="text" disabled="disabled" style="color:grey" class="input length_1"></td>
+                                    <td><input name="averagebakeouttime" type="text" class="input length_1"  disabled="disabled" style="color:grey" ></td>
+                                    <td><input name="averagetocentertime" type="text" class="input length_1"  disabled="disabled" style="color:grey" ></td>
+                                    <td><input name="averagedeliverytime" type="text" class="input length_1"  disabled="disabled" style="color:grey" ></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" id="J_table_list" style="table-layout:fixed;">
+                <colgroup>
+                <col width="300">
+                </colgroup>
+                <tr>
+                    <td>商家送餐时间</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="newdata[root_1][begintime]" type="time" class="input length_2">&nbsp;至&nbsp;
+                        <input name="newdata[root_1][endtime]" type="time" class="input length_2">&nbsp;权重&nbsp;
+                        <input name="newdata[root_1][weights]" class="input length_1">&nbsp;启用&nbsp;
+                        <input name="newdata[root_1][isactive]" type="checkbox" value="1">
+                    </td>
+                </tr>
+            </table>
+            <table width="100%">
+                <tr class="ct"><td colspan="5" style="padding-left:38px;"><a data-type="nav_1" data-html="tbody" href="" id="J_add_root" class="link_add">添加送餐时间</a></td></tr>
+            </table>
+        </div>
+        <div class="pop_bottom">
+            <button type="submit" class="btn btn_submit fr J_ajax_submit_btn">提交</button>
+        </div>
+        </form>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+    $(".choosenProvinceid").change(function () {
+        searchchange(true, false);
+
+    });
+
+    $(".choosenSchoolid").change(function () {
+        searchchange(true, true);
+    });
+
+    $(".search").click(function () {
+        searchchange(true, true);
+    });
+
+    function searchchange(showP, showS) {
+        var provincepara = '&choosenProvinceid=' + $(".choosenProvinceid").val();
+        if (!showP) {
+            provincepara = "";
+        }
+        var schoolpara = '&choosenSchoolid=' + $(".choosenSchoolid").val();
+        if (!showS) {
+            schoolpara = "";
+        }
+        var isChange = '&isChange=';
+        window.location.href = $(".pageurl").val() + provincepara + schoolpara + isChange;
+    }
+    var root_tr_html ='<tr>\
+                         <td><input name="newdata[root_][begintime]" type="time" class="input length_2">&nbsp;至&nbsp;\
+                         <input name="newdata[root_][endtime]" type="time" class="input length_2">&nbsp;权重&nbsp;\
+                         <input name="newdata[root_][weights]" class="input length_1">&nbsp;启用&nbsp;\
+                         <input name="newdata[root_][isactive]" type="checkbox" value="1"></td>\
+                       </tr>';
+    Wind.js(GV.JS_ROOT+ 'pages/admin/common/forumTree_table.js?v=' +GV.JS_VERSION);       
+</script>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"></script>

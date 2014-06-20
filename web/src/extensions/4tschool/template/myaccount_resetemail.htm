@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red"></span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myaccount/sendEmailValidation}" id="myAccountForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myaccount/sendEmailValidation}">
+	<input type="hidden" class="redirecturl" name="redirecturl" value="{@url:app/4tschool/myaccount/securitycenter}">
+	<div class="clear"></div>
+		  <div class="account_right">
+		  	
+		  	<!--# if ($NotMyEmail) { #-->
+            	<p style="margin-left:300px;margin-top:20px;"> 这不是您此帐号的邮箱！请在个人资料画面更改填写真实的邮箱</p>
+			<!--# } else { #-->
+			<!--# if ($emailVerified == false) { #-->
+				<h4>验证邮箱: {$email}</h4>
+				<p class="verification_list_btn verification_btn02" id="send_email">
+	            	<a href="" id="send_valid_email" class="ver_send">
+	            		<span id="send_email_txt">发送验证邮件</span>
+	            	</a>
+	            	<span id="send_num" style="width:230px;"></span>
+	            </p>
+	            <p id="sendAlready" style="display:none;margin-top:30px;margin-left:350px;">验证邮件已发送,请检查您的邮箱</p>
+ 
+			<!--# } #-->
+
+			<!--# } #-->
+			<div class="ver_bottom_hint">
+	                    <p class="title">无法收到验证邮件？</p>
+	                    <p>·&nbsp;验证邮件可能在垃圾邮箱或广告邮箱中，请仔细查找</p>
+	                    <p>·&nbsp;由于网络原因，可能会有延迟。如果您10分钟还没有收到，请再次发送验证邮件，一个账号一天最多可以发送5封验证邮件</p>
+	        </div>
+            </div>
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	$(".ver_send").click(function(event)
+	{
+		event.preventDefault();
+
+		$(this).attr("disabled","disabled");
+
+		//update data for each order's delivery
+		var postUrl = $(".pageurl").val();
+		$.post(postUrl, 
+			$('#myAccountForm').serialize(), 
+			function(returndata) {
+				returndata=eval("("+returndata+")");
+
+				if(returndata.success)
+				{
+					alert("发送成功, 请检查您的邮箱");
+					$("#sendAlready").show();
+					$("#send_email").hide();
+					
+				}else
+				{
+					alert(returndata.data);
+				}
+
+		});
+
+	});
+
+});
+</script>
+

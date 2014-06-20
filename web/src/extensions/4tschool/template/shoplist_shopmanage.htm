@@ -1,0 +1,105 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style style="text/css">
+	#content ul{
+		list-style:none;
+		padding: 20px;
+	} 
+
+	#content ul li{
+		float:left;
+		width:76px;
+	}
+
+	#content-title {
+		background-color: #F2F5F5;
+		font-weight: bolder;
+	}
+
+	#content ul li.phone-number{
+		width:80px;
+	}
+
+	#content ul li.active-status{
+		text-align: center;
+	}
+
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+		<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/shoplist/shopmanage?schoolid=$schoolId}">
+		<div class="myddorder_search clearfix">
+			<div class="time_box" style="width:100%;padding-bottom:1px;">
+				<form action="{@url:app/4tschool/shoplist/shopmanage?schoolid=$schoolId}" id="shopmanageForm" method="post">
+				<div class="mb10">	
+				<input type='hidden' name='type' value="do">
+				<span>商家名:</span>
+				<select class="choosenShopid" name="choosenShopid">
+					<option value="-1">全部商家</option>	
+					<!--#foreach($allShopList as $item) {#-->
+					<option value="{$item['id']}" <?php if($item['id'] == $searchCondition['choosenShopid']) echo "selected"; ?>>{$item['name']}</option>
+					<!--#}#-->
+				</select>
+				<input type="submit" name="shopsearch" value="搜索" />
+				<a class="btn J_dialog" href="{@url:app/4tschool/shoplist/shopmanageadd?schoolid=$schoolId}" title="添加商家" role="button"style="float:right">
+				<span class="add"></span>添加商家</a>
+				</div>
+				</form>
+			</div>
+		</div>
+		<div id="content">
+			<ul id="content-title">
+				<li>商家</li>
+				<li>区域</li>
+				<li>起送价</li>
+				<li class="phone-number">手机号码</li>
+				<li style="text-align:center">上线?</li>
+				<li>商家状态</li>
+				<li>操作</li>
+			</ul>
+			<!--#foreach($shopList as $item) {#-->
+			<ul>
+				<li><a href="{@url:app/4tschool/shoplist/shopmanagedit?id=$item['id']&schoolid=$schoolId}" class="mr10 J_dialog" title="{$item['name']}">{$item['name']}</a></li>
+				<li>{$item['areaname']}</li>
+				<li>{$item['startingprice']}￥</li>
+				<li class="phone-number">{$item['phonenumber']}</li>
+				<li class="active-status">
+					<!--# if($item['isactive']){ #-->是<!--# }else{ #-->否<!--# } #-->
+				</li>
+				<li>
+					<!--# if($item['isaudit']){#-->
+					审核通过
+					<!--#}else{#-->
+					审核中...
+					<!--#}#-->
+				</li>
+				<li style="width:275px">
+					<a href="{@url:app/4tschool/shoplist/shoptagmanage?id=$item['id']&schoolid=$schoolId}" class="mr10 J_dialog" title="分类管理">[分类管理]</a>
+					<a href="{@url:app/4tschool/merchandiselist/merchandisemanage?id=$item['id']&schoolid=$schoolId}" class="mr10 J_dialog" title="菜单管理">[菜单]</a>
+                    <a href="{@url:app/4tschool/shoplist/shopmanageupload?sid=$item['id']&url=$item['breviaryphoto']&schoolid=$schoolId}" class="mr10 J_dialog" title="上传图片">[上传图片]</a>
+
+                    <!--# if($item['newimage'] == 'no'){ #-->
+					<label>[无图]</label>
+					<!--# }else{ #-->
+					<a href="{@url:app/4tschool/shoplist/shopmanagepreview?id=$item['id']&schoolid=$schoolId}"  target="_blank">[预览]</a>
+					<!--# } #-->
+				</li>
+			</ul>
+			<!--#}#-->
+		</div>
+		<div class="spacer"></div>
+		<div class="p10">
+			<page tpl="TPL:common.page" load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/shoplist/shopmanage?schoolid=$schoolId' />
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"></script>
+
+

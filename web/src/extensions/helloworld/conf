@@ -1,0 +1,11 @@
+<?php
+  return array(
+	'isopen' => '0',
+	'maxalbum' => '3',
+	'testcheck' => array(
+		'0' => '1',
+		'1' => '2',
+	),
+      'school' => array('南航','南大','江西科技师范大学')
+);
+?>

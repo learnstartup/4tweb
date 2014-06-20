@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <template source='TPL:admin.common.head'/>
+</head>
+<body>
+<div class="wrap">
+    <div class="nav">
+        <ul class="cc">
+            <li><a href="{@url:app/4tschool/index/run}">导航</a></li>
+            <li><a href="{@url:app/4tschool/myorder/run}">我的订单</a></li>
+            <li><a href="{@url:app/4tschool/searches/run}">搜索</a></li>
+            <li class="current"><a href="{@url:app/4tschool/promo/run}">商家活动管理</a></li>
+        </ul>
+    </div>
+    <div class="h_a">商家选择</div>
+    <div class="">
+        <form action="{@url:app/4tschool/promo/run}" method="post">
+            <input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/promo/run}">
+            <input type='hidden' name='choosenSchoolid' value="{$choosenSchoolid}">
+            <input type='hidden' name='choosenSchoolAreaid' value="{choosenSchoolAreaid}">
+            <input type='hidden' name='choosenShopid' value="{$choosenShopid}">
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>请选择学校：</th>
+                <td>
+                    <select id="choosenSchoolid" class="select_long" name="choosenSchoolid">
+                        <option value="">请选择</option>
+                        <!--#foreach($schoolList as $item) {#-->
+                        <option
+                        <?php if ($item['schoolid']==$choosenSchoolid) echo "selected"; ?>
+                        class="area{$item['schoolid']}" value="{$item['schoolid']}">{$item['name']}
+                        </option>
+                        <!--#}#-->
+                    </select>
+                </td>
+                <th>请选择区域：</th>
+                <td>
+                    <select id="choosenSchoolAreaid" class="select_long" name="choosenSchoolAreaid">
+                        <!--# if(!$choosenSchoolid) { #-->
+                        <option value="">请选择</option>
+                        <!--# } #-->
+                        <!--# else { #-->
+                        <!--# if($schoolAreaList) { #-->
+                        <option value="">请选择</option>
+                        <!--#foreach($schoolAreaList as $item) {#-->
+                        <option
+                        <?php if ($item['id']==$choosenSchoolAreaid) echo "selected"; ?> class="area{$item['id']}"
+                        value="{$item['id']}">{$item['areaname']}</option>
+                        <!--#}#-->
+                        <!--# } #-->
+                        <!--# else { #-->
+                        <option value="">您没有选择学校或所选学校还没有设置区域！</option>
+                        <!--# } #-->
+                        <!--# } #-->
+                    </select>
+                </td>
+                <th>请选择商家：</th>
+                <td>
+                    <select id="choosenShopid" class="select_long" name="choosenShopid">
+                        <!--# if(!$choosenSchoolAreaid) { #-->
+                        <option value="">请选择</option>
+                        <!--# } #-->
+                        <!--# else { #-->
+                        <!--# if($shopList) { #-->
+                        <option value="">请选择</option>
+                        <!--#foreach($shopList as $item) {#-->
+                        <option
+                        <?php if ($item['id']==$choosenShopid) echo "selected"; ?> class="shop{$item['id']}"
+                        value="{$item['id']}">{$item['name']}</option>
+                        <!--#}#-->
+                        <!--# } #-->
+                        <!--# else { #-->
+                        <option value="">您没有选择学校区域或所选学校区域还没有店铺！</option>
+                        <!--# } #-->
+                        <!--# } #-->
+                    </select>
+                </td>
+                <td>
+                    <!--# if($shopList) { #-->
+                    <a class="btn J_dialog" href="{@url:app/4tschool/promo/add?choosenShopid=$choosenShopid}" title="添加活动" role="button"><span class="add"></span>添加活动</a>
+                    <!--# } #-->
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <div class="table_list">
+            <table width="100%">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>商品</td>
+                    <td>促销活动</td>
+                    <td>折扣</td>
+                    <td>原价</td>
+                    <td>现价</td>
+                    <td>描述</td>
+                    <td>创建时间</td>
+                    <td>最后更新时间</td>
+                    <td>功能</td>
+                </tr>
+                </thead>
+                <!--# if ($shopPromotionsList) { #-->
+                <!--#foreach ($shopPromotionsList as $key => $item) {#-->
+                <tr>
+                    <td>{$item['id']}</td>
+                    <td>{$item['merchandiseName']}</td>
+                    <td>{$item['promoName']}</td>
+                    <td>{$item['value']}</td>
+                    <td>{$item['price']}</td>
+                    <td>{$item['currentprice']}</td>
+                    <td>{$item['description']}</td>
+                    <td>{@Pw::time2str($item['createdate'],'Y-m-d H:i:s')}</td>
+                    <td>{@Pw::time2str($item['lastupdatetime'], 'Y-m-d H:i:s')}</td>
+                    <td><a href="{@url:app/4tschool/promo/edit?spid=$item['id']&name=$item['merchandiseName']}" class="mr10 J_dialog" title="编辑活动">[编辑]</a>
+                    </td>
+                </tr>
+                <!--#}#-->
+                <!--# } else { #-->
+                <tbody>
+                <tr><td colspan="14" class="tac">啊哦，目前该商家还没有菜品参与活动哟！</td></tr>
+                </tbody>
+                <!--# } #-->
+            </table>
+        </div>
+
+        <!--<page tpl='TPL:common.page' page='$page' count='$count' per='$perPage' url='u/manage/run' args='$args'/>-->
+    </div>
+    <template source='TPL:admin.common.footer'/>
+    <script>
+        $("#choosenSchoolid").change(function () {
+            searchchange(false, false);
+        });
+
+        $("#choosenSchoolAreaid").change(function () {
+            searchchange(true, false);
+        });
+
+        $("#choosenShopid").change(function () {
+            searchchange(true, true);
+        });
+
+        function searchchange(showA, showS) {
+            var schoolpara = '&choosenSchoolid=' + $("#choosenSchoolid").val();
+
+            var schoolAreapara = '&choosenSchoolAreaid=' + $("#choosenSchoolAreaid").val();
+            if (!showA) {
+                schoolAreapara = '';
+            }
+
+            var shoppara = '&choosenShopid=' + $("#choosenShopid").val();
+            if (!showS) {
+                shoppara = '';
+            }
+
+            window.location.href = $(".pageurl").val() + schoolpara + schoolAreapara + shoppara;
+        }
+    </script>
+</body>
+</html>

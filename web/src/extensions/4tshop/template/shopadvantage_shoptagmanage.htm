@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<template source='EXT:4tshop.template.header' load="true" />
+<template source='EXT:4tshop.template.shopadvantageheader' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style style="text/css">
+	#search{
+		padding-top:0px;
+	}
+
+	#content-title {
+		background-color: #F2F5F5;
+		font-weight: bolder;
+	} 
+
+	#catab .sa_tag_add_span{
+	    float:right;
+	    padding-right:5px;
+	}
+
+	.step-div{
+	    margin-left: 0px;
+	    margin-right: 5px;
+	}
+
+	.shopadvantage_btn{
+	    font-size:12px;
+	    color:#1A66B3;
+	    font-weight:bolder;
+	}
+
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg control_top">
+	<template source='left_bar' load="true" />
+	<div class="centersidebar" id="orderList">
+		<div class="nav">
+			<div class="return">
+				<a href="{@url:app/4tshop/shopadvantage/shopmerchdise}">返回上一级</a>
+			</div>
+		</div>
+	<form class="J_ajaxForm" method="post" action="{@url:app/4tshop/shopadvantage/doshoptagsetting?shopid=$shopId}" data-role="list">
+	<div class="table_list">
+		<div id="catab" class="step-tab step-div">
+			<p class="site-title">
+                分类名称
+                <span class="sa_tag_add_span">
+                    启用
+                </span>
+            </p>
+		</div>
+		<table id="J_table_list" width="100%">
+			<tbody id="J_tag_tbody">
+			<!--# foreach ($tags as $key => $item) { #-->
+			<tr data-key="{$key}">
+				<td><input name="tags[{$item['id']}][name]" type="text" class="input" value="{$item['name']}"></td>
+				<td><input name="tags[{$item['id']}][isactive]" type="checkbox" value="1"{@Pw::ifcheck($item['isactive'])}></td>
+			</tr>
+			<!--#}#-->
+			</tbody>
+		</table>
+		<table width="100%">
+			<tr>
+				<td colspan="4"><a id="J_add_root" data-type="tag_root" data-html="tbody" href="#" class="link_add mr20">添加新分类</a></td>
+			</tr>
+		</table>
+	</div>
+	<button class="btn J_ajax_submit_btn shopadvantage_btn" type="submit">提交</button><br/><br/>
+	</form>		
+	</div>
+</div>
+<div class="clear"></div>
+<template source='EXT:4tschool.template.footer' />
+<template source='TPL:admin.common.footer' />
+<script>
+var last_tag_key = $('#J_tag_tbody > tr:last').data('key'),
+	root_tr_html = '<tr class="ct">\
+				<td><input type="text" value="" class="input" name="newtags[tag_key_][name]"></td>\
+				<td><input type="checkbox" checked="" value="1" name="newtags[tag_key_][isactive]"></td>\
+						</tr>';						
+
+$(function () {
+    var table_list = $('#J_table_list');
+    if (table_list.length) {
+        var child_id = 1;
+        //添加根导航&添加新分类&添加新积分，均为一级内容
+        //var temp_id = 1;
+        $('#J_add_root').on('click', function (e) {
+            e.preventDefault();
+            child_id++; //添加一个临时id关联
+            var $this = $(this),
+                $tbody;
+            //转换&输出最终的html段
+            if ($this.data('type') === 'tag_root') {
+                //积分设置，依赖已有的最新积分的key值，由credit_run.htm页面声明
+                if (last_tag_key==undefined) last_tag_key=0;
+                last_tag_key = last_tag_key + 1;
+                $tbody = $('<tbody>' + root_tr_html.replace(/root_/g, 'root_' + child_id).replace(/tag_key_/g, last_tag_key) + '</tbody>');
+            } else {
+                //其他
+                $tbody = $('<tbody>' + root_tr_html.replace(/root_/g, 'root_' + child_id).replace(/NEW_ID_/g, child_id) + '</tbody>');
+            }
+            //完成添加
+            table_list.append($tbody);
+            $tbody.find('input.input').first().focus();
+        });
+   
+        //新添加的行可直接删除
+        table_list.on('click', 'a.J_newRow_del', function (e) {
+            e.preventDefault();
+            var tr = $(this).parents('tr'),
+                tbody = $(this).parents('tbody');
+            if (tr.next().length && !tr.prev().length) {
+                //删除一级内容
+                tbody.remove();
+            } 
+        });
+        
+        //鼠标移上去显示添加导航按钮
+        $('#J_table_list').on('mouseover', 'tr', function (e) {
+            $(this).find('a.J_addChild').show();
+        }).on('mouseout', 'tr', function (e) {
+            $(this).find('a.J_addChild').hide();
+        });
+    }
+});
+
+</script>

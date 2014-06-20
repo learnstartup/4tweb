@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<template source='header' load="true" />
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="true" />
+
+	<div class="centersidebar" id="orderList">
+	<div class="myddorder_tab"><a class="current"><span>{$subtitle}</span></a>
+		<span style="color:red">以下是您的留言以及反馈</span>
+		<div class="clear"></div>
+	</div>
+	<form action="{@url:app/4tschool/myfeedback/run}" id="MyFeedbackForm" method="post">
+	<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/myfeedback/run}">
+	<div class="myddorder_search clearfix">
+		<div class="time_box">
+
+			<select id="o_status" style="z-index:0;" class="choosenStatus" name="choosenStatus">
+				<option 
+					<?php if(-1 == $choosenStatus) echo "selected"; ?> value="-1" >
+					所有我的留言
+				</option>
+				<option 
+					<?php if(0 == $choosenStatus) echo "selected"; ?> value="0" >
+					未回复的留言
+				</option>
+				<option 
+					<?php if(1 == $choosenStatus) echo "selected"; ?> value="1" >
+					已回复的留言
+				</option>
+			</select>
+			
+		</div>
+		
+	</div>
+	
+	<div class="clear"></div>
+
+	<ul class="myddorder_list">
+		<li class="myddorder_title">
+			     <span class="list_input" style="width:30px;"></span>
+			     <span class="list_total" style="width:200px">咨询内容</span>
+			     <span class="list_total" style="width:200px">回复内容</span>
+			     <span class="list_status"  style="width:150px;">咨询时间</span>
+			     <span class="list_time"  style="width:150px;"> 回复时间</span>
+			     
+	   </li>
+	   <!--# if ($messageList) { #-->
+		<!--#foreach ($messageList as $key => $item) {#-->
+	   <li onmouseout="this.style.background='none'" onmouseover="this.style.background='#f4f4f4'" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
+	   		<span class="list_input"  style="width:100px;">
+	   		</span>
+	   		<span class="list_order" style="width:150px;text-align:left">{$item['question']}</span>
+			<span class="list_status" style="width:150px;text-align:left">{$item['reply']==''?'':$item['reply']}</span>
+			<span class="list_time" style="width:150px;"> {$item['createdat']}</span>
+			<span class="list_time" style="width:150px;"> {$item['repliedat']==""?"":$item['repliedat']}</span>
+			
+	   </li>
+	   <!--#}#-->
+		<!--# } else { #-->
+			<span class="noresult">未找到符合条件的咨询</span>
+		<!--# } #-->
+	</ul>
+
+	<page tpl='TPL:common.page' load="true" page='$page' count='$count' per='$perPage' url='app/4tschool/myfeedback/run' args='$args' />
+	<div class="spacer"></div>
+</form>
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer' />
+<script>
+Wind.use('jquery', 'global', 'ajaxForm', 'dialog', function(){
+
+	//school area chane
+	$(".choosenStatus").change(function(event)
+	{
+		searchPage();
+	});
+
+	//post data and search
+	function searchPage()
+	{
+		var status = $(".choosenStatus").val();
+		var statusUrl = "&choosenStatus=" + status;
+
+		window.location.href = $(".pageurl").val() +  statusUrl; 
+	}
+
+});
+</script>

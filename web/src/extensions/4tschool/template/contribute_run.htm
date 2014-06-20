@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+    <template source='header' load="true"/>
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jcart.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/reset.css">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/common.css">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/open-base.css">
+    <link rel="stylesheet" href="{@G:url.extres}/4tschool/css/docmtCenter.css">
+    <link href="{@G:url.extres}/4tschool/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="{@G:url.extres}/4tschool/js/jcart.js"></script>
+
+    <style>
+        td{
+            border-left: 1px solid #eadbc9;
+            border-bottom: 1px solid #eadbc9;
+            border-right: 1px solid #eadbc9;
+            width: 200px;
+
+        }
+
+        p{
+            text-indent: 2em; /*em是相对单位，2em即现在一个字大小的两倍*/
+        }
+
+        ol.application_condition{
+            margin-left:20px;
+        }
+
+        .contribute_text{
+            padding:10px;
+            color:black;
+            margin-bottom:10px;
+            background-color: #FFF;
+            margin-top: 10px;
+            letter-spacing:1px;
+        }
+
+        .contribute_text ol,
+        .contribute_text ul{
+            padding:0 0 5px 2em;
+            margin-left:20px;
+            line-height:1.5;
+
+        }
+        .doc-detail-bd table td {
+             border:1px solid #cccccc;
+        }
+        div span .cate_week_list{
+            color: #ff4400;
+        }
+
+        div .contribute_content{
+            margin-left:80px;
+            padding:10px;
+            width:1005px;
+        }
+
+        div .contribute_title{
+            color:black;
+            font-size:15px;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="clear"></div>
+<div class="wrap-sd">
+<div class="sdrow">
+<div id="wrapper" class="twelvecol">
+<div class="step-content contribute_content">
+    <div style="float:left">
+        <strong class="contribute_title">
+            美食达人
+        </strong>
+        <span>
+            (<a target="_blank" class="cate_week_list" href="{@url:app/4tschool/cateweekdetail/allist?schoolid=$schoolNameList['schoolid']}">
+                查看美食文章
+            </a>)&nbsp;&nbsp;
+        </span>
+    </div>
+    <div >
+        <span>
+            <template source='jiathis' load="true"/>
+        </span>
+    </div>
+    <div class="clear"><template source='jiathis' load="true"/></div>
+    <div class="spacer"></div>
+    <div class="merch_bord">
+    <table class="tabl_merch merch_title">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="mb10 contribute_text doc-detail-bd" style="width:1000px">
+                        <p>
+                            <strong>成为吃货达人, 加入吃货互助团:</strong>
+                        </p>     
+
+                        <div class="">
+                            <a href="">
+                                <img alt="diancanyo.com - 点餐哟" src="themes/extres/4tschool/images/Foodie.gif">
+                            </a>
+                        </div>
+                        
+                        <p>
+                        对，我就是{$schoolNameList['name']}学校的吃货达人。快来认证吧, 成为吃货达人，获得吃货勋章, 独享以下特权:
+                        <br/><br/>
+                        <ol class="application_condition">
+                            <li>吃货活动VIP</li>
+                            <li>点餐哟平台互助团候选人</li>
+                            <li>兼职美食编辑,成为点餐哟资助的校园美食编辑</li>
+                            <li>吃货校园交流会</li>
+                            <li>意见领袖勋章</li>
+                        </ol>
+                        </p>
+
+                        <h1>
+                            吃货达人申请条件:
+                        </h1> 
+                        <ol>
+                            <li>@点餐哟,发布今日美食心情（可以有抱怨噢)（需要有配图)</li>
+                            <li>加入吃货互助团, QQ群号: 188093930</li>
+                            <li>转发一条@点餐哟的点餐分享</li>
+                        </ol>
+
+                        <h1>
+                            吃货意见领袖申请条件:
+                        </h1>
+
+                        <ol class="application_condition">
+                            <li>有独立的简洁</li>
+                            <li>了解吃，喜欢吃，愿意分享</li>
+                            <li>有良好的写作能力</li>
+                        </ol>
+                        <p>
+                            {$schoolNameList['name']}点餐哟校园网络订餐点餐平台是您身边的美食专家以及美食外卖呼叫库, 关注你所在{$schoolNameList['name']}校区周围的吃货分享，您的见闻与感受; 所有你的这些体会和心得（也包括抱怨噢)是网站认为是值得分享与鼓励的
+                        </p> 
+                        <p>   
+                            当然您如果有任何疑问，可以拨打
+                            联系人：杨先生
+                            电话：  15270011972
+                            进行联系，我们会进行跟进与解释。
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    <table>
+    <table class="tabl_merch">
+        <tbody>
+        
+        </tbody>
+    </table>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="clear"></div>
+<template source='footer'/>
+<script type="text/javascript" src="{@G:url.extres}/4tschool/js/jquery-ui-1.10.3.custom.js"></script>
+
+</body>
+</html>

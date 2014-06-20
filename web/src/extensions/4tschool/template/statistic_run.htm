@@ -1,0 +1,280 @@
+ <!DOCTYPE html>
+<template source='header' load="true" />
+<link rel="stylesheet" href="{@G:url.extres}/4tschool/css/jquery-ui.css">
+<style>
+td.group {
+color: blue;
+}
+fieldset{
+	border: 3px;
+	padding: 5px;
+	font-size: 14px;
+	margin-top: 20px;
+	background-color: rgb(242, 245, 245);
+	border-top-width: 5px;
+	border-color: blue;
+}
+</style>
+<div class="clear"></div>
+<div class="wrapper line new_box new_bg">
+	<template source='left_bar' load="false" />
+	<div class="centersidebar" id="orderList">
+		<form action="{@url:app/4tschool/statistic/run}" id="schoolordersForm" method="post">
+			<input type="hidden" class="pageurl" name="pageurl" value="{@url:app/4tschool/statistic/run}">
+			<div class="myddorder_search clearfix">
+				<div class="time_box" style="width:100%;padding-bottom:5px;">
+					<strong>从</strong>
+					<input type="text" id="fromTime" value="{$fromTime}" name="fromTime"><strong>到</strong>
+					<input type="text" value="{$toTime}" id="toTime" name="toTime">
+					<span style="float:right">
+						<input type="submit" id="searchBtn" name="searchBtn" value="点击搜索"></input>
+					</span>
+				</div>
+				
+			</div>
+			<fieldset>
+				<legend><h2>交易成功的订单</h2></legend>
+				<p>
+					<span style="float:right;font-size:15px;">以下数据是基于客户签收的订单, 共涉及<strong  style="color:blue">{$totalShops}</strong>家商家, 总金额
+						<strong  style="color:blue">{$totalMoneys}元</strong></span>
+				</p>
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmgrouping">
+					<thead>
+						<tr>
+							<th>商店名</th>
+							<th>商店分组/菜名</th>
+							<th>份数</th>
+							<th>菜品单价</th>
+							<th>合计</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--#foreach ($shopMOrders as $key => $eachShop) {#-->
+						<!--#foreach ($eachShop['Items'] as $key1 => $eachM) {#-->
+						<tr class="">
+							<td>{$key +1}.&nbsp;{$eachShop['Name']}, {$eachShop['Phone']}, {$eachShop['Address']}
+								<span style="float:right;margin-right:40px;">应向店铺合计支付: <strong>￥{$eachShop['PayTotal']}</strong></span>
+							</td>
+							<td>{$eachM['mname']}</td>
+							<td>{$eachM['quatity']}{$eachM['unit']}</td>
+							<td>￥{$eachM['price']}</td>
+							<td>￥{$eachM['quatity'] * $eachM['price']}</td>
+						</tr>
+						<!--# } #-->
+						<!--# } #-->
+						
+					</tbody>
+				</table>
+			</fieldset>
+			<fieldset>
+				<legend><h2>交易正在进行中的订单</h2></legend>
+				<p>
+					<span style="float:right;font-size:15px;">以下数据是基于正在进行中的订单, 共涉及<strong style="color:blue">{$totalInProgressShops}</strong>家商家, 总金额<strong  style="color:blue">{$totalInProgressMoneys}元</strong></span>
+				</p>
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="shopmInProgressGrouping">
+					<thead>
+						<tr>
+							<th>商店名</th>
+							<th>商店分组/菜名</th>
+							<th>份数</th>
+							<th>菜品单价</th>
+							<th>合计</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--#foreach ($shopMInProgressOrders as $key => $eachShop) {#-->
+						<!--#foreach ($eachShop['Items'] as $key1 => $eachM) {#-->
+						<tr class="">
+							<td>{$key +1}.&nbsp;{$eachShop['Name']}, {$eachShop['Phone']}, {$eachShop['Address']}
+								<span style="float:right;margin-right:40px;">应向店铺合计支付: <strong>￥{$eachShop['PayTotal']}</strong></span>
+							</td>
+							<td>{$eachM['mname']}</td>
+							<td>{$eachM['quatity']}{$eachM['unit']}</td>
+							<td>￥{$eachM['price']}</td>
+							<td>￥{$eachM['quatity'] * $eachM['price']}</td>
+						</tr>
+						<!--# } #-->
+						<!--# } #-->
+						
+					</tbody>
+				</table>
+			</fieldset>
+		</form>
+	</div>
+
+</div>
+<div class="clear"></div>
+<template source='footer' />
+
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery-ui.js"></script> 
+ <script type="text/javascript"  src="{@G:url.extres}/4tschool/js/jquery.dataTables.min.js"></script> 
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$( "#fromTime" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+	$( "#toTime" ).datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: "0D" 
+    });
+
+	oTable = $('#shopmgrouping').dataTable({
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+		"fnDrawCallback": function ( oSettings ) {
+			if ( oSettings.aiDisplay.length == 0 )
+			{
+				return;
+			}
+			
+			var nTrs = $('#shopmgrouping tbody tr');
+			var iColspan = nTrs[0].getElementsByTagName('td').length;
+			var sLastGroup = "";
+			for ( var i=0 ; i<nTrs.length ; i++ )
+			{
+				var iDisplayIndex = oSettings._iDisplayStart + i;
+				var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+				if ( sGroup != sLastGroup )
+				{
+					var nGroup = document.createElement( 'tr' );
+					var nCell = document.createElement( 'td' );
+					nCell.colSpan = iColspan;
+					nCell.className = "group";
+					nCell.innerHTML = sGroup;
+					nGroup.appendChild( nCell );
+					nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+					sLastGroup = sGroup;
+				}
+			}
+		},
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [ 0 ] }
+		],
+		"aaSortingFixed": [[ 0, 'asc' ]],
+		"aaSorting": [[ 1, 'asc' ]],
+		"sDom": 'lfr<"giveHeight"t>ip'
+	});
+
+ 	oInProgressTable = $('#shopmInProgressGrouping').dataTable({
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bSearch":false,
+		"fnDrawCallback": function ( oSettings ) {
+			if ( oSettings.aiDisplay.length == 0 )
+			{
+				return;
+			}
+			
+			var nTrs = $('#shopmInProgressGrouping tbody tr');
+			var iColspan = nTrs[0].getElementsByTagName('td').length;
+			var sLastGroup = "";
+			for ( var i=0 ; i<nTrs.length ; i++ )
+			{
+				var iDisplayIndex = oSettings._iDisplayStart + i;
+				var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+				if ( sGroup != sLastGroup )
+				{
+					var nGroup = document.createElement( 'tr' );
+					var nCell = document.createElement( 'td' );
+					nCell.colSpan = iColspan;
+					nCell.className = "group";
+					nCell.innerHTML = sGroup;
+					nGroup.appendChild( nCell );
+					nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+					sLastGroup = sGroup;
+				}
+			}
+		},
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [ 0 ] }
+		],
+		"aaSortingFixed": [[ 0, 'asc' ]],
+		"aaSorting": [[ 1, 'asc' ]],
+		"sDom": 'lfr<"giveHeight"t>ip'
+	});
+});
+
+ $('#searchBtn').click(function(){
+ 	var fromtime = $('#fromTime').val();
+ 	var totime = $('#toTime').val();
+
+ 	var timespan = TimeDiffirence(fromtime,totime).daysDiff;
+ 	if(timespan > 60){
+ 		alert("日期跨度不可大于两个月");
+ 		return false;
+ 	}
+ })
+
+//字符串转日期型
+function parseDate(str) 
+{
+    if (str instanceof Date) {
+        return str;
+    }
+    if (typeof str == 'string') {
+    var results = str.match(/^ *(\d{4})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/);
+    if (results && results.length > 3)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 5)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2}) *$/);
+    if (results && results.length > 6)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10));
+    results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2})\.(\d{1,9}) *$/);
+    if (results && results.length > 7)
+        return new Date(parseInt(results[1],10), parseInt(results[2],10) - 1, parseInt(results[3],10), parseInt(results[4],10), parseInt(results[5],10), parseInt(results[6],10), parseInt(results[7],10));
+    }
+    return null;
+}
+
+//计算时间差函数
+function TimeDiffirence(startTime,endTime){
+    var diffDetail = {};
+    
+    try{
+	    var date1 = getObjectType(startTime) == "date" ? startTime : parseDate(startTime);
+	    var date2 = getObjectType(endTime) == "date" ? endTime : parseDate(endTime);
+	    //毫秒差
+	    diffDetail.msDiff = date2.getTime()-date1.getTime();
+	    //分钟差
+	    diffDetail.minutesDiff=Math.floor(diffDetail.msDiff/(60*1000));
+	    //小时差
+	    diffDetail.hoursDiff=Math.floor(diffDetail.minutesDiff/60);
+	    //天数差
+	    diffDetail.daysDiff=Math.floor(diffDetail.hoursDiff/24);
+	    
+	}catch(e){}
+		
+	return diffDetail;
+}
+
+//判断变量类型
+function getObjectType(o) {
+    var _t;
+    return ((_t = typeof(o)) == "object" ? Object.prototype.toString.call(o).slice(8,-1):_t).toLowerCase();
+}
+
+</script>
+
+

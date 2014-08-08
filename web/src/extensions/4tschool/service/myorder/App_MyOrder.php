@@ -106,7 +106,6 @@ class App_MyOrder
             array('name' => '我的收藏', 'extra' =>"myfavorite", 'role' => '', 'link' => 'index.php?m=app&c=myfavorite&page=1&app=4tschool&a=run')
         ),
         '账户管理' => array(
-            array('name' => '编辑个人档案', 'extra' =>"myinfo", 'role' => '', 'link' => 'index.php?m=app&c=myaccount&page=1&app=4tschool&a=run'),
             array('name' => '安全中心', 'extra' =>"security", 'role' => '', 'link' => 'index.php?m=app&c=myaccount&page=1&app=4tschool&a=securitycenter'),
             array('name' => '我的积分', 'extra' =>"mycredit", 'role' => '', 'link' => 'index.php?m=app&c=myaccount&page=1&app=4tschool&a=mycredit'),
             array('name' => '送餐地址','extra' =>"myaddress",  'role' => '', 'link' => 'index.php?m=app&c=myaccount&page=1&app=4tschool&a=orderaddress'),

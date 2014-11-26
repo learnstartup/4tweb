@@ -7,6 +7,9 @@
 安装后 Web端配置修改: https://github.com/learnstartup/4tweb/wiki/Web%E7%AB%AF%E9%85%8D%E7%BD%AE%E9%A1%B9%E4%BF%AE%E6%94%B9(%E5%9F%BA%E4%BA%8E%E4%BD%A0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE,-%E7%9F%AD%E4%BF%A1%E8%AE%BE%E7%BD%AE,-%E5%BE%AE%E4%BF%A1Key,-%E7%99%BE%E5%BA%A6%E6%8E%A8%E9%80%81%EF%BC%89
 
 =====
+常见错误以及解决方案: https://github.com/learnstartup/4tweb/wiki/%E7%82%B9%E9%A4%90%E5%93%9F%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E5%B8%B8%E8%A7%81%E7%9A%84%E9%94%99%E8%AF%AF%E8%AF%B4%E6%98%8E
+
+=====
 项目截图与概述: https://github.com/learnstartup/4tweb/wiki/Web%E7%AB%AF%E6%A6%82%E5%86%B5:-%E9%A1%B9%E7%9B%AE%E6%88%AA%E5%9B%BE(%E4%B8%89%E4%BD%8D%E4%B8%80%E4%BD%93,-Web,-App,-%E5%BE%AE%E4%BF%A1)
 
 点餐哟基于PHPWIND的外卖平台, 是一个开源的公益的平台, 开源是指点餐哟开源所有代码, 大家有自己的权利去发布自己的代码去做商业的活动以及二次开发; 当然用的人也需要遵守phpwind的协议。
